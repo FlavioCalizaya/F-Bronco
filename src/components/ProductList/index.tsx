@@ -10,28 +10,28 @@ import { IconButton } from '@mui/material'
 import Update from 'mdi-material-ui/Update'
 import Delete from 'mdi-material-ui/Delete'
 
+const ProductList = () => {
+  
+  const createData = (
+    codI: string,
+    tipo: string,
+    marca: string,
+    descripcion: string,
+    alto: number,
+    ancho: number,
+    esp: number
+  ) => {
+    return { codI, tipo, marca, descripcion, alto, ancho, esp }
+  }
+  
+  const rows = [
+    createData('A130', 'AT', 'CHEVROLET', 'Chevrolet Aveo/PT G3 1,6L', 60.0, 40.0, 26),
+    createData('A0333', 'MT', 'TOYOTA', 'Toyota Colorado 2.8L', 46.0, 60.0, 22),
+    createData('A0523', 'AT', 'NISSAN', 'Nissa DMAX 3,0', 47.0, 58.0, 26),
+    createData('A0129', 'MT', 'DODGE', 'Dodge Trallalazer 02-09', 46.0, 66.8, 26),
+    createData('A0418', 'AT', 'SUSUKY', 'Susuky dakota 2000-2003', 66.0, 38.0, 32)
+  ]
 
-const createData = (
-  codI: string,
-  tipo: string,
-  marca: string,
-  descripcion: string,
-  alto: number,
-  ancho: number,
-  esp: number
-) => {
-  return { codI, tipo, marca, descripcion, alto, ancho, esp }
-}
-
-const rows = [
-  createData('A130', 'AT', 'CHEVROLET', 'Chevrolet Aveo/PT G3 1,6L', 60.0, 40.0, 26),
-  createData('A0333', 'MT', 'TOYOTA', 'Toyota Colorado 2.8L', 46.0, 60.0, 22),
-  createData('A0523', 'AT', 'NISSAN', 'Nissa DMAX 3,0', 47.0, 58.0, 26),
-  createData('A0129', 'MT', 'DODGE', 'Dodge Trallalazer 02-09', 46.0, 66.8, 26),
-  createData('A0418', 'AT', 'SUSUKY', 'Susuky dakota 2000-2003', 66.0, 38.0, 32)
-]
-
-const TableProducts = () => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
@@ -85,4 +85,4 @@ const TableProducts = () => {
   )
 }
 
-export default TableProducts
+export default ProductList

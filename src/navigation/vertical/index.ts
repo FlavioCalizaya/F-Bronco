@@ -35,7 +35,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Lista de Productos',
       icon: FormatListNumbered,
-      path: '/list-products'
+      path: '/Products'
     },
     {
       title: 'Login',

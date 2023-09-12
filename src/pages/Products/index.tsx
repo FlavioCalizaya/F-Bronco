@@ -6,9 +6,9 @@ import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 
 // ** Components Imports
-import TableProducts from 'src/components/tables/TableListProducts'
+import ProductList from 'src/components/ProductList'
 
-const listProducts = () => {
+const Products = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -23,7 +23,7 @@ const listProducts = () => {
       <Grid item xs={12}>
         <Card>
           <CardHeader title='Productos' titleTypographyProps={{ variant: 'h6' }} />
-          <TableProducts />
+          <ProductList />
         </Card>
       </Grid>
 
@@ -31,4 +31,4 @@ const listProducts = () => {
   )
 }
 
-export default listProducts
+export default Products
