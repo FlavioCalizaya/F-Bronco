@@ -7,6 +7,7 @@ import CardHeader from '@mui/material/CardHeader'
 
 // ** Components Imports
 import ProductList from 'src/components/ProductList'
+import InsertProducts from 'src/components/InsertProduct'
 
 const Products = () => {
   return (
@@ -18,6 +19,7 @@ const Products = () => {
           </Link>
         </Typography>
         <Typography variant='body2'>Productos disponibles para la venta.</Typography>
+        <InsertProducts />
       </Grid>
   
       <Grid item xs={12}>
