@@ -1,11 +1,8 @@
-// ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
-
-// ** Components Imports
 import ProductList from 'src/components/ProductList'
 import InsertProducts from 'src/components/InsertProduct'
 
