@@ -37,7 +37,7 @@ const UserLayout = ({ children }: Props) => {
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
-
+/*
   const UpgradeToProImg = () => {
     return (
       <Box sx={{ mx: 'auto' }}>
@@ -51,27 +51,27 @@ const UserLayout = ({ children }: Props) => {
       </Box>
     )
   }
-
+*/
   return (
     <VerticalLayout
       hidden={hidden}
       settings={settings}
       saveSettings={saveSettings}
       verticalNavItems={VerticalNavItems()} // Navigation Items
-      afterVerticalNavMenuContent={UpgradeToProImg}
+      //afterVerticalNavMenuContent={UpgradeToProImg}
       verticalAppBarContent={(
         props // AppBar Content
       ) => (
-        <VerticalAppBarContent
+       <VerticalAppBarContent
           hidden={hidden}
           settings={settings}
           saveSettings={saveSettings}
           toggleNavVisibility={props.toggleNavVisibility}
-        />
+       />
       )}
     >
       {children}
-      <UpgradeToProButton />
+      {/*<UpgradeToProButton />*/}
     </VerticalLayout>
   )
 }
