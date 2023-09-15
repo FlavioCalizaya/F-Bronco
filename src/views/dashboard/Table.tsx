@@ -12,7 +12,7 @@ import TableContainer from '@mui/material/TableContainer'
 
 // ** Types Imports
 //import { ThemeColor } from 'src/@core/layouts/types'
-import { useGetUsersQuery } from 'src/api'
+import { useGetAllProvidersQuery } from 'src/api'
 
 interface RowType {
   id: number
@@ -25,7 +25,7 @@ interface RowType {
 const DashboardTable = () => {
 
   // @ts-ignore
-const {data, isLoading, error} = useGetUsersQuery()
+const {data, isLoading} = useGetAllProvidersQuery()
 console.log(data)
 
 
