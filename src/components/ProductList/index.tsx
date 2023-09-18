@@ -8,36 +8,42 @@ import TableContainer from '@mui/material/TableContainer'
 import { IconButton } from '@mui/material'
 import Update from 'mdi-material-ui/Update'
 import Delete from 'mdi-material-ui/Delete'
+import { useGetAllProductsQuery } from 'src/api/Product'
+
+
+interface RowType {
+  idProducto: number;
+  categoria: number;
+  codigo: string;
+  imagen: string;
+  nombreProducto: string;
+  precioVenta: number;
+  estado: number;
+  alto: number;
+  ancho: number;
+  espesor: number;
+  marca: string;
+  tipo: string;
+  descripcion: string;
+}
 
 const ProductList = () => {
-  
-  const createData = (
-    codI: string,
-    tipo: string,
-    marca: string,
-    descripcion: string,
-    alto: number,
-    ancho: number,
-    esp: number
-  ) => {
-    return { codI, tipo, marca, descripcion, alto, ancho, esp }
-  }
-  
-  const rows = [
-    createData('A130', 'AT', 'CHEVROLET', 'Chevrolet Aveo/PT G3 1,6L', 60.0, 40.0, 26),
-    createData('A0333', 'MT', 'TOYOTA', 'Toyota Colorado 2.8L', 46.0, 60.0, 22),
-    createData('A0523', 'AT', 'NISSAN', 'Nissa DMAX 3,0', 47.0, 58.0, 26),
-    createData('A0129', 'MT', 'DODGE', 'Dodge Trallalazer 02-09', 46.0, 66.8, 26),
-    createData('A0418', 'AT', 'SUSUKY', 'Susuky dakota 2000-2003', 66.0, 38.0, 32)
-  ]
 
+    // @ts-ignore
+  const { data, isLoading} = useGetAllProductsQuery();
+  console.log( data )
   return (
+    <>
+  
+    { isLoading ? <h5>Cargando..</h5> :
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
             <TableCell>Cod I</TableCell>
+            <TableCell align='right'>Nombre</TableCell>
             <TableCell align='right'>Tipo </TableCell>
+            <TableCell align='right'>Categoria</TableCell>
             <TableCell align='right'>Marca </TableCell>
             <TableCell align='right'>Descripcion </TableCell>
             <TableCell align='right'>Alto</TableCell>
@@ -48,9 +54,9 @@ const ProductList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
+          {data.map((product: RowType) => (
             <TableRow
-              key={row.codI}
+              key={product.idProducto}
               sx={{
                 '&:last-of-type td, &:last-of-type th': {
                   border: 0
@@ -58,14 +64,16 @@ const ProductList = () => {
               }}
             >
               <TableCell component='th' scope='row'>
-                {row.codI}
+                {product.codigo}
               </TableCell>
-              <TableCell align='right'>{row.tipo}</TableCell>
-              <TableCell align='right'>{row.marca}</TableCell>
-              <TableCell align='right'>{row.descripcion}</TableCell>
-              <TableCell align='right'>{row.alto}</TableCell>
-              <TableCell align='right'>{row.ancho}</TableCell>
-              <TableCell align='right'>{row.esp}</TableCell>
+              <TableCell align='right'>{product.nombreProducto}</TableCell>
+              <TableCell align='right'>{product.tipo}</TableCell>
+              <TableCell align='right'>{product.categoria}</TableCell>
+              <TableCell align='right'>{product.marca}</TableCell>
+              <TableCell align='right'>{product.descripcion}</TableCell>
+              <TableCell align='right'>{product.alto}</TableCell>
+              <TableCell align='right'>{product.ancho}</TableCell>
+              <TableCell align='right'>{product.categoria}</TableCell>
               <TableCell align='right'>
                 <IconButton aria-label='Update' color="primary">
                   <Update />
@@ -81,6 +89,8 @@ const ProductList = () => {
         </TableBody>
       </Table>
     </TableContainer>
+            }
+    </>
   )
 }
 
