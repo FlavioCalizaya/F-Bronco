@@ -10,10 +10,12 @@ import { store } from 'src/store'
 
 const Products = () => {
   return (
+    <Provider store={ store }>
+
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography variant='h5'>
-          <Link href='#' target='_blank'>
+          <Link href='#'>
             Lista de Productos
           </Link>
         </Typography>
@@ -24,13 +26,13 @@ const Products = () => {
       <Grid item xs={12}>
         <Card>
           <CardHeader title='Productos' titleTypographyProps={{ variant: 'h6' }} />
-          <Provider store={ store }>
           <ProductList />
-          </Provider>
         </Card>
       </Grid>
 
     </Grid>
+    </Provider>
+
   )
 }
 
