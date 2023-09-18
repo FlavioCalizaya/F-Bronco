@@ -192,7 +192,7 @@ const InsertProduct = () => {
             Cancelar
           </Button>
           <Button onClick={ handleAddProduct } disabled={ isLoading } variant='contained' autoFocus>
-            { isLoading ? 'Añadir producto...' : 'Añadir producto'}
+            { isLoading ? 'Añadiendo producto...' : 'Añadir producto'}
           </Button>
           { isError && <div> Error adding product </div> }
         </DialogActions>
