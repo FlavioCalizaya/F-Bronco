@@ -7,8 +7,8 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import { IconButton } from '@mui/material'
 import Update from 'mdi-material-ui/Update'
-import Delete from 'mdi-material-ui/Delete'
 import { useGetAllProductsQuery } from 'src/api/Product'
+import DeleteProduct from '../DeleteProduct'
 
 
 interface RowType {
@@ -70,7 +70,7 @@ const ProductList = () => {
               <TableCell align='right'>{product.tipo}</TableCell>
               <TableCell align='right'>{product.categoria}</TableCell>
               <TableCell align='right'>{product.marca}</TableCell>
-              <TableCell align='right'>{ product.descripcion ? product.descripcion : 'No hay descripcion'}</TableCell>
+              <TableCell align='right'>{product.descripcion ? product.descripcion : 'No hay descripcion'}</TableCell>
               <TableCell align='right'>{product.alto}</TableCell>
               <TableCell align='right'>{product.ancho}</TableCell>
               <TableCell align='right'>{product.categoria}</TableCell>
@@ -80,9 +80,7 @@ const ProductList = () => {
                 </IconButton>
               </TableCell>
               <TableCell align='right'>
-                <IconButton aria-label='Delete' color="error">
-                  <Delete />
-                </IconButton>
+              <DeleteProduct id={ product.idProducto } />
               </TableCell>
             </TableRow>
           ))}
