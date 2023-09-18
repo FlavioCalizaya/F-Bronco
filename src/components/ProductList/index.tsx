@@ -70,7 +70,7 @@ const ProductList = () => {
               <TableCell align='right'>{product.tipo}</TableCell>
               <TableCell align='right'>{product.categoria}</TableCell>
               <TableCell align='right'>{product.marca}</TableCell>
-              <TableCell align='right'>{product.descripcion}</TableCell>
+              <TableCell align='right'>{ product.descripcion ? product.descripcion : 'No hay descripcion'}</TableCell>
               <TableCell align='right'>{product.alto}</TableCell>
               <TableCell align='right'>{product.ancho}</TableCell>
               <TableCell align='right'>{product.categoria}</TableCell>
