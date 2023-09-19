@@ -36,10 +36,7 @@ export default function DeleteProduct( { id }: { id: number } ) {
 
   const handleDeleteProduct = async () => {
     const updatedProductData = {
-      id: id,
-      values: {
-        estado: 0,
-      },
+      id: id
     };
 
     try {

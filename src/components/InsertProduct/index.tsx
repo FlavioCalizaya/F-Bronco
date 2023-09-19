@@ -28,8 +28,8 @@ const InsertProduct = () => {
     marca: '',
     tipo: 'MT',
     descripcion: '',
-    alto: '',
-    ancho: '',
+    alto: 0,
+    ancho: 0,
     espesor: '',
     precioVenta: ''
   }
