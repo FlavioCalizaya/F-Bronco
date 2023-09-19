@@ -33,7 +33,12 @@ const navigation = (): VerticalNavItemsType => {
       sectionTitle: 'Pages'
     },
     {
-      title: 'Lista de Productos',
+      title: 'Clientes',
+      icon: AccountPlusOutline,
+      path: '/Clients'
+    },
+    {
+      title: 'Productos',
       icon: FormatListNumbered,
       path: '/Products'
     },

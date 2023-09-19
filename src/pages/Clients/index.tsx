@@ -3,26 +3,25 @@ import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
-import ProductList from 'src/components/ProductList'
-import InsertProducts from 'src/components/InsertProduct'
+import InsertClient from 'src/components/InsertClient'
+import ClientList from 'src/components/ClientList'
 
-const Products = () => {
+const Clients = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography variant='h5'>
           <Link href='#' target='_blank'>
-            Lista de Productos
+            LISTA DE CLIENTES
           </Link>
-        </Typography>
-        <Typography variant='body2'>Productos disponibles para la venta.</Typography>
-        <InsertProducts />
+        </Typography>      
+      <InsertClient />
       </Grid>
 
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Productos' titleTypographyProps={{ variant: 'h6' }} />
-          <ProductList />
+          
+          <ClientList/>
         </Card>
       </Grid>
 
@@ -30,4 +29,4 @@ const Products = () => {
   )
 }
 
-export default Products
+export default Clients
