@@ -50,12 +50,12 @@ export const productApi = createApi({
 
       updateProduct: builder.mutation({
         query(data){
-          const { id, values } = data
+          const { id, value } = data
 
           return {
             url: `/products/${id}`,
             method: 'PUT',
-            body: values,
+            body: value,
           }
         },
         invalidatesTags: ["Product"],
@@ -63,11 +63,17 @@ export const productApi = createApi({
       }),
 
       deleteProduct: builder.mutation({
-        query: (id) => ({
-          url: `/products/${id}`,
-          method: 'DELETE',
-        }),
-        extraOptions: {maxRetries:2},
+        query(data){
+          const { id, values } = data
+
+          return {
+            url: `/products/remove/${id}`,
+            method: 'PUT',
+            body: values,
+          }
+        },
+        invalidatesTags: ["Product"],
+        extraOptions: {maxRetries:2}
       })
     })
 

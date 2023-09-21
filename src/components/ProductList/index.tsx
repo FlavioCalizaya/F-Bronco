@@ -5,10 +5,9 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import { IconButton } from '@mui/material'
-import Update from 'mdi-material-ui/Update'
 import { useGetAllProductsQuery } from 'src/api/Product'
 import DeleteProduct from '../DeleteProduct'
+import UpdateProduct from '../UpdateProduct'
 
 
 interface RowType {
@@ -73,11 +72,9 @@ const ProductList = () => {
               <TableCell align='right'>{product.descripcion ? product.descripcion : 'No hay descripcion'}</TableCell>
               <TableCell align='right'>{product.alto}</TableCell>
               <TableCell align='right'>{product.ancho}</TableCell>
-              <TableCell align='right'>{product.categoria}</TableCell>
+              <TableCell align='right'>{product.espesor}</TableCell>
               <TableCell align='right'>
-                <IconButton aria-label='Update' color="primary">
-                  <Update />
-                </IconButton>
+               <UpdateProduct id={ product.idProducto } />
               </TableCell>
               <TableCell align='right'>
               <DeleteProduct id={ product.idProducto } />

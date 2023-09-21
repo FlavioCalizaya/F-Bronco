@@ -9,7 +9,7 @@ import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { IconButton } from '@mui/material';
 import Delete from 'mdi-material-ui/Delete'
-import { useUpdateProductMutation } from 'src/api/Product';
+import { useDeleteProductMutation } from 'src/api/Product';
 
 
 const Transition = React.forwardRef(function Transition(
@@ -32,7 +32,7 @@ export default function DeleteProduct( { id }: { id: number } ) {
     setOpen(false);
   };
 
-  const [updateProduct, { isLoading, isError }] = useUpdateProductMutation();
+  const [deleteProduct, { isLoading, isError }] = useDeleteProductMutation();
 
   const handleDeleteProduct = async () => {
     const updatedProductData = {
@@ -40,7 +40,7 @@ export default function DeleteProduct( { id }: { id: number } ) {
     };
 
     try {
-      await updateProduct(updatedProductData).unwrap();
+      await deleteProduct(updatedProductData).unwrap();
       handleClose();
     } catch (error) {
       console.error('Error deleting product:', error);
