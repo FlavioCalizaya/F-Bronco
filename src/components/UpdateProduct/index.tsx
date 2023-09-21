@@ -2,7 +2,6 @@ import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
@@ -13,30 +12,34 @@ import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { useEffect, useState } from 'react'
-import { useGetProductByIDQuery } from 'src/api/Product'
+import { useGetProductByIDQuery, useUpdateProductMutation } from 'src/api/Product'
 import Link from '@mui/material/Link'
 import { IconButton } from '@mui/material'
 import Update from 'mdi-material-ui/Update'
 
+
+const initialValuesInputs= { 
+  nombreProducto: 'Cargando',
+  categoria: '1',
+  codigo: 'Cargando',
+  marca: 'Cargando',
+  tipo: 'MT',
+  descripcion: 'Cargando',
+  alto: 0,
+  ancho: 0,
+  espesor: 'Cargando',
+  precioVenta: 'Cargando'
+}
 
 const UpdateProduct = ({ id }: { id: number }) => {
 
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
-  
-  const initialValuesInputs= { 
-    nombreProducto: 'Cargando',
-    categoria: '1',
-    codigo: 'Cargando',
-    marca: 'Cargando',
-    tipo: 'MT',
-    descripcion: 'Cargando',
-    alto: 0,
-    ancho: 0,
-    espesor: 'Cargando',
-    precioVenta: 'Cargando'
-  }
+
+
+  const { data: product } = useGetProductByIDQuery(id);
+
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -47,6 +50,9 @@ const UpdateProduct = ({ id }: { id: number }) => {
   }
 
   const handleClickOpen = () => {
+
+  setinputsValues(product )
+
     setOpen(true)
    
   }
@@ -55,16 +61,23 @@ const UpdateProduct = ({ id }: { id: number }) => {
     setOpen(false)
   }
 
-  const { data: product, isLoading, isError } = useGetProductByIDQuery(id);
-
-
   const [inputsValues, setinputsValues] = useState(initialValuesInputs);
 
-  useEffect(() => {
-    if (product ) {
-      setinputsValues(product )
+  const [updateProduct, { isLoading, isError }] = useUpdateProductMutation();
+
+
+  const handleUpdateProduct = async () => {
+    const updatedProductData = {
+      id: id,
+      value: inputsValues 
+    };
+    try {
+      await updateProduct(updatedProductData).unwrap();
+      handleClose();
+    } catch (error) {
+      console.error('Error updating product:', error);
     }
-  }, [product])
+  };
   
 
   return (
@@ -82,7 +95,7 @@ const UpdateProduct = ({ id }: { id: number }) => {
           <Grid container spacing={7} style={{ paddingTop: '5px' }}>
             <Grid item xs={12} sm={6}>
               <TextField
-                name='nombre'
+                name='nombreProducto'
                 value={inputsValues.nombreProducto}
                 onChange={handleInputChange}
                 fullWidth
@@ -188,10 +201,14 @@ const UpdateProduct = ({ id }: { id: number }) => {
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button  disabled={isLoading} variant='contained' autoFocus>
+          <Button  
+          disabled={isLoading}  
+          onClick={ handleUpdateProduct } 
+          variant='contained' 
+          autoFocus>
             {isLoading ? 'Actualizando producto...' : 'Actualizar producto'}
           </Button>
-          {isError && <div> Error get product </div>}
+          {isError && <div> Error update product </div>}
         </DialogActions>
       </Dialog>
     </div>
