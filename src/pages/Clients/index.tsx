@@ -6,27 +6,34 @@ import CardHeader from '@mui/material/CardHeader'
 import InsertClient from 'src/components/InsertClient'
 import ClientList from 'src/components/ClientList'
 
-const Clients = () => {
+
+const Client = () => {
   return (
+
+
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography variant='h5'>
-          <Link href='#' target='_blank'>
-            LISTA DE CLIENTES
+          <Link href='#'>
+            Lista de Clientes
           </Link>
-        </Typography>      
-      <InsertClient />
+        </Typography>
+        <Typography variant='body2'>Clients</Typography>
+        <InsertClient />
       </Grid>
 
       <Grid item xs={12}>
         <Card>
-          
-          <ClientList/>
+          <CardHeader title='Client' titleTypographyProps={{ variant: 'h6' }} />
+          <ClientList />
         </Card>
       </Grid>
 
     </Grid>
+    
+
   )
 }
 
-export default Clients
+export default Client
+

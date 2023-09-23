@@ -7,58 +7,69 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import { IconButton } from '@mui/material'
 import Update from 'mdi-material-ui/Update'
-import Delete from 'mdi-material-ui/Delete'
+import { useGetAllClientQuery } from 'src/api/Client'
+import DeleteClient from '../DeleteClient'
+
+interface RowType {
+  idClient: number;
+  nit_ci: number;
+  business_name: string;
+  phone_number: number;
+  estado:number;
+  
+}
 
 const ClientList = () => {
-  
-  const createData = (
-    
-    razonSocial: string,
-    nit: string,
-    telefono: number
-  ) =>{
-    return {razonSocial,nit,telefono}
-  }
-  const rows = [
-    createData('Alejandra', '9879876-B', 6576787),
-    createData('Amanda', '678674-A', 4654656),
-    createData('lesly', '465646-E', 45363564)
-  ]
- 
 
+    // @ts-ignore
+  const { data, isLoading} = useGetAllClientQuery();
+  console.log( data )
   return (
+    <>
+  
+    { isLoading ? <h5>Cargando..</h5>:
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 600 }} aria-label='simple table'>
+      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
+            <TableCell>Cod I</TableCell>
+            <TableCell align='right'>Nit/C.I.</TableCell>
             <TableCell align='right'>Razon Social </TableCell>
-            <TableCell align='right'>Nit </TableCell>
-            <TableCell align='right'>Telefono </TableCell>
-            <TableCell align='right'>Modificar</TableCell>
+            <TableCell align='right'>Telefono</TableCell>
+            <TableCell align='right'>Actualizar</TableCell>
             <TableCell align='right'>Eliminar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow>             
-              <TableCell align='right'>{row.razonSocial}</TableCell>
-              <TableCell align='right'>{row.nit}</TableCell>
-              <TableCell align='right'>{row.telefono}</TableCell>
+          {data.map((client: RowType) => (
+            <TableRow
+              key={client.idClient}
+              sx={{
+                '&:last-of-type td, &:last-of-type th': {
+                  border: 0
+                }
+              }}
+            >
+              <TableCell align='right'>{client.nit_ci}</TableCell>
+              <TableCell align='right'>{client.business_name}</TableCell>
+              <TableCell align='right'>{client.phone_number}</TableCell>
+              <TableCell align='right'>{client.estado}</TableCell>
+
               <TableCell align='right'>
                 <IconButton aria-label='Update' color="primary">
                   <Update />
                 </IconButton>
               </TableCell>
               <TableCell align='right'>
-                <IconButton aria-label='Delete' color="error">
-                  <Delete />
-                </IconButton>
+              <DeleteClient id={ client.idClient } />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
+            }
+    </>
   )
 }
 
