@@ -36,9 +36,11 @@ const ProductList = () => {
   
     { isLoading ? <h5>Cargando..</h5> :
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+      <Table sx={{ minWidth: 650 }} stickyHeader aria-label='sticky table'>
         <TableHead>
           <TableRow>
+
+            <TableCell>Imagen</TableCell>
             <TableCell>Cod I</TableCell>
             <TableCell align='right'>Nombre</TableCell>
             <TableCell align='right'>Tipo </TableCell>
@@ -62,6 +64,11 @@ const ProductList = () => {
                 }
               }}
             >
+              <TableCell align='right'>
+              {product.imagen && 
+                  <img src={ `/images/products/${product.imagen}`} alt='Imagen Producto' style={{ maxWidth: '100%', height: '80px' }} />
+              }
+              </TableCell>
               <TableCell component='th' scope='row'>
                 {product.codigo}
               </TableCell>
