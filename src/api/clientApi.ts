@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 
-export const clientApi = createApi({
+export const clientApi:any = createApi({
 
-    reducerPath: 'client',
+    reducerPath: 'clients',
 
     baseQuery: retry(fetchBaseQuery({ 
       baseUrl: 'http://localhost:8080/api/v1',
@@ -29,18 +29,19 @@ export const clientApi = createApi({
     endpoints: (builder) => ({
 
       getAllClient: builder.query({
-        query: () => '/client',
+        query: () => '/Clients',
         providesTags: ["Client"],
     }),
 
     getClientByID: builder.query({
-        query: (id) => `/client/${ id }`,
+        query: (id) => `/Clients/${ id }`,
         extraOptions:{maxRetries:2},
         providesTags: ["Client"],
     }),
         addNewClient: builder.mutation({
           query: (newClient) =>({
-            url: '/client',
+            url: '/Clients',
+            
             method: 'POST',
             body: newClient,
           }),
@@ -53,7 +54,7 @@ export const clientApi = createApi({
           const { id, values } = data
 
           return {
-            url: `/client/${id}`,
+            url: `/Clients/${id}`,
             method: 'PUT',
             body: values,
           }
@@ -64,7 +65,7 @@ export const clientApi = createApi({
 
       deleteClient: builder.mutation({
         query: (id) => ({
-          url: `/client/${id}`,
+          url: `/Clients/${id}`,
           method: 'DELETE',
         }),
         extraOptions: {maxRetries:2},
@@ -79,4 +80,5 @@ export const {
   useAddNewClientMutation,
   useUpdateClientMutation,
   useDeleteClientMutation,
+  useLazyGetClientByIDQuery
  } = clientApi;

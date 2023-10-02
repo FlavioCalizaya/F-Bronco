@@ -54,7 +54,7 @@ const ProductList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((product: RowType) => (
+          {data  && data.map((product: RowType) => (
             <TableRow
               key={product.idProducto}
               sx={{

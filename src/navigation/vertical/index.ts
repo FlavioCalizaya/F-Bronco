@@ -1,8 +1,8 @@
 // ** Icon imports
 import Login from 'mdi-material-ui/Login'
 import Table from 'mdi-material-ui/Table'
-import Coffe from 'mdi-material-ui/Coffee'
 import FormatListNumbered from 'mdi-material-ui/FormatListNumbered'
+import GroupsIcon from '@mui/icons-material/Groups';
 
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
@@ -15,7 +15,6 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
-import { CameraFront } from 'mdi-material-ui'
 
 const navigation = (): VerticalNavItemsType => {
   return [
@@ -41,6 +40,11 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Productos',
       icon: FormatListNumbered,
       path: '/Products'
+    },
+    {
+      title: 'Proveedores',
+      icon: GroupsIcon,
+      path: '/Providers'
     },
     {
       title: 'Login',

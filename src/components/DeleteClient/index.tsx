@@ -7,9 +7,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
+import { useState } from 'react';
 import { IconButton } from '@mui/material';
 import Delete from 'mdi-material-ui/Delete'
-import { useUpdateClientMutation } from 'src/api/Client';
+import {useDeleteClientMutation} from 'src/api/clientApi';
+
+
+
 
 
 const Transition = React.forwardRef(function Transition(
@@ -21,8 +25,12 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function DeleteClient( { id }: { id: number } ) {
+export default function DeleteClient( data:any ) {
+
   const [open, setOpen] = React.useState(false);
+
+  const [id, setID] = useState(data.data.id);
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,27 +40,29 @@ export default function DeleteClient( { id }: { id: number } ) {
     setOpen(false);
   };
 
-  const [updateClient, { isLoading, isError }] = useUpdateClientMutation();
+  const [ DeleteClient,{ isLoading, isError }] = useDeleteClientMutation()
 
-  const handleDeleteClient = async () => {
-    const updateClientData = {
-      id: id
-    };
 
-    try {
-      await updateClient(updateClientData).unwrap();
-      handleClose();
-    } catch (error) {
-      console.error('Error deleting Cliente:', error);
+  const deleteClientByID = async (e:any) => {
+    e.preventDefault();
+
+    console.log(id)
+
+    const res =  await DeleteClient(id).unwrap();
+    if (res){
+      console.log('client eliminado con exito')
+      handleClose()
+    }else{
+      console.log('Error al eliminar')
+      handleClose()
     }
-  };
+  }
 
   return (
     <div>
-
       <IconButton aria-label='Delete' color="error" onClick={handleClickOpen}>
-         <Delete />
-       </IconButton>
+        <Delete />
+      </IconButton>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -60,20 +70,19 @@ export default function DeleteClient( { id }: { id: number } ) {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Estas seguro de eliminar?"}</DialogTitle>
+        <DialogTitle>{"Esta seguro de elimar el client"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-          Si eliminas el producto, no podrás ver en tu lista de Client.
+            {data.data.businessName}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button 
-          variant='contained'
-          disabled={ isLoading } 
-          onClick={ handleDeleteClient }
-          >
-           { isLoading ? 'Eliminando producto...' : 'Eliminar Client'} 
+          <Button autoFocus onClick={handleClose}>Cancelar</Button>
+
+          <Button  variant='contained'
+          disabled={ isLoading }
+            onClick={deleteClientByID } >
+              { isLoading ? 'Eliminando Client...' : 'Eliminar Client'} 
             </Button>
         </DialogActions>
       </Dialog>

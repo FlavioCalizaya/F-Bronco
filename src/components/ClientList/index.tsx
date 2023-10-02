@@ -5,72 +5,71 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import { IconButton } from '@mui/material'
-import Update from 'mdi-material-ui/Update'
-import { useGetAllClientQuery } from 'src/api/Client'
+import CircularProgress from '@mui/material/CircularProgress';
+
+import { useGetAllClientQuery } from 'src/api/clientApi'
+import UpdateClient from '../UpdateClient'
 import DeleteClient from '../DeleteClient'
 
-interface RowType {
-  idClient: number;
-  nit_ci: number;
-  business_name: string;
-  phone_number: number;
+export default function ClientList(){
+  
+interface Client {
+
+  id: number;
+  nitCi: number;
+  businessName: string;
+  phoneNumber: number;
   estado:number;
   
 }
 
-const ClientList = () => {
-
     // @ts-ignore
-  const { data, isLoading} = useGetAllClientQuery();
-  console.log( data )
-  return (
-    <>
-  
-    { isLoading ? <h5>Cargando..</h5>:
+  const { data, isLoading} = useGetAllClientQuery()
+ 
+  return (  
+    isLoading ?  <CircularProgress/>:
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
-            <TableCell>Cod I</TableCell>
-            <TableCell align='right'>Nit/C.I.</TableCell>
-            <TableCell align='right'>Razon Social </TableCell>
-            <TableCell align='right'>Telefono</TableCell>
-            <TableCell align='right'>Actualizar</TableCell>
-            <TableCell align='right'>Eliminar</TableCell>
+            <TableCell>Nro</TableCell>   
+            <TableCell align='left'>Razon Social </TableCell>     
+            <TableCell align='left'>Nit/C.I.</TableCell>      
+                    
+            <TableCell align='left'>Telefono</TableCell>
+
+            <TableCell align='left'>Editar</TableCell>
+            <TableCell align='left'>Eliminar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((client: RowType) => (
+          {data && data.map((client: Client,item:number) => (
             <TableRow
-              key={client.idClient}
+              key={client.nitCi}
               sx={{
                 '&:last-of-type td, &:last-of-type th': {
                   border: 0
                 }
               }}
             >
-              <TableCell align='right'>{client.nit_ci}</TableCell>
-              <TableCell align='right'>{client.business_name}</TableCell>
-              <TableCell align='right'>{client.phone_number}</TableCell>
-              <TableCell align='right'>{client.estado}</TableCell>
+              <TableCell  align='left' component='th' scope='row'>{item +1}</TableCell>
+              <TableCell align='left'>{client.nitCi}</TableCell>
+              <TableCell align='left'>{client.businessName}</TableCell>
+              <TableCell align='left'>{client.phoneNumber}</TableCell>
+             
+              <TableCell align='left'>
+              <UpdateClient data={client}/>             
+              </TableCell>
 
-              <TableCell align='right'>
-                <IconButton aria-label='Update' color="primary">
-                  <Update />
-                </IconButton>
-              </TableCell>
-              <TableCell align='right'>
-              <DeleteClient id={ client.idClient } />
-              </TableCell>
-            </TableRow>
+              <TableCell align='left'>
+              <DeleteClient data={client}/>                            
+              </TableCell>     
+              </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
-            }
-    </>
+    </TableContainer>   
   )
 }
 
-export default ClientList
+

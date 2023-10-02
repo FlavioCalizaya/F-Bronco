@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { useState } from 'react'
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,10 +8,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { IconButton } from '@mui/material';
-import Delete from 'mdi-material-ui/Delete'
-import { useUpdateProductMutation } from 'src/api/Product';
 
+import { IconButton } from '@mui/material'
+import Delete from 'mdi-material-ui/Delete'
+import { useDeleteProviderMutation } from 'src/api/providerApi';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -21,9 +22,12 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function DeleteProduct( { id }: { id: number } ) {
-  
+export default function RemoveProvider(data:any) {
+
   const [open, setOpen] = React.useState(false);
+
+  const [id, setID] = useState(data.data.id);
+  const [ removeProvider ] = useDeleteProviderMutation()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,51 +37,41 @@ export default function DeleteProduct( { id }: { id: number } ) {
     setOpen(false);
   };
 
-  const [updateProduct, { isLoading, isError }] = useUpdateProductMutation();
+  const removeProviderByID = async (e:any) => {
+    e.preventDefault();
 
-  const handleDeleteProduct = async () => {
-    const updatedProductData = {
-      id: id
-    };
+    console.log(id)
 
-    try {
-      await updateProduct(updatedProductData).unwrap();
-      handleClose();
-    } catch (error) {
-      console.error('Error deleting product:', error);
+    const res =  await removeProvider(id).unwrap();
+    if (res){
+      console.log('Proveedor eliminado con exito')
+      handleClose()
+    }else{
+      console.log('Error al eliminar')
+      handleClose()
     }
-  };
+  }
 
   return (
     <div>
-
       <IconButton aria-label='Delete' color="error" onClick={handleClickOpen}>
-         <Delete />
-       </IconButton>
+        <Delete />
+      </IconButton>
       <Dialog
         open={open}
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Estas seguro de eliminar?"}</DialogTitle>
+        aria-describedby="alert-dialog-slide-description"   >
+        <DialogTitle>{"Esta seguro de elimar el Proveedor"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-          Si eliminas el producto, no podrás ver en tu lista de productos.
+            {data.data.businessName}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-        
-          <Button 
-          variant='contained'
-          disabled={ isLoading } 
-          onClick={ handleDeleteProduct }
-          >
-           { isLoading ? 'Eliminando producto...' : 'Eliminar producto'} 
-            </Button>
-
+          <Button onClick={removeProviderByID}>Eliminar</Button>
         </DialogActions>
       </Dialog>
     </div>
