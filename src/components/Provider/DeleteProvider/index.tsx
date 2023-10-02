@@ -37,10 +37,7 @@ export default function RemoveProvider(data:any) {
     setOpen(false);
   };
 
-  const removeProviderByID = async (e:any) => {
-    e.preventDefault();
-
-    console.log(id)
+  const removeProviderByID = async () => {
 
     const res =  await removeProvider(id).unwrap();
     if (res){
