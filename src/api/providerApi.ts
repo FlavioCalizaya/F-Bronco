@@ -1,14 +1,15 @@
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 
-export const providerApi = createApi({
+export const providerApi: any = createApi({
 
     reducerPath: 'provider',
 
     baseQuery: retry(fetchBaseQuery({ 
       baseUrl: 'http://localhost:8080/api/v1',
+      
       prepareHeaders: (headers) => {
-        // By default, if we have a token in the store, let's use that for authenticated requests
+        
         const token = sessionStorage.getItem('sessionJWTToken')
         if (token) {
           headers.set('x-access-token', `${token}`)
@@ -19,10 +20,10 @@ export const providerApi = createApi({
     ),
     {maxRetries:1}),
 
-    keepUnusedDataFor: 60,    //Tiempo que se matendra la data en el cache
-    refetchOnMountOrArgChange: true,  // Revalida lo datos en cada cambio
-    refetchOnFocus: true,       // Cuando pone el foco en la informacion revalida
-    refetchOnReconnect:true,    // Revalida los datos cuando hay Red
+    keepUnusedDataFor: 60,    
+    refetchOnMountOrArgChange: true,  
+    refetchOnFocus: true,       
+    refetchOnReconnect:true,
 
     tagTypes: ["Providers"],
 
@@ -34,6 +35,7 @@ export const providerApi = createApi({
         }),
 
         getProviderByID: builder.query({
+          
             query: (id) => `/providers/${ id }`,
             extraOptions:{maxRetries:2},
             providesTags: ["Providers"],
@@ -68,6 +70,7 @@ export const providerApi = createApi({
           url: `/providers/${id}`,
           method: 'DELETE',
         }),
+        invalidatesTags: ["Providers"],
         extraOptions: {maxRetries:2},
       })
     })
@@ -80,4 +83,5 @@ export const {
   useAddNewProviderMutation,
   useUpdateProviderMutation,
   useDeleteProviderMutation,
+  useLazyGetProviderByIDQuery
  } = providerApi;
