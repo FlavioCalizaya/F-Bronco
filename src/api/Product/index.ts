@@ -39,19 +39,19 @@ export const productApi = createApi({
         }),
 
         addNewProduct: builder.mutation({
-          query: (newProduct) =>({
-            url: '/products',
-            method: 'POST',
-            body: newProduct,
-          }),
-          invalidatesTags: ["Product"],
-          extraOptions: {maxRetries:0}
+          query: ( newProduct ) => {
+            console.log(newProduct,'new Product');
+            return {
+              url: '/products',
+              method: 'POST',
+              body: newProduct
+            };
+          },
         }),
 
       updateProduct: builder.mutation({
         query(data){
           const { id, value } = data
-
           return {
             url: `/products/${id}`,
             method: 'PUT',
