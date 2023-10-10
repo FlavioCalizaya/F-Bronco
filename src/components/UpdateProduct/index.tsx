@@ -2,7 +2,6 @@ import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
@@ -12,28 +11,35 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import { useState } from 'react'
-import { useAddNewProductMutation } from 'src/api/Product'
+import { useEffect, useState } from 'react'
+import { useGetProductByIDQuery, useUpdateProductMutation } from 'src/api/Product'
 import Link from '@mui/material/Link'
+import { IconButton } from '@mui/material'
+import Update from 'mdi-material-ui/Update'
 
-const InsertProduct = () => {
+
+const initialValuesInputs= { 
+  nombreProducto: 'Cargando',
+  categoria: '1',
+  codigo: 'Cargando',
+  marca: 'Cargando',
+  tipo: 'MT',
+  descripcion: 'Cargando',
+  alto: 0,
+  ancho: 0,
+  espesor: 'Cargando',
+  precioVenta: 'Cargando'
+}
+
+const UpdateProduct = ({ id }: { id: number }) => {
+
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
-  const initialValuesInputs= { 
-    nombre: '',
-    categoria: '1',
-    codigo: '',
-    marca: '',
-    tipo: 'MT',
-    descripcion: '',
-    alto: 0,
-    ancho: 0,
-    espesor: '',
-    precioVenta: ''
-  }
-  const [inputsValues, setinputsValues] = useState( initialValuesInputs );
+
+  const { data: product } = useGetProductByIDQuery(id);
+
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -44,55 +50,54 @@ const InsertProduct = () => {
   }
 
   const handleClickOpen = () => {
+
+  setinputsValues(product )
+
     setOpen(true)
+   
   }
 
   const handleClose = () => {
     setOpen(false)
   }
 
-  const [addNewProduct, { isLoading, isError }] = useAddNewProductMutation();
+  const [inputsValues, setinputsValues] = useState(initialValuesInputs);
 
-  const handleAddProduct = async () => {
-    const newProduct = {
-      idProducto: 1,
-      categoria: inputsValues.categoria,
-      codigo: inputsValues.codigo,
-      imagen: 'imagen.png',
-      nombreProducto: inputsValues.nombre,
-      precioVenta: inputsValues.precioVenta,
-      estado: 1,
-      alto: inputsValues.alto,
-      ancho: inputsValues.ancho,
-      espesor: inputsValues.espesor,
-      marca: inputsValues.marca,
-      tipo: inputsValues.tipo,
-      descripcion: inputsValues.descripcion
+  const [updateProduct, { isLoading, isError }] = useUpdateProductMutation();
+
+
+  const handleUpdateProduct = async () => {
+    const updatedProductData = {
+      id: id,
+      value: inputsValues 
     };
-
-    try{
-      await addNewProduct( newProduct ).unwrap();
+    try {
+      await updateProduct(updatedProductData).unwrap();
       handleClose();
-      setinputsValues( initialValuesInputs );
-    } catch( error ) {
-      console.log( error );
+    } catch (error) {
+      console.error('Error updating product:', error);
     }
-  }
+  };
+  
 
   return (
     <div>
-      <Button variant='outlined' onClick={handleClickOpen}>
-        Insertar Producto
-      </Button>
+      <IconButton aria-label='Update' color='primary' onClick={handleClickOpen}>
+        <Update />
+      </IconButton>
+  
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
-        <DialogTitle id='responsive-dialog-title'>  <Link href='#'> Añadir nuevo Producto </Link></DialogTitle>
+        <DialogTitle id='responsive-dialog-title'>
+          {' '}
+          <Link href='#'> Actualizar Producto </Link>
+        </DialogTitle>
         <DialogContent>
-          <Grid container spacing={7} style={{ paddingTop: '5px'}}>
+          <Grid container spacing={7} style={{ paddingTop: '5px' }}>
             <Grid item xs={12} sm={6}>
               <TextField
-                name='nombre'
-                value={inputsValues.nombre}
-                onChange={ handleInputChange }
+                name='nombreProducto'
+                value={inputsValues.nombreProducto}
+                onChange={handleInputChange}
                 fullWidth
                 label='Nombre'
               />
@@ -100,7 +105,12 @@ const InsertProduct = () => {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>Categoria</InputLabel>
-                <Select label='Categoria' name='categoria' onChange={ handleInputChange } defaultValue={ inputsValues.categoria }>
+                <Select
+                  label='Categoria'
+                  name='categoria'
+                  onChange={handleInputChange}
+                  defaultValue={inputsValues.categoria}
+                >
                   <MenuItem value='1'>Accesorios</MenuItem>
                   <MenuItem value='2'>Aceites</MenuItem>
                 </Select>
@@ -137,7 +147,7 @@ const InsertProduct = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 name='descripcion'
-                value={ inputsValues.descripcion }
+                value={inputsValues.descripcion}
                 onChange={handleInputChange}
                 fullWidth
                 id='outlined-multiline-static'
@@ -191,14 +201,18 @@ const InsertProduct = () => {
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={ handleAddProduct } disabled={ isLoading } variant='contained' autoFocus>
-            { isLoading ? 'Añadiendo producto...' : 'Añadir producto'}
+          <Button  
+          disabled={isLoading}  
+          onClick={ handleUpdateProduct } 
+          variant='contained' 
+          autoFocus>
+            {isLoading ? 'Actualizando producto...' : 'Actualizar producto'}
           </Button>
-          { isError && <div> Error adding product </div> }
+          {isError && <div> Error update product </div>}
         </DialogActions>
       </Dialog>
     </div>
   )
 }
 
-export default InsertProduct
+export default UpdateProduct

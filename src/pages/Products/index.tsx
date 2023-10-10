@@ -5,13 +5,17 @@ import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import ProductList from 'src/components/ProductList'
 import InsertProducts from 'src/components/InsertProduct'
+import {Provider} from 'react-redux'
+import { store } from 'src/store'
 
 const Products = () => {
   return (
+    <Provider store={ store }>
+
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography variant='h5'>
-          <Link href='#' target='_blank'>
+          <Link href='#'>
             Lista de Productos
           </Link>
         </Typography>
@@ -27,6 +31,8 @@ const Products = () => {
       </Grid>
 
     </Grid>
+    </Provider>
+
   )
 }
 
