@@ -70,6 +70,7 @@ export const providerApi: any = createApi({
           url: `/providers/${id}`,
           method: 'DELETE',
         }),
+        invalidatesTags: ["Providers"],
         extraOptions: {maxRetries:2},
       })
     })

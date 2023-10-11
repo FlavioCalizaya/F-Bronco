@@ -1,12 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
 
-
-import { productApi } from 'src/api/Product';
 import { providerApi } from '../api/providerApi';
-import {clientApi} from '../api/clientApi';
-
-
+import { productApi } from 'src/api/Product';
+import { clientApi } from '../api/clientApi'; 
 
 export const store:any = configureStore({
   reducer: {
