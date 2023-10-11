@@ -34,7 +34,7 @@ const ProductList = () => {
   return (
     <>
   
-    { isLoading ? <h5>Cargando..</h5> :
+    { isLoading ? <h5>Cargando..</h5>:
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
@@ -53,7 +53,7 @@ const ProductList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((product: RowType) => (
+          {data  && data.map((product: RowType) => (
             <TableRow
               key={product.idProducto}
               sx={{
@@ -62,9 +62,7 @@ const ProductList = () => {
                 }
               }}
             >
-              <TableCell component='th' scope='row'>
-                {product.codigo}
-              </TableCell>
+              <TableCell component='th' scope='row'> {product.codigo}   </TableCell>
               <TableCell align='right'>{product.nombreProducto}</TableCell>
               <TableCell align='right'>{product.tipo}</TableCell>
               <TableCell align='right'>{product.categoria}</TableCell>
