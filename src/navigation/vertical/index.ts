@@ -33,8 +33,13 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Clientes',
-      icon: AccountPlusOutline,
+      icon:AccountPlusOutline,
       path: '/Clients'
+    },
+    {
+      title: 'Servicios',
+      icon:AccountCogOutline,
+      path: '/Services'
     },
     {
       title: 'Productos',
