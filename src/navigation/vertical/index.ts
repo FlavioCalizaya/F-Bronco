@@ -2,6 +2,7 @@
 import Login from 'mdi-material-ui/Login'
 import Table from 'mdi-material-ui/Table'
 import FormatListNumbered from 'mdi-material-ui/FormatListNumbered'
+import Sale from 'mdi-material-ui/PointOfSale'
 import GroupsIcon from '@mui/icons-material/Groups';
 
 import CubeOutline from 'mdi-material-ui/CubeOutline'
@@ -35,6 +36,11 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Lista de Productos',
       icon: FormatListNumbered,
       path: '/Products'
+    },
+    {
+      title: 'Lista de Ventas',
+      icon: Sale,
+      path: '/Sales'
     },
     {
       title: 'Proveedores',

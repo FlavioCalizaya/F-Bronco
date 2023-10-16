@@ -3,15 +3,17 @@ import { setupListeners } from '@reduxjs/toolkit/query/react';
 
 import { providerApi } from '../api/providerApi';
 import { productApi } from 'src/api/Product';
+import { saleApi } from 'src/api/Sale';
 
 export const store:any = configureStore({
   reducer: {
     [providerApi.reducerPath]: providerApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
+    [saleApi.reducerPath]: saleApi.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
   .concat( [
-    providerApi.middleware, productApi.middleware ] )
+    providerApi.middleware, productApi.middleware, saleApi.middleware ] )
 })
 
 setupListeners(store.dispatch)
