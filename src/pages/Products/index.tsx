@@ -22,7 +22,7 @@ const Products = () => {
         <Typography variant='body2'>Productos disponibles para la venta.</Typography>
         <InsertProducts />
       </Grid>
-  
+
       <Grid item xs={12}>
         <Card>
           <CardHeader title='Productos' titleTypographyProps={{ variant: 'h6' }} />

@@ -22,6 +22,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function DeleteProduct( { id }: { id: number } ) {
+  
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -68,6 +69,7 @@ export default function DeleteProduct( { id }: { id: number } ) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
+        
           <Button 
           variant='contained'
           disabled={ isLoading } 
@@ -75,6 +77,7 @@ export default function DeleteProduct( { id }: { id: number } ) {
           >
            { isLoading ? 'Eliminando producto...' : 'Eliminar producto'} 
             </Button>
+
         </DialogActions>
       </Dialog>
     </div>

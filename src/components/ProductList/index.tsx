@@ -34,7 +34,7 @@ const ProductList = () => {
   return (
     <>
   
-    { isLoading ? <h5>Cargando..</h5> :
+    { isLoading ? <h5>Cargando..</h5>:
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} stickyHeader aria-label='sticky table'>
         <TableHead>
@@ -55,7 +55,7 @@ const ProductList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((product: RowType) => (
+          {data  && data.map((product: RowType) => (
             <TableRow
               key={product.idProducto}
               sx={{
