@@ -18,7 +18,7 @@ import Link from '@mui/material/Link'
 import CloudUploadIcon from 'mdi-material-ui/CloudUpload'
 import { styled } from '@mui/material/styles'
 
-const InsertProduct = () => {
+const InsertSales = () => {
 
   const [open, setOpen] = useState(false)
   const theme = useTheme()
@@ -97,13 +97,13 @@ const InsertProduct = () => {
   }
   return (
     <div>
-      <Button variant='outlined' onClick={handleClickOpen}>
-        Insertar Producto
+      <Button variant='outlined' onClick={ handleClickOpen }>
+        Insertar Venta
       </Button>
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
         <DialogTitle id='responsive-dialog-title'>
           {' '}
-          <Link href='#'> Añadir nuevo producto </Link>
+          <Link href='#'> Añadir una nueva Venta</Link>
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={7} style={{ paddingTop: '5px' }}>
@@ -227,13 +227,13 @@ const InsertProduct = () => {
             Cancelar
           </Button>
           <Button onClick={handleAddProduct} disabled={isLoading} variant='contained' autoFocus>
-            {isLoading ? 'Añadiendo producto...' : 'Añadir producto'}
+            { isLoading ? 'Añadiendo venta...' : 'Añadir venta' }
           </Button>
-          {isError && <div> Error adding product </div>}
+          {isError && <div> Error al añadir una venta </div>}
         </DialogActions>
       </Dialog>
     </div>
   )
 }
 
-export default InsertProduct
+export default InsertSales
