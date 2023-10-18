@@ -3,6 +3,7 @@ import Login from 'mdi-material-ui/Login'
 import Table from 'mdi-material-ui/Table'
 import FormatListNumbered from 'mdi-material-ui/FormatListNumbered'
 import GroupsIcon from '@mui/icons-material/Groups';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
@@ -40,6 +41,11 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Proveedores',
       icon: GroupsIcon,
       path: '/Providers'
+    },
+    {
+      title: 'Compras',
+      icon: ShoppingBagIcon,
+      path: '/Purchases'
     },
     {
       title: 'Login',

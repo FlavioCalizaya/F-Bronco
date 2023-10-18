@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles'
 
 import { useState } from 'react'
 import { useAddNewpurchaseMutation } from 'src/api/purchaseApi'
-import TagsSearch from 'src/views/search/PurchaseStepper'
+import TagsSearch from 'src/views/search/TagSearhs'
 import { useGetAllProvidersQuery } from 'src/api/providerApi'
 
 const InsertPurchase = () => {
