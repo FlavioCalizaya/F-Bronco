@@ -2,6 +2,7 @@
 import Login from 'mdi-material-ui/Login'
 import Table from 'mdi-material-ui/Table'
 import FormatListNumbered from 'mdi-material-ui/FormatListNumbered'
+import Sale from 'mdi-material-ui/PointOfSale'
 import GroupsIcon from '@mui/icons-material/Groups';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
@@ -33,9 +34,19 @@ const navigation = (): VerticalNavItemsType => {
       sectionTitle: 'Pages'
     },
     {
-      title: 'Lista de Productos',
+      title: 'Clientes',
+      icon: AccountPlusOutline,
+      path: '/Clients'
+    },
+    {
+      title: 'Productos',
       icon: FormatListNumbered,
       path: '/Products'
+    },
+    {
+      title: 'Lista de Ventas',
+      icon: Sale,
+      path: '/Sales'
     },
     {
       title: 'Proveedores',

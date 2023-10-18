@@ -3,12 +3,13 @@ import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
-import ProductList from 'src/components/ProductList'
-import InsertProducts from 'src/components/InsertProduct'
-import {Provider} from 'react-redux'
-import { store } from 'src/store'
 
-const Products = () => {
+import { Provider } from 'react-redux'
+import { store } from 'src/store'
+import InsertSales from 'src/components/Sale/InsertSale'
+import SalesList from 'src/components/Sale/SaleList'
+
+const Sales = () => {
   return (
     <Provider store={ store }>
 
@@ -16,17 +17,17 @@ const Products = () => {
       <Grid item xs={12}>
         <Typography variant='h5'>
           <Link href='#'>
-            Lista de Productos
+            Lista de Ventas
           </Link>
         </Typography>
-        <Typography variant='body2'>Productos disponibles para la venta.</Typography>
-        <InsertProducts />
-      </Grid>
-
+        <Typography variant='body2'>Registros de las ventas realizadas.</Typography>
+        <InsertSales />
+    </Grid>
+  
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Productos' titleTypographyProps={{ variant: 'h6' }} />
-          <ProductList />
+          <CardHeader title='Ventas' titleTypographyProps={{ variant: 'h6' }} />
+          <SalesList />
         </Card>
       </Grid>
 
@@ -36,4 +37,4 @@ const Products = () => {
   )
 }
 
-export default Products
+export default Sales

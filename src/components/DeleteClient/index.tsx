@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react'
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,10 +7,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-
-import { IconButton } from '@mui/material'
+import { useState } from 'react';
+import { IconButton } from '@mui/material';
 import Delete from 'mdi-material-ui/Delete'
-import { useDeleteProviderMutation } from 'src/api/providerApi';
+import {useDeleteClientMutation} from 'src/api/clientApi';
+
+
+
+
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -22,12 +25,12 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function RemoveProvider(data:any) {
+export default function DeleteClient( data:any ) {
 
   const [open, setOpen] = React.useState(false);
 
   const [id, setID] = useState(data.data.id);
-  const [ removeProvider ] = useDeleteProviderMutation()
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,11 +40,17 @@ export default function RemoveProvider(data:any) {
     setOpen(false);
   };
 
-  const removeProviderByID = async () => {
+  const [ DeleteClient,{ isLoading, isError }] = useDeleteClientMutation()
 
-    const res =  await removeProvider(id).unwrap();
+
+  const deleteClientByID = async (e:any) => {
+    e.preventDefault();
+
+    console.log(id)
+
+    const res =  await DeleteClient(id).unwrap();
     if (res){
-      console.log('Proveedor eliminado con exito')
+      console.log('client eliminado con exito')
       handleClose()
     }else{
       console.log('Error al eliminar')
@@ -59,16 +68,22 @@ export default function RemoveProvider(data:any) {
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"   >
-        <DialogTitle>{"Esta seguro de elimar el Proveedor"}</DialogTitle>
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Esta seguro de elimar el client"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             {data.data.businessName}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={removeProviderByID}>Eliminar</Button>
+          <Button autoFocus onClick={handleClose}>Cancelar</Button>
+
+          <Button  variant='contained'
+          disabled={ isLoading }
+            onClick={deleteClientByID } >
+              { isLoading ? 'Eliminando Client...' : 'Eliminar Client'} 
+            </Button>
         </DialogActions>
       </Dialog>
     </div>
