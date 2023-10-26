@@ -24,6 +24,8 @@ const Transition = React.forwardRef(function Transition(
 
 export default function PurchaseDetail(data:any) {
 
+  console.log(data)
+
   const [open, setOpen] = React.useState(false);
 
   //const [id, setID] = useState(data.data.id);

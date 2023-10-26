@@ -12,7 +12,7 @@ const CardPurchaseDetail = (data:any) => {
 
   interface Product{
     id: number
-    name: string
+    nombreProducto: string
   }
 
   interface Inventory{
@@ -52,7 +52,7 @@ const CardPurchaseDetail = (data:any) => {
               sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}
             >
               <TableCell component='th' scope='row'>{i +1}</TableCell>
-              <TableCell align='left'>{item.product.name}</TableCell>
+              <TableCell align='left'>{item.product.nombreProducto}</TableCell>
               <TableCell align='left'>{item.quantity}</TableCell>
               <TableCell align='left'>{item.price}</TableCell>
               <TableCell align='left'>{item.inventory.lot}</TableCell>

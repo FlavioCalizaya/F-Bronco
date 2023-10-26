@@ -51,20 +51,20 @@ export default function PurchaseList () {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((Purchase: Purchase, item:number) => (
+          {data?.map((purchase: Purchase, item:number) => (
             <TableRow
-              key={Purchase.id}
+              key={purchase.id}
               sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}
             >
               <TableCell component='th' scope='row'>{item +1}</TableCell>
-              <TableCell align='left'>{dateParse(Purchase.date)}</TableCell>
-              <TableCell align='left'>{Purchase.provider.businessName}</TableCell>
-              <TableCell align='left'>{Purchase.total}</TableCell>
+              <TableCell align='left'>{dateParse(purchase.date)}</TableCell>
+              <TableCell align='left'>{purchase.provider.businessName}</TableCell>
+              <TableCell align='left'>{purchase.total}</TableCell>
               <TableCell align='left'>
-                <PurchaseDetail data={Purchase}/>
+                <PurchaseDetail data={purchase}/>
               </TableCell>
               <TableCell align='left'>
-                <RemovePurchase data={Purchase}/>
+                <RemovePurchase data={purchase}/>
               </TableCell>
             </TableRow>
             ))}
