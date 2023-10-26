@@ -76,7 +76,7 @@ const AccountSettings = () => {
             }
           />
           <Tab
-            value='info'
+            value='info' 
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InformationOutline />

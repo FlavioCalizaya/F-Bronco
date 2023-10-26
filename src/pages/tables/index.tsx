@@ -18,11 +18,9 @@ const MUITable = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography variant='h5'>
-          <Link href='https://mui.com/components/tables/' target='_blank'>
-            MUI Tables
-          </Link>
+         
         </Typography>
-        <Typography variant='body2'>Tables display sets of data. They can be fully customized</Typography>
+        <Typography variant='body2'> Tables display sets of data. They can be fully customized</Typography>
       </Grid>
       <Grid item xs={12}>
         <Card>
