@@ -43,7 +43,7 @@ export default function ProviderList () {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((provider: Provider, item:number) => (
+          {data?.data.map((provider: Provider, item:number) => (
             <TableRow
               key={provider.nitCi}
               sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}

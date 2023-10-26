@@ -4,6 +4,8 @@ import Table from 'mdi-material-ui/Table'
 import FormatListNumbered from 'mdi-material-ui/FormatListNumbered'
 import Sale from 'mdi-material-ui/PointOfSale'
 import GroupsIcon from '@mui/icons-material/Groups';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
@@ -51,6 +53,16 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Proveedores',
       icon: GroupsIcon,
       path: '/Providers'
+    },
+    {
+      title: 'Compras',
+      icon: ShoppingBagIcon,
+      path: '/Purchases'
+    },
+    {
+      title: 'Inventario',
+      icon: GraphicEqIcon,
+      path: '/Inventory'
     },
     {
       title: 'Login',
