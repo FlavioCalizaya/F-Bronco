@@ -48,6 +48,16 @@ const navigation = (): VerticalNavItemsType => {
       path: '/Sales'
     },
     {
+      title: 'Servicios',
+      icon: FormatListNumbered,
+      path: '/Serviceys'
+    },
+    {
+      title: 'Mantenimiento',
+      icon: FormatListNumbered,
+      path: '/Maintenance'
+    },
+      {
       title: 'Proveedores',
       icon: GroupsIcon,
       path: '/Providers'
