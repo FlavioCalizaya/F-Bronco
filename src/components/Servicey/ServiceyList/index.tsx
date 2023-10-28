@@ -32,6 +32,8 @@ interface Servicey {
         <TableHead>
           <TableRow>
             <TableCell>Nro</TableCell>   
+
+            <TableCell align='left'>Cliente </TableCell>     
             <TableCell align='left'>Tipo Servicio </TableCell>     
             <TableCell align='left'>Descripcion</TableCell>      
             <TableCell align='left'>Importe</TableCell>
@@ -51,12 +53,13 @@ interface Servicey {
                 }
               }}
             >
-              <TableCell  align='left' component='th' scope='row'>{item +1}</TableCell>
+              <TableCell align='left' component='th' scope='row'>{item +1}</TableCell>
+              <TableCell align='left'>MMMAA AA</TableCell>
               <TableCell align='left'>{servicey.serviceType}</TableCell>
               <TableCell align='left'>{servicey.description}</TableCell>
               <TableCell align='left'>{servicey.amount}</TableCell>
               <TableCell align='left'>aaaaaaa</TableCell>
-              <TableCell align='left'>{servicey.statusMaintenance? 'Finalizado':'Pendiente'}</TableCell>
+              <TableCell align='left'><small style={{ backgroundColor: servicey.statusMaintenance ? 'green' : 'red', borderRadius:30, color:'white'}}>{servicey.statusMaintenance? ' Finalizado ':' Pendiente '}</small></TableCell>
               
               {/* <TableCell align='left'>
               <UpdateServicey data={servicey}/>             

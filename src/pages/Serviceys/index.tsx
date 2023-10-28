@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
 import Card from '@mui/material/Card'
-/* import InsertServicey from 'src/components/Servicey/InsertServicey' */
+import InsertServicey from 'src/components/Servicey/InsertServicey'
 import ServiceyList from 'src/components/Servicey/ServiceyList'
 
 
@@ -15,7 +15,7 @@ const Servicey = () => {
           Lista de Servicios
         </Typography>
 
-        {/* <InsertServicey /> */}
+        <InsertServicey />
       </Grid>
 
       <Grid item xs={12}>

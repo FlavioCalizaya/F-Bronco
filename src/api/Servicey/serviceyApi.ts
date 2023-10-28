@@ -34,13 +34,13 @@ export const serviceyApi:any = createApi({
     }),
 
     getServiceyByID: builder.query({
-        query: (id) => `/Serviceys/${ id }`,
+        query: (id) => `/servicess/${ id }`,
         extraOptions:{maxRetries:2},
         providesTags: ["Servicey"],
     }),
         addNewServicey: builder.mutation({
           query: (newServicey) =>({
-            url: '/Serviceys',
+            url: '/servicess',
             
             method: 'POST',
             body: newServicey,
@@ -54,7 +54,7 @@ export const serviceyApi:any = createApi({
           const { id, values } = data
 
           return {
-            url: `/Serviceys/${id}`,
+            url: `/servicess/${id}`,
             method: 'PUT',
             body: values,
           }
@@ -65,7 +65,7 @@ export const serviceyApi:any = createApi({
 
       deleteServicey: builder.mutation({
         query: (id) => ({
-          url: `/Serviceys/${id}`,
+          url: `/servicess/${id}`,
           method: 'DELETE',
         }),
         extraOptions: {maxRetries:2},
