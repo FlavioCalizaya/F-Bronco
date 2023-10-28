@@ -2,8 +2,8 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
 import Card from '@mui/material/Card'
-import InsertClient from 'src/components/InsertClient'
-import ClientList from 'src/components/ClientList'
+import InsertClient from 'src/components/Client/InsertClient'
+import ClientList from 'src/components/Client/ClientList'
 
 
 
