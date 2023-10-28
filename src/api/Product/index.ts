@@ -37,6 +37,11 @@ export const productApi = createApi({
             extraOptions:{maxRetries:2},
             providesTags: ["Product"],
         }),
+        getProductByName: builder.query({
+          query: ( name ) => `/products/names/${ name }`,
+          extraOptions:{maxRetries:2},
+          providesTags: ["Product"],
+      }),
 
         addNewProduct: builder.mutation({
           query: ( newProduct ) => {
@@ -82,6 +87,7 @@ export const productApi = createApi({
 export const { 
   useGetAllProductsQuery,
   useGetProductByIDQuery,
+  useGetProductByNameQuery,
   useAddNewProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
