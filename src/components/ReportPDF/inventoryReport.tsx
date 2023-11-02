@@ -42,19 +42,5 @@ export const generaPdf = (data: any) => {
     body: inventories,
   });
 
-  /*
-  const alto = doc.lastAutoTable.finalY;
-  doc.setFillColor(124, 95, 240);
-  doc.rect(135, alto + 4, 55, 11, "F");
-  doc.triangle(190, alto + 4, 195, alto + 9.5, 190, alto + 15, "F");
-
-  doc.setFontSize(16);
-  doc.setTextColor(255, 255, 255);
-  const importeTotal = parseFloat(others.total).toFixed(2)
-  doc.text(`Total Bs.:  ${importeTotal}`, 145, alto + 11);
-
-  doc.setTextColor(33, 33, 33);
-  doc.setFontSize(12);
-*/
   doc.output("pdfobjectnewwindow"); 
 };
