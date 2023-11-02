@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 
-export const providerApi: any = createApi({
+export const purchaseApi: any = createApi({
 
-    reducerPath: 'provider',
+    reducerPath: 'purchase',
 
     baseQuery: retry(fetchBaseQuery({ 
       baseUrl: 'http://localhost:8080/api/v1',
@@ -25,52 +25,52 @@ export const providerApi: any = createApi({
     refetchOnFocus: true,       
     refetchOnReconnect:true,
 
-    tagTypes: ["Providers"],
+    tagTypes: ["Purchases"],
 
     endpoints: (builder) => ({
 
-        getAllProviders: builder.query({
-            query: () => '/providers',
-            providesTags: ["Providers"],
+        getAllpurchase: builder.query({
+            query: () => '/purchase',
+            providesTags: ["Purchases"],
         }),
 
-        getProviderByID: builder.query({
+        getpurchaseByID: builder.query({
           
-            query: (id) => `/providers/${ id }`,
+            query: (id) => `/purchase/${ id }`,
             extraOptions:{maxRetries:2},
-            providesTags: ["Providers"],
+            providesTags: ["Purchases"],
         }),
 
-        addNewProvider: builder.mutation({
-          query: (newProvider) =>({
-            url: '/providers',
+        addNewpurchase: builder.mutation({
+          query: (newpurchase) =>({
+            url: '/purchase',
             method: 'POST',
-            body: newProvider,
+            body: newpurchase,
           }),
-          invalidatesTags: ["Providers"],
+          invalidatesTags: ["Purchases"],
           extraOptions: {maxRetries:0}
         }),
 
-      updateProvider: builder.mutation({
+      updatepurchase: builder.mutation({
         query(data){
           const { id, values } = data
 
           return {
-            url: `/providers/${id}`,
+            url: `/purchase/${id}`,
             method: 'PUT',
             body: values,
           }
         },
-        invalidatesTags: ["Providers"],
+        invalidatesTags: ["Purchases"],
         extraOptions: {maxRetries:2}
       }),
 
-      deleteProvider: builder.mutation({
+      deletepurchase: builder.mutation({
         query: (id) => ({
-          url: `/providers/${id}`,
+          url: `/purchase/${id}`,
           method: 'DELETE',
         }),
-        invalidatesTags: ["Providers"],
+        invalidatesTags: ["Purchases"],
         extraOptions: {maxRetries:2},
       })
     })
@@ -78,10 +78,10 @@ export const providerApi: any = createApi({
 })
 
 export const { 
-  useGetAllProvidersQuery,
-  useGetProviderByIDQuery,
-  useAddNewProviderMutation,
-  useUpdateProviderMutation,
-  useDeleteProviderMutation,
-  useLazyGetProviderByIDQuery
- } = providerApi;
+  useGetAllpurchaseQuery,
+  useGetpurchaseByIDQuery,
+  useAddNewpurchaseMutation,
+  useUpdatepurchaseMutation,
+  useDeletepurchaseMutation,
+  useLazyGetpurchaseByIDQuery
+ } = purchaseApi;

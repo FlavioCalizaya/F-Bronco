@@ -11,7 +11,7 @@ import { TransitionProps } from '@mui/material/transitions';
 
 import { IconButton } from '@mui/material'
 import Delete from 'mdi-material-ui/Delete'
-import { useDeleteProviderMutation } from 'src/api/providerApi';
+import { useDeletepurchaseMutation } from 'src/api/purchaseApi';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -22,12 +22,12 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function RemoveProvider(data:any) {
+export default function RemovePurchase(data:any) {
 
   const [open, setOpen] = React.useState(false);
 
   const [id, setID] = useState(data.data.id);
-  const [ removeProvider ] = useDeleteProviderMutation()
+  const [ removePurchase ] = useDeletepurchaseMutation()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,11 +37,11 @@ export default function RemoveProvider(data:any) {
     setOpen(false);
   };
 
-  const removeProviderByID = async () => {
+  const removePurchaseByID = async () => {
 
-    const res =  await removeProvider(id).unwrap();
+    const res =  await removePurchase(id).unwrap();
     if (res){
-      console.log('Proveedor eliminado con exito')
+      console.log('Compra eliminado con exito')
       handleClose()
     }else{
       console.log('Error al eliminar')
@@ -59,16 +59,17 @@ export default function RemoveProvider(data:any) {
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"   >
-        <DialogTitle>{"Esta seguro de elimar el Proveedor"}</DialogTitle>
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Esta seguro de anular la compra"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            {data.data.businessName}
+            {data.data.provider.businessName}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={removeProviderByID}>Eliminar</Button>
+          <Button onClick={removePurchaseByID}>Eliminar</Button>
         </DialogActions>
       </Dialog>
     </div>

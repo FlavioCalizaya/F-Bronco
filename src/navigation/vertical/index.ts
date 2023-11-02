@@ -1,7 +1,12 @@
 // ** Icon imports
 import Login from 'mdi-material-ui/Login'
 import FormatListNumbered from 'mdi-material-ui/FormatListNumbered'
-import GroupsIcon from '@mui/icons-material/Groups'
+import Sale from 'mdi-material-ui/PointOfSale'
+import GroupsIcon from '@mui/icons-material/Groups';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
+
+import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
@@ -44,9 +49,34 @@ const navigation = (): VerticalNavItemsType => {
       path: '/Products'
     },
     {
+      title: 'Lista de Ventas',
+      icon: Sale,
+      path: '/Sales'
+    },
+    {
+      title: 'Servicios',
+      icon: FormatListNumbered,
+      path: '/Serviceys'
+    },
+    {
+      title: 'Mantenimiento',
+      icon: FormatListNumbered,
+      path: '/Maintenance'
+    },
+      {
       title: 'Proveedores',
       icon: GroupsIcon,
       path: '/Providers'
+    },
+    {
+      title: 'Compras',
+      icon: ShoppingBagIcon,
+      path: '/Purchases'
+    },
+    {
+      title: 'Inventario',
+      icon: GraphicEqIcon,
+      path: '/Inventory'
     },
     {
       title: 'Login',

@@ -50,6 +50,7 @@ const InsertProvider = () => {
      console.log('Error')
     }
   }
+
   return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen}>
@@ -73,14 +74,14 @@ const InsertProvider = () => {
               <TextField required fullWidth type='text' label='Dirección' value={address} onChange={(e)=>setAddress(e.target.value)} />
               </Grid>
             </Grid>
-          <DialogActions>
+         <DialogActions>
             <Button autoFocus onClick={handleClose}>
               Cancelar
             </Button>
             <Button variant='contained' type='submit'  autoFocus>
               Añadir
             </Button>
-          </DialogActions>
+          </DialogActions> 
           </Box>
         </DialogContent>
       </Dialog>

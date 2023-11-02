@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 
-export const providerApi: any = createApi({
+export const inventoryApi: any = createApi({
 
-    reducerPath: 'provider',
+    reducerPath: 'inventory',
 
     baseQuery: retry(fetchBaseQuery({ 
       baseUrl: 'http://localhost:8080/api/v1',
@@ -25,52 +25,52 @@ export const providerApi: any = createApi({
     refetchOnFocus: true,       
     refetchOnReconnect:true,
 
-    tagTypes: ["Providers"],
+    tagTypes: ["Inventories"],
 
     endpoints: (builder) => ({
 
-        getAllProviders: builder.query({
-            query: () => '/providers',
-            providesTags: ["Providers"],
+        getAllInventories: builder.query({
+            query: () => '/inventory',
+            providesTags: ["Inventories"],
         }),
 
-        getProviderByID: builder.query({
+        getInventoryByID: builder.query({
           
-            query: (id) => `/providers/${ id }`,
+            query: (id) => `/inventory/${ id }`,
             extraOptions:{maxRetries:2},
-            providesTags: ["Providers"],
+            providesTags: ["Inventories"],
         }),
 
-        addNewProvider: builder.mutation({
-          query: (newProvider) =>({
-            url: '/providers',
+        addNewInventory: builder.mutation({
+          query: (newInventory) =>({
+            url: '/inventory',
             method: 'POST',
-            body: newProvider,
+            body: newInventory,
           }),
-          invalidatesTags: ["Providers"],
+          invalidatesTags: ["Inventories"],
           extraOptions: {maxRetries:0}
         }),
 
-      updateProvider: builder.mutation({
+      updateInventory: builder.mutation({
         query(data){
           const { id, values } = data
 
           return {
-            url: `/providers/${id}`,
+            url: `/inventory/${id}`,
             method: 'PUT',
             body: values,
           }
         },
-        invalidatesTags: ["Providers"],
+        invalidatesTags: ["Inventories"],
         extraOptions: {maxRetries:2}
       }),
 
-      deleteProvider: builder.mutation({
+      deleteInventory: builder.mutation({
         query: (id) => ({
-          url: `/providers/${id}`,
+          url: `/inventory/${id}`,
           method: 'DELETE',
         }),
-        invalidatesTags: ["Providers"],
+        invalidatesTags: ["Inventories"],
         extraOptions: {maxRetries:2},
       })
     })
@@ -78,10 +78,10 @@ export const providerApi: any = createApi({
 })
 
 export const { 
-  useGetAllProvidersQuery,
-  useGetProviderByIDQuery,
-  useAddNewProviderMutation,
-  useUpdateProviderMutation,
-  useDeleteProviderMutation,
-  useLazyGetProviderByIDQuery
- } = providerApi;
+  useGetAllInventoriesQuery,
+  useGetInventoryByIDQuery,
+  useAddNewInventoryMutation,
+  useUpdateInventoryMutation,
+  useDeleteInventoryMutation,
+  useLazyGetInventoryByIDQuery
+ } = inventoryApi;
