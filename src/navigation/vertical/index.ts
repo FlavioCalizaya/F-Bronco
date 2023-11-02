@@ -5,13 +5,11 @@ import Sale from 'mdi-material-ui/PointOfSale'
 import GroupsIcon from '@mui/icons-material/Groups';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import GraphicEqIcon from '@mui/icons-material/GraphicEq';
-
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
-
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 

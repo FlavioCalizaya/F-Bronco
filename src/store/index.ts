@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
-
 import { providerApi } from '../api/providerApi';
 import { productApi } from 'src/api/Product';
 import { saleApi } from 'src/api/Sale';
@@ -8,6 +7,9 @@ import { clientApi } from '../api/clientApi';
 import { serviceyApi } from '../api/Servicey/serviceyApi'; 
 import { purchaseApi } from 'src/api/purchaseApi';
 import { inventoryApi } from 'src/api/inventoryApi';
+import {userApi} from '../api/userApi';
+
+
 
 export const store:any = configureStore({
   reducer: {
@@ -18,6 +20,7 @@ export const store:any = configureStore({
     [saleApi.reducerPath]: saleApi.reducer,
     [purchaseApi.reducerPath]: purchaseApi.reducer,
     [inventoryApi.reducerPath]: inventoryApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
 
 
   },
@@ -29,7 +32,8 @@ export const store:any = configureStore({
     saleApi.middleware,
     purchaseApi.middleware,
     inventoryApi.middleware,
-    serviceyApi.middleware
+    serviceyApi.middleware,
+    userApi.middleware
     ] )
 })
 
