@@ -5,14 +5,16 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-
 import CircularProgress from '@mui/material/CircularProgress';
+import { IconButton } from '@mui/material'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 /**Impor Purchase API */
 import { useGetAllpurchaseQuery } from 'src/api/purchaseApi'
 import RemovePurchase from '../DeletePurchase'
 import PurchaseDetail from '../PurchaseDetail'
 import { dateParse } from 'src/utils/dateParser'
+import { generaPdf } from '../../ReportPDF/purchaseReport'
 
 
 export default function PurchaseList () {
@@ -34,6 +36,10 @@ export default function PurchaseList () {
 
     // @ts-ignore
    const {data, isLoading} =  useGetAllpurchaseQuery()
+
+   const showReportPDF = (purcahse: Purchase)=>{
+    generaPdf(purcahse)
+  }
   
   return (
     isLoading ? <CircularProgress/>
@@ -45,9 +51,10 @@ export default function PurchaseList () {
             <TableCell>Número</TableCell>
             <TableCell align='left'>Fecha </TableCell>
             <TableCell align='left'>Proveedor </TableCell>
-            <TableCell align='left'>Total </TableCell>
+            <TableCell align='left'>Total Bs.</TableCell>
             <TableCell align='left'>Detalle Compra</TableCell>
-            <TableCell align='left'>Anular Compra</TableCell>
+            <TableCell align='left'>Eliminar</TableCell>
+            <TableCell align='left'>Exportar PDF</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -65,6 +72,12 @@ export default function PurchaseList () {
               </TableCell>
               <TableCell align='left'>
                 <RemovePurchase data={purchase}/>
+              </TableCell>
+              <TableCell align='left'>
+              <IconButton aria-label='' color="primary" 
+              onClick={()=>showReportPDF(purchase)}>
+                <PictureAsPdfIcon />
+              </IconButton>
               </TableCell>
             </TableRow>
             ))}
