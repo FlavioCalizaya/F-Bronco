@@ -5,14 +5,15 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
+import Button from '@mui/material/Button'
+import Grid from '@mui/material/Grid'
 
 import CircularProgress from '@mui/material/CircularProgress';
 
 /**Impor Inventory API */
 import { useGetAllInventoriesQuery } from 'src/api/inventoryApi'
-import UpdatePovider from '../UpdateInventory'
-import RemoveInventory from '../DeleteInventory'
 import { dateParse } from 'src/utils/dateParser'
+import { generaPdf } from 'src/components/ReportPDF/inventoryReport'
 
 export default function InventoryList () {
 
@@ -42,11 +43,20 @@ export default function InventoryList () {
 
     // @ts-ignore
    const {data, isLoading} =  useGetAllInventoriesQuery()
+
+  const showReportPDF = ()=>{
+    generaPdf(data)
+  }
   
   return (
     isLoading ? <CircularProgress/>
     :
     <TableContainer component={Paper}>
+      <Grid paddingRight={10} container direction="row" justifyContent="flex-end" alignItems="flex-start">
+      <Button variant='contained' onClick={()=>showReportPDF()}>
+        Reporte PDF
+      </Button>
+      </Grid>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
@@ -72,14 +82,6 @@ export default function InventoryList () {
               <TableCell align='left'>{inventory.price}</TableCell>
               <TableCell align='left'>{inventory.stock}</TableCell>
               <TableCell align='left'>{dateParse(inventory.date)}</TableCell>
-              {/*<TableCell align='left'>
-              
-               <UpdatePovider data={inventory}/>
-               
-              </TableCell>
-              <TableCell align='left'>
-                <RemoveInventory data={inventory}/>
-              </TableCell>*/}
             </TableRow>
             ))}
            
