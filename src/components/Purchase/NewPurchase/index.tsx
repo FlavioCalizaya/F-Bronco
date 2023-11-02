@@ -135,7 +135,6 @@ const InsertPurchase = () => {
     setListPurchases(listPurchase.filter((item:Purchase) => item.lot !== lot))
   }
 
-
   return (
     isLoading ? <CircularProgress/>
     : <div>
@@ -279,15 +278,6 @@ const InsertPurchase = () => {
                         </TableCell>
                     </TableRow>
                   ))}
-           {/*<TableRow>
-            <TableCell rowSpan={1} />
-            <TableCell rowSpan={1} />
-            <TableCell rowSpan={1} />
-            <TableCell rowSpan={1} />
-            <TableCell rowSpan={1} />
-            <TableCell colSpan={2}>Total</TableCell>
-            <TableCell  align="left">{listPurchase?.map((item:Purchase)=>item.amount).reduce((prev, curr)=>prev+curr,0)}</TableCell>
-          </TableRow>*/}
 
           </TableBody>
         </Table>
