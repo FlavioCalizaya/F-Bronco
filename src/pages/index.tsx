@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid'
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
-import Button from '@mui/material/Button'
+
 
 // ** Stor fiel import
 
@@ -18,12 +18,13 @@ const Dashboard = () => {
     
     <ApexChartWrapper>
       <DashboardTable/>
-        {/*<Grid container spacing={6}>
+        {<Grid container spacing={6}>
+
           <Grid item xs={12} md={4}>
-            <Trophy />
-            
+                         
           </Grid>
-  </Grid>*/}
+          
+        </Grid>}
       </ApexChartWrapper>
   )
 }

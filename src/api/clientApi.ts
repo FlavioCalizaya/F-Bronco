@@ -14,7 +14,7 @@ export const clientApi:any = createApi({
           headers.set('x-access-token', `${token}`)
         }
 
-        return headers
+        return headers 
       },},
     ),
     {maxRetries:1}),
