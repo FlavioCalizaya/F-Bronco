@@ -17,6 +17,7 @@ const navigation = (): VerticalNavItemsType => {
     },
 
     {
+      
       title: 'Dashboard',
       icon: HomeOutline,
       path: '/'

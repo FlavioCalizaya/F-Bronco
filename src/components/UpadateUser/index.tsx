@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { useGetUserByIDQuery, useUpdateUserMutation } from 'src/api/userApi'
 import Link from '@mui/material/Link'
 import { IconButton } from '@mui/material'
-import Update from 'mdi-material-ui/Update'
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const initialValuesInputs= { 
@@ -74,29 +74,20 @@ const UpdateUser= ({ id }: { id: number }) => {
     }
   };
   
-
   return (
     <div>
-      <IconButton aria-label='Update' color='primary' onClick={handleClickOpen}>
-        <Update />
+      <IconButton aria-label='Edit' color='primary' onClick={handleClickOpen}>
+        <EditIcon />
       </IconButton>
   
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
         <DialogTitle id='responsive-dialog-title'>
-          {' '}
-          <Link href='#'> Actualizar Usuario </Link>
+        
+          <Link href='#'> Modificar  Usuario </Link>
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={7} style={{ paddingTop: '5px' }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                name='nombreUser'
-                value={inputsValues.nombre}
-                onChange={handleInputChange}
-                fullWidth
-                label='Nombre'
-              />
-            </Grid>           
+                       
             <Grid item xs={12} sm={6}>
               <TextField
                 name='nombre'
@@ -141,16 +132,14 @@ const UpdateUser= ({ id }: { id: number }) => {
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <InputLabel>Rol</InputLabel>
-                <Select label='Role' name='tipo' onChange={handleInputChange} defaultValue={inputsValues.rol}>
+                <InputLabel>rol</InputLabel>
+                <Select label='rol' name='rol' onChange={handleInputChange} defaultValue={inputsValues.rol}>
                   <MenuItem value='admin'>Admin</MenuItem>
                   <MenuItem value='user'>User</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>      
-                 
-           
-          
+            </Grid>   
+                                  
           </Grid>
         </DialogContent>
         <DialogActions>

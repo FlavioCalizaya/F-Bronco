@@ -11,6 +11,7 @@ import { useGetAllUsersQuery } from 'src/api/userApi'
 import DeleteUser from '../DeleteUser'
 import UpdateUser from '../UpadateUser'
 import User from 'src/pages/Users'
+import { CircularProgress } from '@mui/material';
 
 
 interface  User {
@@ -21,6 +22,10 @@ interface  User {
   ci: string;
   rol: string;
   estado: number;
+
+  userName:string;
+  password:string;
+
 
 }
 
@@ -34,7 +39,7 @@ const UserList = () => {
   return (
     <>
   
-    { isLoading ? <h5>Cargando..</h5>:
+    { isLoading ?  <CircularProgress/>:
 
 
     <TableContainer component={Paper}>
@@ -68,7 +73,9 @@ const UserList = () => {
               <TableCell align='right'>{user.segundoApellido}</TableCell>
               <TableCell align='right'>{user.ci}</TableCell>
               <TableCell align='right'>{user.rol}</TableCell>
-            
+
+              
+
               <TableCell align='right'>
 
                <UpdateUser id={ user.idUser } />

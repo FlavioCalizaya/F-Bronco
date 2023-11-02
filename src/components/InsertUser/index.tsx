@@ -26,7 +26,7 @@ const InsertUser = () => {
     segundoApellido: '',
     ci: '',
     rol: '',
-    userName: '',
+    nameUser: '',
     password: ''   
   
   }
@@ -51,14 +51,31 @@ const InsertUser = () => {
   const [addNewUser, { isLoading, isError }] = useAddNewUserMutation();
 
   const handleAddUser = async () => {
+
+    // Validar que los campos no estén en blanco
+  if (
+    !inputsValues.nombre ||
+    !inputsValues.primerApellido ||
+    !inputsValues.segundoApellido ||
+    !inputsValues.ci ||
+    !inputsValues.rol ||
+    !inputsValues.nameUser ||
+    !inputsValues.password
+  ) {
+    
+    alert('Por favor, Llene todos los campos antes de agregar un Usuario.');
+    return; 
+  }
     const newUser = {
       idUser: 1,
       nombre: inputsValues.nombre,
-      primerApellido: inputsValues.primerApellido,    
+      primerApellido: inputsValues.primerApellido,   
+      segundoApellido: inputsValues.segundoApellido,   
       estado: 1,
       ci: inputsValues.ci,
       rol: inputsValues.rol,
-      userName: inputsValues.userName,
+
+      nameUser: inputsValues.nameUser,
       password: inputsValues.password
      
     };
@@ -88,6 +105,7 @@ const InsertUser = () => {
                 onChange={ handleInputChange }
                 fullWidth
                 label='Nombre'
+                type='text'
               />
             </Grid>
 
@@ -98,6 +116,7 @@ const InsertUser = () => {
                 onChange={(e: any) => handleInputChange(e)}
                 fullWidth
                 label='primer Apellido'
+                type='text'
               />
             </Grid>
 
@@ -108,9 +127,9 @@ const InsertUser = () => {
                 onChange={(e: any) => handleInputChange(e)}
                 fullWidth
                 label='segundo Apellido'
+                type='text'
               />
             </Grid>
-
 
             <Grid item xs={12} sm={6}>
               <TextField
@@ -119,38 +138,42 @@ const InsertUser = () => {
                 onChange={(e: any) => handleInputChange(e)}
                 fullWidth
                 label='C.I.'
+                type='text'
               />
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>rol</InputLabel>
-                <Select label='Usuario' name='usuario' onChange={ handleInputChange } defaultValue={ inputsValues.rol }>
-                  <MenuItem value='1'>admin</MenuItem>
-                  <MenuItem value='2'>user</MenuItem>
+                <Select label='rol' name='rol' onChange={ handleInputChange } defaultValue={ inputsValues.rol }>
+                  <MenuItem value='admin'>Admin</MenuItem>
+                  <MenuItem value='user'>User</MenuItem>
                 </Select>
               </FormControl>
-            </Grid> 
+            </Grid>          
          
-         
-            <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
               <TextField
-                name='userName'
-                value={inputsValues.userName}
-                onChange={handleInputChange}
+                name='nameUser'
+                value={inputsValues.nameUser}
+                onChange={(e: any) => handleInputChange(e)}
                 fullWidth
+                label='User Name'
                 type='text'
-                label='Nombre Usuario'
               />
-            </Grid>   
+            </Grid>
+            
+             
             <Grid item xs={12} sm={6}>
               <TextField
-                name='password'
+                name='password' 
                 value={inputsValues.password}
-                onChange={handleInputChange}
-                fullWidth
-                type='text'
-                label='Password'
+                id='auth-register-password'
+                onChange={handleInputChange}                
+                fullWidth                 
+                label='Password'  aria-label='toggle password visibility'
+                type='password'
+              
               />
             </Grid>                     
           </Grid>
