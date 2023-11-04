@@ -9,6 +9,8 @@ import { purchaseApi } from 'src/api/purchaseApi';
 import { inventoryApi } from 'src/api/inventoryApi';
 import {userApi} from '../api/userApi';
 import { maintenanceApi } from 'src/api/Servicey/maintenanceApi';
+import { authApi } from 'src/api/authApi';
+
 
 
 export const store:any = configureStore({
@@ -22,6 +24,7 @@ export const store:any = configureStore({
     [inventoryApi.reducerPath]: inventoryApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [maintenanceApi.reducerPath]: maintenanceApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
 
 
   },
@@ -35,7 +38,8 @@ export const store:any = configureStore({
     inventoryApi.middleware,
     serviceyApi.middleware,
     userApi.middleware,
-    maintenanceApi.middleware
+    maintenanceApi.middleware,
+    authApi.middleware,
     ] )
 })
 

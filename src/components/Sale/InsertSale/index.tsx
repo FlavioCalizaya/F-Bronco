@@ -25,7 +25,10 @@ import { styled } from '@mui/material/styles'
 import { Autocomplete, IconButton } from '@mui/material'
 import Delete from 'mdi-material-ui/Delete'
 import { useGetAllClientQuery } from 'src/api/clientApi'
-
+import { useGetAllInventoriesQuery } from 'src/api/inventoryApi'
+import Typography from '@mui/material/Typography'
+import SaleDetails from '../SaleDetail/index';
+import { useAddNewSaleMutation } from 'src/api/Sale'
 
 const InsertSales = () => {
   const [open, setOpen] = useState(false)
@@ -34,6 +37,7 @@ const InsertSales = () => {
 
   interface Product {
     idProducto: number
+    idInventario: number
     categoria: number
     codigo: string
     imagen: string
@@ -46,75 +50,151 @@ const InsertSales = () => {
     marca: string
     tipo: string
     Descripcion: string
+    stock: number
+    cantidad: number
+    subtotal: number
+    precio: number
   }
   interface Client {
-    nitCi: string;
-    businessName: string;
-    phoneNumber: number;
+    nitCi: string
+    businessName: string
+    phoneNumber: number
   }
   const handleClickOpen = () => {
-    setOpen(true)
+    setOpen(true);
   }
 
   const handleClose = () => {
+    
+    setSelectedProducts([]);
+    
     setOpen(false)
   }
 
   const [productName, setProductName] = useState('a')
-  const { data: products, isError, error } = useGetProductByNameQuery(productName);
-  const { data: clients, isLoading} = useGetAllClientQuery();
+  // const { data: products, isError, error } = useGetProductByNameQuery(productName);
+  const { data: clients } = useGetAllClientQuery()
+
+  const { data: products } = useGetAllInventoriesQuery()
+
+  const [ addNewSale, { isLoading, isError } ] = useAddNewSaleMutation()
 
 
   const handleInputChange = (event: any, value: any) => {
     setProductName(value)
   }
 
+  const [date, setDate] = useState('')
+  const [correlativeNumber, setCorrelativeNumber] = useState('')
+  
+  
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([])
 
+  const handleCountChange = (event: any, productId: any) => {
+    const updatedProducts = selectedProducts.map(product =>
+      product.idProducto === productId
+        ? { ...product, cantidad: event.target.value, subtotal: event.target.value * product.precio }
+        : product
+    )
+    setSelectedProducts(updatedProducts);
+  }
+  const calculateTotal = () => {
+    return selectedProducts.reduce((acc, product) => {
+      return acc + product.subtotal;
+    }, 0);
+  };
+
+const handleAddSale = async () => {
+   const dataSale = {
+     sale : {  
+     idVenta: 1,
+     total: calculateTotal(),
+     estado: 1, 
+     fecha: date, 
+     nroCorrelativo: correlativeNumber
+     },
+     saleDetails: selectedProducts.map( detail => {
+      return  { idDetalleVenta: 1, 
+        precio: detail.precio,
+        cantidad: detail.cantidad, 
+        importe: detail.subtotal,
+        idProducto: detail.idProducto,
+        idInventario: detail.idInventario}
+     }
+     )
+   }
+
+  //  console.log(dataSale);
+
+   try {
+    await addNewSale(dataSale).unwrap()
+    handleClose();
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+  
   return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen}>
         Insertar Venta
       </Button>
-      <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
+      <Dialog
+        fullScreen={fullScreen}
+        maxWidth={'lg'}
+        fullWidth={true}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='responsive-dialog-title'
+      >
         <DialogTitle id='responsive-dialog-title'>
           {' '}
           <Link href='#'> Añadir una nueva venta</Link>
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={7} style={{ paddingTop: '5px' }}>
-
             <Grid item xs={6} sm={6}>
               <Autocomplete
                 options={clients ? clients : []}
                 getOptionLabel={(option: Client) => option.businessName}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label='Buscar Cliente'
-                    variant='outlined'
-                  />
-                )}
+                renderInput={params => <TextField {...params} label='Buscar Cliente' variant='outlined' />}
               />
             </Grid>
             <Grid item xs={6} sm={6}>
               <Autocomplete
-                options={products ? products : []}
+                options={
+                  products
+                    ?
+                    products.map( (product:any )=> { 
+                       return  {
+                        ...product.product,
+                        stock: product.stock,
+                        precio: product.price,
+                        cantidad: 0,
+                        subtotal: 0, 
+                        idInventario:product.id
+                      }
+                    })
+                    : []
+                }
                 getOptionLabel={(option: Product) => option.nombreProducto}
-                onChange={(event, value): void => {
-                  if (value) {
-                    setSelectedProducts(prevSelectedProducts => [...prevSelectedProducts, value])
+                onChange={(e, newValue) => {
+                  if (newValue !== null) {
+                    setSelectedProducts([...selectedProducts, newValue])
                   }
                 }}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label='Buscar producto'
-                    variant='outlined'
-                    onChange={e => handleInputChange(e, e.target.value)}
-                  />
-                )}
+                renderInput={params => <TextField {...params} label='Buscar producto' variant='outlined' />}
               />
+            </Grid>
+            <Grid item xs={6} sm={6}>
+            <TextField type='date' fullWidth placeholder='Eliga una fecha' 
+            value={date} onChange={(e)=>setDate(e.target.value)}/>
+            </Grid>
+            <Grid item xs={6} sm={6}>
+            <TextField type='correlativeNumber' fullWidth placeholder='Escriba un numero correlativo' 
+                label='Numero Correlativo'
+                value={correlativeNumber}  onChange={(e)=>setCorrelativeNumber(e.target.value)}/>
             </Grid>
             <Grid item xs={12} sm={12}>
               <TableContainer component={Paper}>
@@ -127,10 +207,13 @@ const InsertSales = () => {
                       <TableCell align='right'>Tipo </TableCell>
                       <TableCell align='right'>Categoria</TableCell>
                       <TableCell align='right'>Marca </TableCell>
-                      <TableCell align='right'>Descripcion </TableCell>
                       <TableCell align='right'>Alto</TableCell>
                       <TableCell align='right'>Ancho</TableCell>
                       <TableCell align='right'>Esp</TableCell>
+                      <TableCell align='right'>Stock</TableCell>
+                      <TableCell align='right'>Precio</TableCell>
+                      <TableCell align='center'>Cantidad</TableCell>
+                      <TableCell align='center'>Subtotal</TableCell>
                       <TableCell align='right'>Eliminar</TableCell>
                     </TableRow>
                   </TableHead>
@@ -149,19 +232,35 @@ const InsertSales = () => {
                         <TableCell align='right'>{product.tipo}</TableCell>
                         <TableCell align='right'>{product.categoria}</TableCell>
                         <TableCell align='right'>{product.marca}</TableCell>
-                        <TableCell align='right'>{product.Descripcion}</TableCell>
                         <TableCell align='right'>{product.alto}</TableCell>
                         <TableCell align='right'>{product.ancho}</TableCell>
                         <TableCell align='right'>{product.espesor}</TableCell>
+                        <TableCell align='right'>{product.stock}</TableCell>
+                        <TableCell align='right'>{product.precio} Bs</TableCell>
                         <TableCell align='right'>
-                      
+                          <TextField
+                            type='number'
+                            value={product.cantidad}
+                            onChange={event => {
+                              handleCountChange(event, product.idProducto);
 
-                          <IconButton aria-label='Delete' color='error' onClick={() => {
+                            }
+                            }
+                          />
+                        </TableCell>
+                        <TableCell align='right'>{product.subtotal} Bs</TableCell>
+                        <TableCell align='right'>
+                          <IconButton
+                            aria-label='Delete'
+                            color='error'
+                            onClick={() => {
                               // Handle delete or remove logic here
                               setSelectedProducts(prevSelectedProducts =>
                                 prevSelectedProducts.filter(p => p.idProducto !== product.idProducto)
                               )
-                            }}>
+
+                            }}
+                          >
                             <Delete />
                           </IconButton>
                         </TableCell>
@@ -172,16 +271,31 @@ const InsertSales = () => {
                 </Table>
               </TableContainer>
             </Grid>
+
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+            >
+              <Typography variant='h6' style={{ fontWeight: 'bold' }}>
+                Total:
+              </Typography>
+              <Typography variant='h6' style={{ color: 'blue' }}>
+              {calculateTotal()} Bs
+              </Typography>
+            </Grid>
+
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          {/* <Button onClick={handleAddProduct} disabled={isLoading} variant='contained' autoFocus>
+          <Button onClick={ handleAddSale } disabled={ isLoading } variant='contained' autoFocus>
             { isLoading ? 'Añadiendo venta...' : 'Añadir venta' }
-          </Button> */}
-          {isError && <div> Error al buscar un producto </div>}
+          </Button>
+          {/* {isError && <div> Error al buscar un producto </div>} */}
         </DialogActions>
       </Dialog>
     </div>
