@@ -7,6 +7,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import { useGetAllSalesQuery } from 'src/api/Sale'
 import SaleDetails from '../SaleDetail'
+import DeleteSale from '../DeleteSale'
 
 
 
@@ -57,7 +58,7 @@ const SalesList = () => {
                 <SaleDetails detail={ sale.saleDetails } /> 
               </TableCell>
               <TableCell align='right'>
-              {/* <DeleteProduct id={ product.idProducto } /> */}
+              <DeleteSale id={ sale.idVenta }    />
               </TableCell>
             </TableRow>
           ))}
