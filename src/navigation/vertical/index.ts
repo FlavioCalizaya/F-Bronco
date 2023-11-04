@@ -7,6 +7,7 @@ import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
+import CubeOutline from 'mdi-material-ui/CubeOutline'
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
