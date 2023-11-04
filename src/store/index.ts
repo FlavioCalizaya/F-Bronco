@@ -8,7 +8,7 @@ import { serviceyApi } from '../api/Servicey/serviceyApi';
 import { purchaseApi } from 'src/api/purchaseApi';
 import { inventoryApi } from 'src/api/inventoryApi';
 import {userApi} from '../api/userApi';
-
+import { maintenanceApi } from 'src/api/Servicey/maintenanceApi';
 
 
 export const store:any = configureStore({
@@ -21,6 +21,7 @@ export const store:any = configureStore({
     [purchaseApi.reducerPath]: purchaseApi.reducer,
     [inventoryApi.reducerPath]: inventoryApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [maintenanceApi.reducerPath]: maintenanceApi.reducer,
 
 
   },
@@ -33,7 +34,8 @@ export const store:any = configureStore({
     purchaseApi.middleware,
     inventoryApi.middleware,
     serviceyApi.middleware,
-    userApi.middleware
+    userApi.middleware,
+    maintenanceApi.middleware
     ] )
 })
 

@@ -37,11 +37,6 @@ const navigation = (): VerticalNavItemsType => {
       path: '/Clients'
     },
     {
-      title: 'Servicios',
-      icon:AccountCogOutline,
-      path: '/Services'
-    },
-    {
       title: 'Productos',
       icon: FormatListNumbered,
       path: '/Products'
@@ -53,13 +48,13 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Servicios',
-      icon: FormatListNumbered,
+      icon: CubeOutline,///AccountFileTextOutline,
       path: '/Serviceys'
     },
     {
       title: 'Mantenimiento',
-      icon: FormatListNumbered,
-      path: '/Maintenance'
+      icon: AccountCogOutline,
+      path: '/Maintenances'
     },
       {
       title: 'Proveedores',
