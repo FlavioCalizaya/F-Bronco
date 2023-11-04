@@ -30,11 +30,32 @@ export const saleApi = createApi({
         getAllSales: builder.query({
             query: () => '/sales',
             providesTags: ["Sale"],
+        }),
+        addNewSale: builder.mutation({
+          query: (newSale) =>({
+            url: '/sales/nueva',
+            method: 'POST',
+            body: newSale,
+          }),
+          invalidatesTags: ["Sale"],
+          extraOptions: {maxRetries:0}
+        }),
+        deleteSale: builder.mutation({
+          query({ id }){
+            return {
+              url: `/sales/remove/${id}`,
+              method: 'PUT'
+            }
+          },
+          invalidatesTags: ["Sale"],
+          extraOptions: {maxRetries:2}
         })
     })
 
 })
 
 export const { 
-  useGetAllSalesQuery
+  useGetAllSalesQuery,
+  useAddNewSaleMutation,
+  useDeleteSaleMutation
  } = saleApi;
