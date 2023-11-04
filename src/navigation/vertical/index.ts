@@ -7,6 +7,7 @@ import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
+import CubeOutline from 'mdi-material-ui/CubeOutline'
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
@@ -35,11 +36,6 @@ const navigation = (): VerticalNavItemsType => {
       path: '/Clients'
     },
     {
-      title: 'Servicios',
-      icon:AccountCogOutline,
-      path: '/Services'
-    },
-    {
       title: 'Productos',
       icon: FormatListNumbered,
       path: '/Products'
@@ -51,13 +47,13 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Servicios',
-      icon: FormatListNumbered,
+      icon: CubeOutline,///AccountFileTextOutline,
       path: '/Serviceys'
     },
     {
       title: 'Mantenimiento',
-      icon: FormatListNumbered,
-      path: '/Maintenance'
+      icon: AccountCogOutline,
+      path: '/Maintenances'
     },
       {
       title: 'Proveedores',
