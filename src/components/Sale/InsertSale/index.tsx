@@ -35,6 +35,8 @@ const InsertSales = () => {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
+  const [customer, setCustomer] = useState({});
+
   interface Product {
     idProducto: number
     idInventario: number
@@ -67,6 +69,7 @@ const InsertSales = () => {
   const handleClose = () => {
     
     setSelectedProducts([]);
+    setCustomer({});
     
     setOpen(false)
   }
@@ -111,7 +114,8 @@ const handleAddSale = async () => {
      total: calculateTotal(),
      estado: 1, 
      fecha: date, 
-     nroCorrelativo: correlativeNumber
+     nroCorrelativo: correlativeNumber, 
+     client: customer
      },
      saleDetails: selectedProducts.map( detail => {
       return  { idDetalleVenta: 1, 
@@ -123,8 +127,6 @@ const handleAddSale = async () => {
      }
      )
    }
-
-  //  console.log(dataSale);
 
    try {
     await addNewSale(dataSale).unwrap()
@@ -158,6 +160,7 @@ const handleAddSale = async () => {
               <Autocomplete
                 options={clients ? clients : []}
                 getOptionLabel={(option: Client) => option.businessName}
+                onChange={ (e, newValue:any ) => { setCustomer( newValue ) } }
                 renderInput={params => <TextField {...params} label='Buscar Cliente' variant='outlined' />}
               />
             </Grid>
@@ -281,7 +284,7 @@ const handleAddSale = async () => {
               <Typography variant='h6' style={{ fontWeight: 'bold' }}>
                 Total:
               </Typography>
-              <Typography variant='h6' style={{ color: 'blue' }}>
+              <Typography variant='h6' >
               {calculateTotal()} Bs
               </Typography>
             </Grid>
