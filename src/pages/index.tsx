@@ -1,5 +1,5 @@
 // ** React Imports
-import { ChangeEvent, MouseEvent, ReactNode, useState } from 'react'
+import { MouseEvent, ReactNode, useState } from 'react'
 
 // ** Next Imports
 import { useRouter } from 'next/router'
@@ -71,14 +71,20 @@ const LoginPage = () => {
   
     const values ={ nameUser, password}
 
-    const res = await login(values).unwrap()
-    console.log(res)
-    if (res.statusCodeValue === 200){
+    const {body} = await login(values).unwrap()
+
+    //console.log(body.data.rol)
+    if (body.data.rol ==="admin"){
       await sessionStorage.setItem('user', JSON.stringify(nameUser));
+      await sessionStorage.setItem('rol', JSON.stringify(body.data.rol));
       router.push('/Dashboard')
+    }else{
+      await sessionStorage.setItem('user', JSON.stringify(nameUser));
+      await sessionStorage.setItem('rol', JSON.stringify(body.data.rol));
+      router.push('/Clients')
     }
   }
-  
+
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>

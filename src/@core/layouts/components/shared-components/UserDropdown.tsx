@@ -40,6 +40,7 @@ const UserDropdown = () => {
 
   const handleDropdownClose = (url?: string) => {
     if (url) {
+      sessionStorage.clear()
       router.push(url)
     }
     setAnchorEl(null)
@@ -57,6 +58,14 @@ const UserDropdown = () => {
       fontSize: '1.375rem',
       color: 'text.secondary'
     }
+  }
+
+  let rol = ''
+  let user = ''
+
+  if (typeof window !== 'undefined') {
+    rol = JSON.parse(sessionStorage.getItem('rol'))
+    user = JSON.parse(sessionStorage.getItem('user'))
   }
 
   return (
@@ -93,9 +102,9 @@ const UserDropdown = () => {
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{user}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                Admin
+                {rol}
               </Typography>
             </Box>
           </Box>
