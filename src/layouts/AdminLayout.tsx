@@ -10,7 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import VerticalLayout from 'src/@core/layouts/VerticalLayout'
 
 // ** Navigation Imports
-import VerticalNavItems from 'src/navigation/vertical/userRoutes'
+import VerticalNavItems from 'src/navigation/vertical/adminRoutes'
 
 import VerticalAppBarContent from './components/vertical/AppBarContent'
 

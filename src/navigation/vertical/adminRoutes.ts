@@ -12,7 +12,7 @@ import CubeOutline from 'mdi-material-ui/CubeOutline'
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
-const navigation = (): VerticalNavItemsType => {
+const adminNavigation = (): VerticalNavItemsType => {
   return [
     {
       sectionTitle: 'MENU PRINCIPAL DE OPCIONES'
@@ -73,4 +73,4 @@ const navigation = (): VerticalNavItemsType => {
   ]
 }
 
-export default navigation
+export default adminNavigation

@@ -22,6 +22,7 @@ import themeConfig from 'src/configs/themeConfig'
 
 // ** Component Imports
 import UserLayout from 'src/layouts/UserLayout'
+import AdminLayout from 'src/layouts/AdminLayout'
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
 
 // ** Contexts
@@ -35,6 +36,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import { ReactNode } from 'react'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -62,7 +64,17 @@ const App = (props: ExtendedAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   // Variables
-  const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
+  const getLayout = Component.getLayout ?? (page => <AdminLayout>{page}</AdminLayout>)
+  const getLayoutUser = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
+
+  let rol = ''
+
+  if (typeof window !== 'undefined') {
+    rol = JSON.parse(sessionStorage.getItem('rol'))
+  }
+
+  console.log(rol)
+
 
   return (
     <Provider store={store}>
@@ -81,7 +93,7 @@ const App = (props: ExtendedAppProps) => {
         <SettingsProvider>
           <SettingsConsumer>
             {({ settings }) => {
-              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+              return <ThemeComponent settings={settings}>{rol==='admin'? getLayout(<Component {...pageProps} />): rol==='user'? getLayoutUser(<Component {...pageProps} />):getLayout(<Component {...pageProps} />)}</ThemeComponent>
             }}
           </SettingsConsumer>
         </SettingsProvider>
