@@ -7,6 +7,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useGetAllServiceyQuery } from 'src/api/Servicey/serviceyApi'
+import UpdateServicey from '../UpdateServicey'
 
 
 export default function ServiceyList(){
@@ -59,13 +60,13 @@ interface Servicey {
               <TableCell align='left'>{servicey.description}</TableCell>
               <TableCell align='left'>{servicey.amount}</TableCell>
               <TableCell align='left'>aaaaaaa</TableCell>
-              <TableCell align='left'><small style={{ backgroundColor: servicey.statusMaintenance ? 'green' : 'red', borderRadius:30, color:'white'}}>{servicey.statusMaintenance? ' Finalizado ':' Pendiente '}</small></TableCell>
-              
-              {/* <TableCell align='left'>
-              <UpdateServicey data={servicey}/>             
+              <TableCell align='left'>
+                <small style={{ backgroundColor: servicey.statusMaintenance ? 'green' : 'red', borderRadius:30, color:'white'}}>{servicey.statusMaintenance? ' Finalizado ':' Pendiente '}</small></TableCell>
+              <TableCell align='left'>
+              <UpdateServicey id={servicey.id}/>             
               </TableCell>
 
-              <TableCell align='left'>
+              {/*<TableCell align='left'>
               <DeleteServicey data={servicey}/>                            
               </TableCell>   */}   
               </TableRow>
