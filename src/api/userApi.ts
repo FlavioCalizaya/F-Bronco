@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 export const userApi = createApi({
 
-    reducerPath: 'Users',
+    reducerPath: 'users',
 
     baseQuery: retry(fetchBaseQuery({ 
       baseUrl: 'http://localhost:8080/api/v1',
@@ -23,7 +23,7 @@ export const userApi = createApi({
     refetchOnFocus: true,       // Cuando pone el foco en la informacion revalida
     refetchOnReconnect:true,    // Revalida los datos cuando hay Red
 
-    tagTypes: ["Users"],
+    tagTypes: ["Users","User"],
 
     endpoints: (builder) => ({
 

@@ -12,18 +12,18 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAddNewServiceyMutation } from 'src/api/Servicey/serviceyApi'
 import Link from '@mui/material/Link'
 import CloudUploadIcon from 'mdi-material-ui/CloudUpload'
 import { styled } from '@mui/material/styles'
 import { Autocomplete, IconButton } from '@mui/material'
 import { useGetAllClientQuery } from 'src/api/clientApi'
-import { useGetAllUsersQuery } from 'src/api/userApi'
 
 const InsertServicey = () => {
 
   const [open, setOpen] = useState(false)
+  const [users, setUsers] = useState([])
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -33,6 +33,7 @@ const InsertServicey = () => {
     description:'',
     amount:0,
     idUser:1,
+
     //user: {},
     estado:0,
     dateInit:"",
@@ -47,6 +48,7 @@ const InsertServicey = () => {
     phoneNumber: number;
   }
   interface User {
+
     /* ci: number;
     nombre: string;
     primerApellido:string;
@@ -86,8 +88,23 @@ const InsertServicey = () => {
 
   const [addNewServicey, { isLoading, isError }] = useAddNewServiceyMutation();
   const { data: clients} = useGetAllClientQuery();
+
   //const { data: users} = useGetAllUsersQuery();
 
+  async function fetchData() {
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/users");
+      const data = await response.json();
+      setUsers(data)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+  
+  useEffect(()=>{
+    fetchData();
+  }
+  ,[])
   const handleAddServicey = async () => {
     try {
       console.log('yyyy', initialValuesInputs)
@@ -174,21 +191,7 @@ const InsertServicey = () => {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Encargado de Servicio</InputLabel>
-                <Select
-                  label='idAssignedMaintenanceUser'
-                  name='idAssignedMaintenanceUser'
-                  //onChange={handleInputChange}
-                  value={inputsValues.idAssignedMaintenanceUser}>
-                  <MenuItem value='1'>Mario Rios</MenuItem>
-                  <MenuItem value='2'>Osuma Poma</MenuItem>
-                  <MenuItem value='3'>Peres Rios</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            {/* <Grid item xs={12} sm={6}>
+             <Grid item xs={12} sm={6}>
               <Autocomplete
                 options={users ? users : []}
                 getOptionLabel={(option: User) => option.nombre}
@@ -200,7 +203,7 @@ const InsertServicey = () => {
                   />
                 )}
               />
-            </Grid> */}
+            </Grid> 
           </Grid>
         </DialogContent>
         <DialogActions>
