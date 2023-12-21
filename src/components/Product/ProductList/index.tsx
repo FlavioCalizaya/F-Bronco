@@ -77,7 +77,7 @@ const ProductList = () => {
             >
               <TableCell align='right'>
               {product.imagen && 
-                  <img src={ `/images/products/${product.imagen}`} alt='Imagen Producto' style={{ maxWidth: '100%', height: '80px' }} />
+                  <img src={ `/images/products/${product.imagen}`} alt='Imagen Producto' style={{ maxWidth: '50%', height: '100px' }} />
               }
               </TableCell>
               <TableCell component='th' scope='row'>
