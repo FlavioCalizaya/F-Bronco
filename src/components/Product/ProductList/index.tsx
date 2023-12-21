@@ -29,12 +29,23 @@ interface RowType {
 const ProductList = () => {
 
     // @ts-ignore
-  const { data, isLoading} = useGetAllProductsQuery();
-  console.log( data )
+  const { data, isLoading, isError, error } = useGetAllProductsQuery();
+
+  if (isLoading) {
+    return <h5>Cargando...</h5>;
+  }
+
+  if (isError) {
+    return <h4>Problemas al cargar los productos del servidor. {(error as any).message}</h4>;
+  }
+
+  if (data && data.length === 0) {
+    return <div>No hay productos disponibles.</div>;
+  }
+
   return (
     <>
-  
-    { isLoading ? <h5>Cargando..</h5>:
+    { 
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} stickyHeader aria-label='sticky table'>
         <TableHead>
@@ -66,7 +77,7 @@ const ProductList = () => {
             >
               <TableCell align='right'>
               {product.imagen && 
-                  <img src={ `/images/products/${product.imagen}`} alt='Imagen Producto' style={{ maxWidth: '100%', height: '80px' }} />
+                  <img src={ `/images/products/${product.imagen}`} alt='Imagen Producto' style={{ maxWidth: '50%', height: '100px' }} />
               }
               </TableCell>
               <TableCell component='th' scope='row'>

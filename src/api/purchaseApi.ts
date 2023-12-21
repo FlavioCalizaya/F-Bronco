@@ -35,7 +35,7 @@ export const purchaseApi: any = createApi({
         }),
 
         getpurchaseByID: builder.query({
-          
+ 
             query: (id) => `/purchase/${ id }`,
             extraOptions:{maxRetries:2},
             providesTags: ["Purchases"],
