@@ -53,8 +53,8 @@ interface Client {
               }}
             >
               <TableCell  align='left' component='th' scope='row'>{item +1}</TableCell>
-              <TableCell align='left'>{client.nitCi}</TableCell>
               <TableCell align='left'>{client.businessName}</TableCell>
+              <TableCell align='left'>{client.nitCi}</TableCell>
               <TableCell align='left'>{client.phoneNumber}</TableCell>
              
               <TableCell align='left'>

@@ -8,6 +8,8 @@ import TableContainer from '@mui/material/TableContainer'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useGetAllMaintenanceQuery } from 'src/api/Servicey/maintenanceApi'
 import UpdateMaintenance from '../UpdateMaintenance'
+import { ThemeColor } from 'src/@core/layouts/types'
+import Chip from '@mui/material/Chip'
 
 
 export default function MaintenanceList(){
@@ -22,7 +24,19 @@ interface Maintenance {
   statusMaintenance:number;
   
 }
+const statusObj: StatusObj = {
+  pendiente: { color: 'info' },
+  observado: { color: 'warning' },
+  finalizado: { color: 'success' }
+}
 
+interface StatusObj {
+  [key: string]: {
+    color: ThemeColor
+  }
+}
+/* let datos = localStorage;
+console.log('sasasa', datos) */
 let user = 1
     // @ts-ignore
 const { data, isLoading} = useGetAllMaintenanceQuery(user)
@@ -54,9 +68,18 @@ const { data, isLoading} = useGetAllMaintenanceQuery(user)
               <TableCell align='left' component='th' scope='row'>{item +1}</TableCell>
               <TableCell align='left'>{maintenance.serviceType}</TableCell>
               <TableCell align='left'>{maintenance.description}</TableCell>
-              <TableCell align='left'>
-                <small style={{ backgroundColor: maintenance.statusMaintenance ? 'green' : 'red', borderRadius:30, color:'white'}}>{maintenance.statusMaintenance? ' Finalizado ':' Pendiente '}</small></TableCell>
-            
+              <TableCell>
+                <Chip
+                  label={maintenance.statusMaintenance}
+                  color={statusObj[maintenance.statusMaintenance].color}
+                  sx={{
+                    height: 24,
+                    fontSize: '0.75rem',
+                    textTransform: 'capitalize',
+                    '& .MuiChip-label': { fontWeight: 500 }
+                  }}
+                />
+              </TableCell>
               <TableCell align='left'>
                 <UpdateMaintenance id={maintenance.id}/>             
               </TableCell>  

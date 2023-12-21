@@ -21,12 +21,12 @@ import Update from 'mdi-material-ui/Update'
 const initialValuesInputs= { 
     serviceType:'',
     description:'',
-    //amount:0,
+    amount:0,
     //idUser: 3,
     //estado:0,
     dateInit:'',
     //idAssignedMaintenanceUser: 4, 
-    statusMaintenance: false, 
+    statusMaintenance: 'pendiente', 
     dateEnd:'' , 
     //client: {"id": 1,"nitCi": "76576","businessName": "liss","phoneNumber": 67868,"estado": 0}
 }
@@ -55,7 +55,8 @@ const UpdateMaintenance = ({ id }: { id: number }) => {
    
   }
 
-  const [date, setDate] = useState('')
+  const [dateInit, setDateInit] = useState('')
+  const [dateEnd, setDateEnd] = useState('')
 
   const handleClose = () => {
     setOpen(false)
@@ -65,16 +66,18 @@ const UpdateMaintenance = ({ id }: { id: number }) => {
 
   const [updateServicey, { isLoading, isError }] = useUpdateMaintenanceMutation();
 
+  
 
   const handleUpdateMaintenance = async () => {
     const updatedServiceyData = {
       id: id,
       values: { 
+        amount: inputsValues.amount,
         serviceType: inputsValues.serviceType ,
         description: inputsValues.description,
-        statusMaintenance: false,//inputsValues.statusMaintenance,
-        dateInit:inputsValues.dateInit,
-        dateEnd:inputsValues.dateEnd , 
+        statusMaintenance: inputsValues.statusMaintenance,
+        dateInit:dateInit,
+        dateEnd:dateEnd, 
       } 
     };
     console.log('yyyeee', updatedServiceyData)
@@ -101,7 +104,7 @@ const UpdateMaintenance = ({ id }: { id: number }) => {
         <DialogContent>
           <Grid container spacing={7} style={{ paddingTop: '5px' }}>
             
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <FormControl fullWidth>
                 <InputLabel>Tipo Servicio</InputLabel>
                 <Select
@@ -129,26 +132,25 @@ const UpdateMaintenance = ({ id }: { id: number }) => {
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
-                <TextField type='date' fullWidth placeholder='Fecha de Inicio' 
-                value={inputsValues.dateInit} onChange={(e)=>setDate(e.target.value)}/>
+                <TextField type='date' fullWidth placeholder='Fecha de Inicio' label='Fecha de Inicio'
+                value={dateInit} onChange={(e)=>setDateInit(e.target.value)}/>
             </Grid>
-            <Grid item xs={12} sm={4}>
-                <TextField type='date' fullWidth placeholder='Fecha Final' 
-                value={inputsValues.dateEnd} onChange={(e)=>setDate(e.target.value)}/>
-            </Grid>
-
             <Grid item xs={12} sm={6}>
+                <TextField type='date' fullWidth placeholder='Fecha Final'  label='Fecha Finalizado'
+                value={dateEnd} onChange={(e)=>setDateEnd(e.target.value)}/>
+            </Grid>
+            <Grid item xs={12} sm={12}>
               <FormControl fullWidth>
-                <InputLabel>Estado de Mantenimiento</InputLabel>
+                <InputLabel>Estado de Mant.</InputLabel>
                 <Select
-                  label='statusMant'
-                  name='statusMant'
+                  label='statusMaintenance'
+                  name='statusMaintenance'
                   onChange={handleInputChange}
                   defaultValue={inputsValues.statusMaintenance}
                 >
-                  <MenuItem value='0'>Pendiente</MenuItem>
-                  <MenuItem value='1'>Finalizado</MenuItem>
-                  <MenuItem value='2'>Observado</MenuItem>
+                  <MenuItem value='pendiente'>Pendiente</MenuItem>
+                  <MenuItem value='finalizado'>Finalizado</MenuItem>
+                  <MenuItem value='observado'>Observado</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
