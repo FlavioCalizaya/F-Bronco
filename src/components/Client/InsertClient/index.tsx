@@ -64,10 +64,10 @@ const InsertClient = () => {
           <Grid container spacing={7} style={{ marginTop: '1px' }}>
 
             <Grid item xs={12} sm={6}>            
-            <TextField required fullWidth type='text' label='NIT/CI' value={businessName} onChange={(e)=>setBusinessName(e.target.value)} />
+            <TextField required fullWidth type='text' label='NIT/CI' value={nitCi} onChange={(e)=>setNitCi(e.target.value)} />
             </Grid>
             <Grid item xs={12} sm={6}>
-            <TextField required fullWidth type='text' label='RAZON SOCIAL' value={nitCi} onChange={(e)=>setNitCi(e.target.value)}/>
+            <TextField required fullWidth type='text' label='RAZON SOCIAL' value={businessName} onChange={(e)=>setBusinessName(e.target.value)}/>
             </Grid>
             <Grid item xs={12} sm={6}>
             <TextField required fullWidth type='number' label='TELEFONO'  value={phoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)}/>

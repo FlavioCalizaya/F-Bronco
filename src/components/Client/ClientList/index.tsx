@@ -25,8 +25,9 @@ interface Client {
 
     // @ts-ignore
   const { data, isLoading} = useGetAllClientQuery()
- 
-  return (  
+ console.log('data',data)
+  
+return (  
     isLoading ?  <CircularProgress/>:
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>

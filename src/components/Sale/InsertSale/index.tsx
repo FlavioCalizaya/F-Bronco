@@ -79,6 +79,7 @@ const InsertSales = () => {
   const { data: clients } = useGetAllClientQuery()
 
   const { data: products } = useGetAllInventoriesQuery()
+  console.log(products, 'products')
 
   const [ addNewSale, { isLoading, isError } ] = useAddNewSaleMutation()
 

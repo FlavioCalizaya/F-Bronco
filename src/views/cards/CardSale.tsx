@@ -11,7 +11,8 @@ import { dateParse } from 'src/utils/dateParser'
 const CardSale = ( {data}:any ) => {
 
   console.log( data );
-  return (
+  
+return (
     <Card sx={{ border: 0, boxShadow: 2, color: 'common.white', backgroundColor: 'info.main' }}>
       <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5, 4.5)} !important` }}>
         <Typography
@@ -38,13 +39,13 @@ const CardSale = ( {data}:any ) => {
           variant='body2'
           sx={{ display: 'flex', marginBottom: 2.75, alignItems: 'center', color: 'common.white' }}
         >
-          Fecha de Compra: {dateParse(data.fecha)}
+          Fecha de Venta: {dateParse(data.fecha)}
         </Typography>
         <Typography
           variant='body2'
           sx={{ display: 'flex', marginBottom: 2.75, alignItems: 'center', color: 'common.white' }}
         >
-          Total Compra Bs. {data.total}
+          Total Venta Bs. {data.total}
         </Typography>
         </Grid>
       </CardContent>

@@ -95,7 +95,8 @@ const InsertProduct = () => {
     reader.readAsDataURL( file );
 
   }
-  return (
+  
+return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen}>
         Insertar Producto

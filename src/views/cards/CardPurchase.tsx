@@ -31,13 +31,13 @@ const CardPurchase = (data:any) => {
           variant='body2'
           sx={{ display: 'flex', marginBottom: 2.75, alignItems: 'center', color: 'common.white' }}
         >
-          Fecha de Venta: {dateParse(data.data.data.date)}
+          Fecha de Compra: {dateParse(data.data.data.date)}
         </Typography>
         <Typography
           variant='body2'
           sx={{ display: 'flex', marginBottom: 2.75, alignItems: 'center', color: 'common.white' }}
         >
-          Total Venta Bs. {data.data.data.total}
+          Total Compra Bs. {data.data.data.total}
         </Typography>
         </Grid>
       </CardContent>
