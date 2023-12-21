@@ -19,6 +19,7 @@ import CloudUploadIcon from 'mdi-material-ui/CloudUpload'
 import { styled } from '@mui/material/styles'
 import { Autocomplete, IconButton } from '@mui/material'
 import { useGetAllClientQuery } from 'src/api/clientApi'
+import { useGetAllUsersQuery } from 'src/api/userApi'
 
 const InsertServicey = () => {
 
@@ -31,18 +32,36 @@ const InsertServicey = () => {
     serviceType:'',
     description:'',
     amount:0,
-    idUser: 3,
+    idUser:1,
+    //user: {},
     estado:0,
-    dateInit:"2023-10-16T02:04:43.000+00:00",
+    dateInit:"",
     idAssignedMaintenanceUser: 1, 
-    statusMaintenance: false, 
-    dateEnd:"2023-10-26T02:09:04.000+00:00" , 
-    //client: {"id": 1,"nitCi": "76576","businessName": "liss","phoneNumber": 67868,"estado": 0}
+    statusMaintenance: 'pendiente', 
+    dateEnd:"" , 
+    client: {}
   }
   interface Client {
     nitCi: string;
     businessName: string;
     phoneNumber: number;
+  }
+  interface User {
+    /* ci: number;
+    nombre: string;
+    primerApellido:string;
+    segundoApellido:string;
+    rol: string; */
+    idUser: number;
+    nombre:string;
+    primerApellido: string;
+    segundoApellido: string;
+    ci: string;
+    rol: string;
+    estado: number;
+
+    userName:string;
+    password:string;
   }
 
   const [inputsValues, setInputsValues] = useState(initialValuesInputs);
@@ -67,7 +86,7 @@ const InsertServicey = () => {
 
   const [addNewServicey, { isLoading, isError }] = useAddNewServiceyMutation();
   const { data: clients} = useGetAllClientQuery();
-
+  //const { data: users} = useGetAllUsersQuery();
 
   const handleAddServicey = async () => {
     try {
@@ -169,7 +188,19 @@ const InsertServicey = () => {
                 </Select>
               </FormControl>
             </Grid>
-            
+            {/* <Grid item xs={12} sm={6}>
+              <Autocomplete
+                options={users ? users : []}
+                getOptionLabel={(option: User) => option.nombre}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label='Encargado Mantenimiento'
+                    variant='outlined'
+                  />
+                )}
+              />
+            </Grid> */}
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -187,3 +218,5 @@ const InsertServicey = () => {
 }
 
 export default InsertServicey
+
+

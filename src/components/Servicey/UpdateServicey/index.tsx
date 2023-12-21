@@ -26,7 +26,7 @@ const initialValuesInputs= {
     //estado:0,
     //dateInit:"2023-10-16T02:04:43.000+00:00",
     //idAssignedMaintenanceUser: 4, 
-    statusMaintenance: false, 
+    statusMaintenance: "pendiente", 
     //dateEnd:"2023-10-26T02:09:04.000+00:00" , 
     //client: {"id": 1,"nitCi": "76576","businessName": "liss","phoneNumber": 67868,"estado": 0}
 }
@@ -71,7 +71,7 @@ const UpdateServicey = ({ id }: { id: number }) => {
         serviceType: inputsValues.serviceType ,
         description: inputsValues.description,
         amount: inputsValues.amount,
-        statusMaintenance: false
+        statusMaintenance: inputsValues.statusMaintenance
       } 
     };
     console.log('yyyeee', updatedServiceyData)

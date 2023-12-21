@@ -29,7 +29,7 @@ export const maintenanceApi:any = createApi({
     endpoints: (builder) => ({
 
       getAllMaintenance: builder.query({
-          query: (idUser) => `/servicess/user/${ idUser }`,
+          query: (idUser) => `/servicess/assing/${ idUser }`,
           providesTags: ["Servicey"],
       }),
 

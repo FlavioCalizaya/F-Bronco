@@ -42,7 +42,8 @@ const SalesList = () => {
   if (data && data.length === 0) {
     return <div>No hay productos disponibles.</div>;
   }
-  return (
+  
+return (
     <>
     { 
     <TableContainer component={Paper}>
