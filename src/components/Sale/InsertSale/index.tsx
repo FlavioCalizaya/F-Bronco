@@ -107,11 +107,17 @@ const InsertSales = () => {
       return acc + product.subtotal;
     }, 0);
   };
+   
+  const addProduct = (prod:any) => {
+    console.log(prod,'new prod')
+    console.log(selectedProducts, 'adding')
+    setSelectedProducts([...selectedProducts, prod])
+  }
 
 const handleAddSale = async () => {
+  console.log('selectedProduc', selectedProducts);
    const dataSale = {
      sale : {  
-     idVenta: 1,
      total: calculateTotal(),
      estado: 1, 
      fecha: date, 
@@ -119,7 +125,7 @@ const handleAddSale = async () => {
      client: customer
      },
      saleDetails: selectedProducts.map( detail => {
-      return  { idDetalleVenta: 1, 
+      return  { 
         precio: detail.precio,
         cantidad: detail.cantidad, 
         importe: detail.subtotal,
@@ -131,6 +137,7 @@ const handleAddSale = async () => {
 
    try {
     await addNewSale(dataSale).unwrap()
+    console.log('datasale', dataSale)
     handleClose();
   } catch (error) {
     console.log(error)
@@ -185,7 +192,7 @@ const handleAddSale = async () => {
                 getOptionLabel={(option: Product) => option.nombreProducto}
                 onChange={(e, newValue) => {
                   if (newValue !== null) {
-                    setSelectedProducts([...selectedProducts, newValue])
+                    addProduct(newValue)
                   }
                 }}
                 renderInput={params => <TextField {...params} label='Buscar producto' variant='outlined' />}
@@ -258,7 +265,6 @@ const handleAddSale = async () => {
                             aria-label='Delete'
                             color='error'
                             onClick={() => {
-                              // Handle delete or remove logic here
                               setSelectedProducts(prevSelectedProducts =>
                                 prevSelectedProducts.filter(p => p.idProducto !== product.idProducto)
                               )
@@ -270,7 +276,6 @@ const handleAddSale = async () => {
                         </TableCell>
                       </TableRow>
                     ))}
-                    {/* ... Other table rows ... */}
                   </TableBody>
                 </Table>
               </TableContainer>

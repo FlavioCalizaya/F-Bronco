@@ -12,7 +12,7 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAddNewProductMutation } from 'src/api/Product'
 import Link from '@mui/material/Link'
 import CloudUploadIcon from 'mdi-material-ui/CloudUpload'
@@ -27,7 +27,7 @@ const InsertProduct = () => {
   const initialValuesInputs = {
     idProducto: 80,
     nombreProducto: '',
-    categoria: '1',
+    categoria: 'Accesorios',
     codigo: '',
     imagen: '',
     marca: '',
@@ -40,7 +40,7 @@ const InsertProduct = () => {
     estado: 1,
   }
   const [inputsValues, setinputsValues] = useState(initialValuesInputs);
-
+  const [categoriaSelected, setCategoriaSelected] = useState('Accesorios')
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
     setinputsValues({
@@ -95,7 +95,14 @@ const InsertProduct = () => {
     reader.readAsDataURL( file );
 
   }
-  
+
+  useEffect(()=>{
+     setinputsValues({
+      ...inputsValues,
+      categoria: categoriaSelected
+    })
+  },[categoriaSelected])
+
 return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen}>
@@ -109,6 +116,23 @@ return (
         <DialogContent>
           <Grid container spacing={7} style={{ paddingTop: '5px' }}>
             <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel>Categoria</InputLabel>
+                <Select
+                  label='Categoria'
+                  name='categoria'
+                  onChange={(event)=>setCategoriaSelected(event.target.value)}
+                  value={inputsValues.categoria}
+                >
+                  <MenuItem value='Accesorios'>Accesorios</MenuItem>
+                  <MenuItem value='Tina de radiador'>Tina de radiador</MenuItem>
+                  <MenuItem value='Panales'>Panales</MenuItem>
+                  <MenuItem value='Ventiladores'>Ventiladores</MenuItem>
+                  <MenuItem value='Radiadores'>Radiadores</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          { (categoriaSelected=='Accesorios' || categoriaSelected=='Tina de radiador' ) && <Grid item xs={12} sm={6}>
               <TextField
                 name='nombreProducto'
                 value={inputsValues.nombreProducto}
@@ -116,22 +140,8 @@ return (
                 fullWidth
                 label='Nombre'
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Categoria</InputLabel>
-                <Select
-                  label='Categoria'
-                  name='categoria'
-                  onChange={handleInputChange}
-                  value={inputsValues.categoria}
-                >
-                  <MenuItem value='1'>Accesorios</MenuItem>
-                  <MenuItem value='2'>Aceites</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid> }
+            { false && <Grid item xs={12} sm={6}>
               <TextField
                 name='codigo'
                 value={inputsValues.codigo}
@@ -139,17 +149,19 @@ return (
                 fullWidth
                 label='Cod I'
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid>}
+            {categoriaSelected=='Panales' && <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>Tipo</InputLabel>
                 <Select label='Role' name='tipo' onChange={handleInputChange} value={ inputsValues.tipo }>
-                  <MenuItem value='MT'>MT</MenuItem>
-                  <MenuItem value='AT'>AT</MenuItem>
+                  <MenuItem value='C'>C</MenuItem>
+                  <MenuItem value='ST'>ST</MenuItem>
+                  <MenuItem value='KD'>KD</MenuItem>
+                  <MenuItem value='KV'>KV</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid>}
+           {(categoriaSelected=='Tina de radiador'|| categoriaSelected=='Ventiladores' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
               <TextField
                 name='marca'
                 value={inputsValues.marca}
@@ -158,8 +170,8 @@ return (
                 type='text'
                 label='Marca'
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid>}
+            {(categoriaSelected=='Tina de radiador'|| categoriaSelected=='Panales' || categoriaSelected=='Ventiladores' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
               <TextField
                 name='descripcion'
                 value={inputsValues.descripcion}
@@ -170,8 +182,8 @@ return (
                 multiline
                 rows={2}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid>}
+            {(categoriaSelected=='Panales' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 type='number'
@@ -180,8 +192,8 @@ return (
                 value={inputsValues.alto}
                 onChange={handleInputChange}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid>}
+            {(categoriaSelected=='Panales' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 type='number'
@@ -190,8 +202,8 @@ return (
                 value={inputsValues.ancho}
                 onChange={handleInputChange}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid> }
+            {categoriaSelected=='Espesor' && <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label='Espesor'
@@ -199,7 +211,7 @@ return (
                 value={inputsValues.espesor}
                 onChange={handleInputChange}
               />
-            </Grid>
+            </Grid>}
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
