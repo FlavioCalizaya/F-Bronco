@@ -24,12 +24,12 @@ const userNavigation = (): VerticalNavItemsType => {
     {
       title: 'Servicios',
       icon:AccountCogOutline,
-      path: '/Services'
+      path: '/Serviceys'
     },
     {
       title: 'Mantenimiento',
       icon: FormatListNumbered,
-      path: '/Maintenance'
+      path: '/Maintenances'
     },
   ]
 }

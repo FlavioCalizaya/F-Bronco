@@ -10,6 +10,9 @@ import { useGetAllMaintenanceQuery } from 'src/api/Servicey/maintenanceApi'
 import UpdateMaintenance from '../UpdateMaintenance'
 import { ThemeColor } from 'src/@core/layouts/types'
 import Chip from '@mui/material/Chip'
+import { useEffect, useState } from 'react'
+import { dateParse } from 'src/utils/dateParser'
+
 
 
 export default function MaintenanceList(){
@@ -17,6 +20,8 @@ export default function MaintenanceList(){
 interface Maintenance {
 
   id: number;
+  dateInit: Date;
+  dateEnd: Date;
   serviceType: number;
   description: string;
   amount: number;
@@ -35,9 +40,33 @@ interface StatusObj {
     color: ThemeColor
   }
 }
-/* let datos = localStorage;
-console.log('sasasa', datos) */
-let user = 1
+
+const [datos, setDatos] = useState({});
+useEffect(() => {
+  const dates = sessionStorage.getItem('idUser');
+  if (dates) {
+    setDatos(JSON.parse(dates));
+  }
+}, []);
+
+/* const getDate=(initDate)=>{
+  return new Date(initDate)
+} */
+const getDate = (initDate:any) => {
+  const date = new Date(initDate);
+  
+  // Obtiene los componentes de la fecha (año, mes y día)
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // El mes va de 0 a 11, por eso se suma 1
+  const day = date.getDate();
+
+  // Formatea la fecha como día/mes/año
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return initDate? formattedDate : '';
+};
+//console.log('sasasa', datos) 
+let user = datos
     // @ts-ignore
 const { data, isLoading} = useGetAllMaintenanceQuery(user)
  
@@ -50,7 +79,9 @@ const { data, isLoading} = useGetAllMaintenanceQuery(user)
             <TableCell>Nro</TableCell>      
             <TableCell align='left'>Tipo Servicio </TableCell>     
             <TableCell align='left'>Descripcion</TableCell>  
-            <TableCell align='left'>Estado Mant</TableCell>
+            <TableCell align='left'>Fecha de inicio</TableCell> 
+            <TableCell align='left'>Fecha de finalizacion</TableCell> 
+            <TableCell align='left'>Estado Mantenimiento</TableCell>
              <TableCell align='left'>Acciones</TableCell>
             {/*<TableCell align='left'>Eliminar</TableCell> */}
           </TableRow>
@@ -66,6 +97,8 @@ const { data, isLoading} = useGetAllMaintenanceQuery(user)
               }}
             >
               <TableCell align='left' component='th' scope='row'>{item +1}</TableCell>
+              <TableCell align='left'>{getDate(maintenance.dateInit)}</TableCell>
+              <TableCell align='left'>{getDate(maintenance.dateEnd)}</TableCell>
               <TableCell align='left'>{maintenance.serviceType}</TableCell>
               <TableCell align='left'>{maintenance.description}</TableCell>
               <TableCell>

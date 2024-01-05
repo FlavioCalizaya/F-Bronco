@@ -10,6 +10,9 @@ import { useGetAllServiceyQuery } from 'src/api/Servicey/serviceyApi'
 import UpdateServicey from '../UpdateServicey'
 import { ThemeColor } from 'src/@core/layouts/types'
 import Chip from '@mui/material/Chip'
+import { generaPdf } from 'src/components/ReportPDF/serviceyReport'
+import { IconButton } from '@mui/material'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 
 
@@ -43,7 +46,7 @@ interface Servicey {
   estado:number;
   assignedMaintenanceUser:User;
   statusMaintenance:number;
-  
+  //createdAt:string;
 }
 
 
@@ -60,6 +63,10 @@ interface StatusObj {
 }
     // @ts-ignore
   const { data, isLoading} = useGetAllServiceyQuery()
+
+  const showReportPDF = (servicey: Servicey)=>{
+    generaPdf(servicey)
+  }
  
   return (  
     isLoading ?  <CircularProgress/>:
@@ -76,6 +83,7 @@ interface StatusObj {
             <TableCell align='left'>Usuario Mantenimiento</TableCell>
             <TableCell align='left'>Estado</TableCell>
             <TableCell align='left'>Editar</TableCell>
+            <TableCell align='left'>PDF</TableCell>
             <TableCell align='left'>Eliminar</TableCell>
           </TableRow>
         </TableHead>
@@ -109,6 +117,12 @@ interface StatusObj {
               </TableCell>
               <TableCell align='left'>
                 <UpdateServicey id={servicey.id}/>             
+              </TableCell>
+              <TableCell align='left'>
+                <IconButton aria-label='' color="primary" 
+                onClick={()=>showReportPDF(servicey)}>
+                  <PictureAsPdfIcon />
+                </IconButton>
               </TableCell>
 
               {/*<TableCell align='left'>

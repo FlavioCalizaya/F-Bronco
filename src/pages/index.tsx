@@ -73,14 +73,16 @@ const LoginPage = () => {
 
     const {body} = await login(values).unwrap()
 
-    //console.log(body.data.rol)
+    console.log('aaaaa',body.data)
     if (body.data.rol ==="admin"){
       await sessionStorage.setItem('user', JSON.stringify(nameUser));
       await sessionStorage.setItem('rol', JSON.stringify(body.data.rol));
+      await sessionStorage.setItem('idUser', JSON.stringify(body.data.idUser));
       router.push('/Dashboard')
     }else{
       await sessionStorage.setItem('user', JSON.stringify(nameUser));
       await sessionStorage.setItem('rol', JSON.stringify(body.data.rol));
+      await sessionStorage.setItem('idUser', JSON.stringify(body.data.idUser));
       router.push('/Clients')
     }
   }

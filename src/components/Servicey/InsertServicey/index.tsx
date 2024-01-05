@@ -23,21 +23,28 @@ import { useGetAllClientQuery } from 'src/api/clientApi'
 const InsertServicey = () => {
 
   const [open, setOpen] = useState(false)
-  const [users, setUsers] = useState([])
+  const [assignedMaintenanceUsers, setAssignedMaintenanceUsers] = useState([])
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
+
+ 
+  const [datos, setDatos] = useState({});
+  useEffect(() => {
+    const dates = sessionStorage.getItem('idUser');
+    if (dates) {
+      setDatos(JSON.parse(dates));
+    }
+  }, []);
 
   const initialValuesInputs = {
     id:66, 
     serviceType:'',
     description:'',
     amount:0,
-    idUser:1,
-
-    //user: {},
+    idUser: 1,
     estado:0,
     dateInit:"",
-    idAssignedMaintenanceUser: 1, 
+    assignedMaintenanceUser: {}, 
     statusMaintenance: 'pendiente', 
     dateEnd:"" , 
     client: {}
@@ -47,21 +54,13 @@ const InsertServicey = () => {
     businessName: string;
     phoneNumber: number;
   }
-  interface User {
-
-    /* ci: number;
-    nombre: string;
-    primerApellido:string;
-    segundoApellido:string;
-    rol: string; */
-    idUser: number;
+  interface AssignedMaintenanceUser {
     nombre:string;
     primerApellido: string;
     segundoApellido: string;
     ci: string;
     rol: string;
     estado: number;
-
     userName:string;
     password:string;
   }
@@ -75,6 +74,23 @@ const InsertServicey = () => {
       [name]: value
     })
     console.log('ggg', inputsValues)
+  }
+  const handleClientChange = (client: any) => {
+    console.log('gggdd',client)
+    setInputsValues({
+      ...inputsValues,
+      client
+    })
+    console.log('hhh', inputsValues)
+  }
+
+  const handleAssingChange = (assignedMaintenanceUser: any) => {
+    console.log('gggdd',assignedMaintenanceUser)
+    setInputsValues({
+      ...inputsValues,
+      assignedMaintenanceUser
+    })
+    console.log('hhh', inputsValues)
   }
 
   const handleClickOpen = () => {
@@ -95,7 +111,7 @@ const InsertServicey = () => {
     try {
       const response = await fetch("http://localhost:8080/api/v1/users");
       const data = await response.json();
-      setUsers(data)
+      setAssignedMaintenanceUsers(data)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -105,10 +121,20 @@ const InsertServicey = () => {
     fetchData();
   }
   ,[])
+
+  const [customer, setCustomer] = useState({});
+
   const handleAddServicey = async () => {
     try {
       console.log('yyyy', initialValuesInputs)
       console.log('333', inputsValues)
+
+    /*   setInputsValues({
+        ...inputsValues,
+        client: customer
+      }) */
+
+      console.log('444', inputsValues)
       await addNewServicey(inputsValues).unwrap()
       handleClose()
       setInputsValues(initialValuesInputs)
@@ -129,6 +155,8 @@ const InsertServicey = () => {
     width: 1
   });
 
+
+
   
   return (
     <div>
@@ -146,6 +174,7 @@ const InsertServicey = () => {
               <Autocomplete
                 options={clients ? clients : []}
                 getOptionLabel={(option: Client) => option.businessName}
+                onChange={ (e, newValue:any ) => { handleClientChange( newValue ) } }
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -193,8 +222,9 @@ const InsertServicey = () => {
             </Grid>
              <Grid item xs={12} sm={6}>
               <Autocomplete
-                options={users ? users : []}
-                getOptionLabel={(option: User) => option.nombre}
+                options={assignedMaintenanceUsers ? assignedMaintenanceUsers : []}
+                getOptionLabel={(option: AssignedMaintenanceUser) => option.nombre}
+                onChange={ (e, newValue:any ) => { handleAssingChange( newValue ) } }
                 renderInput={params => (
                   <TextField
                     {...params}
