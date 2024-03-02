@@ -38,7 +38,7 @@ export default function ProviderList () {
             <TableCell align='left'>Razon Social </TableCell>
             <TableCell align='left'>Teléfono </TableCell>
             <TableCell align='left'>Dirección</TableCell>
-            <TableCell align='left'>Editar</TableCell>
+            <TableCell align='left'>Modificar</TableCell>
             <TableCell align='left'>Eliminar</TableCell>
           </TableRow>
         </TableHead>

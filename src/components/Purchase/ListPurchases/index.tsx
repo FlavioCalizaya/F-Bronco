@@ -15,9 +15,12 @@ import RemovePurchase from '../DeletePurchase'
 import PurchaseDetail from '../PurchaseDetail'
 import { dateParse } from 'src/utils/dateParser'
 import { generaPdf } from '../../ReportPDF/purchaseReport'
+import { useEffect, useState } from 'react'
 
 
-export default function PurchaseList () {
+export default function PurchaseList ({purchasesx}) {
+const [datesFilter, setDatesFilter] = useState([]);
+const {data, isLoading} =  useGetAllpurchaseQuery()
 
   interface Provider{
     id:number
@@ -34,8 +37,14 @@ export default function PurchaseList () {
         provider: Provider
       }
 
-    // @ts-ignore
-   const {data, isLoading} =  useGetAllpurchaseQuery()
+   useEffect(()=>{
+    if(purchasesx != undefined){ 
+      setDatesFilter(purchasesx);
+    }else{
+      setDatesFilter(data);
+    }
+  }
+  ,[purchasesx, data])
 
    const showReportPDF = (purcahse: Purchase)=>{
     generaPdf(purcahse)
@@ -53,12 +62,12 @@ export default function PurchaseList () {
             <TableCell align='left'>Proveedor </TableCell>
             <TableCell align='left'>Total Bs.</TableCell>
             <TableCell align='left'>Detalle Compra</TableCell>
-            <TableCell align='left'>Eliminar</TableCell>
-            <TableCell align='left'>Exportar PDF</TableCell>
+              {!purchasesx && <TableCell align='left'>Eliminar</TableCell>}
+              {!purchasesx &&<TableCell align='left'>Exportar PDF</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((purchase: Purchase, item:number) => (
+          {datesFilter && datesFilter.map((purchase: Purchase, item:number) => (
             <TableRow
               key={purchase.id}
               sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}
@@ -70,15 +79,15 @@ export default function PurchaseList () {
               <TableCell align='left'>
                 <PurchaseDetail data={purchase}/>
               </TableCell>
-              <TableCell align='left'>
+              {!purchasesx &&<TableCell align='left'>
                 <RemovePurchase data={purchase}/>
-              </TableCell>
-              <TableCell align='left'>
+              </TableCell>}
+              {!purchasesx &&<TableCell align='left'>
               <IconButton aria-label='' color="primary" 
               onClick={()=>showReportPDF(purchase)}>
                 <PictureAsPdfIcon />
               </IconButton>
-              </TableCell>
+              </TableCell>}
             </TableRow>
             ))}
            

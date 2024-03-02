@@ -14,8 +14,9 @@ import MenuItem from '@mui/material/MenuItem'
 import { useEffect, useState } from 'react'
 import { useGetServiceyByIDQuery, useUpdateServiceyMutation } from 'src/api/Servicey/serviceyApi'
 import Link from '@mui/material/Link'
-import { IconButton } from '@mui/material'
+import { Autocomplete, IconButton } from '@mui/material'
 import Update from 'mdi-material-ui/Update'
+import { useGetAllClientQuery } from 'src/api/clientApi'
 
 
 const initialValuesInputs= { 
@@ -28,7 +29,25 @@ const initialValuesInputs= {
     //idAssignedMaintenanceUser: 4, 
     statusMaintenance: "pendiente", 
     //dateEnd:"2023-10-26T02:09:04.000+00:00" , 
-    //client: {"id": 1,"nitCi": "76576","businessName": "liss","phoneNumber": 67868,"estado": 0}
+    client: {"id": 1,"nitCi": "76576","businessName": "liss","phoneNumber": 67868,"estado": 0},
+    //client: {},
+    assignedMaintenanceUser: {}, 
+}
+
+interface Client {
+  nitCi: string;
+  businessName: string;
+  phoneNumber: number;
+}
+interface AssignedMaintenanceUser {
+  nombre:string;
+  primerApellido: string;
+  segundoApellido: string;
+  ci: string;
+  rol: string;
+  estado: number;
+  userName:string;
+  password:string;
 }
 
 const UpdateServicey = ({ id }: { id: number }) => {
@@ -36,10 +55,9 @@ const UpdateServicey = ({ id }: { id: number }) => {
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
-
-
+  const [assignedMaintenanceUsers, setAssignedMaintenanceUsers] = useState([])
   const { data: servicey } = useGetServiceyByIDQuery(id);
-
+  const [inputsValues, setinputsValues] = useState(initialValuesInputs);
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -50,6 +68,7 @@ const UpdateServicey = ({ id }: { id: number }) => {
   }
 
   const handleClickOpen = () => {
+    console.log('serviceyUpdate', servicey)
     setinputsValues(servicey )
     setOpen(true)
    
@@ -59,19 +78,55 @@ const UpdateServicey = ({ id }: { id: number }) => {
     setOpen(false)
   }
 
-  const [inputsValues, setinputsValues] = useState(initialValuesInputs);
-
+ 
+  console.log('inputsValues', inputsValues)
   const [updateServicey, { isLoading, isError }] = useUpdateServiceyMutation();
 
+  const handleClientChange = (client: any) => {
+    console.log('gggdd',client)
+    setinputsValues({
+      ...inputsValues,
+      client
+    })
+    console.log('hhh', inputsValues)
+  }
+
+  const handleAssingChange = (assignedMaintenanceUser: any) => {
+    console.log('gggdd',assignedMaintenanceUser)
+    setinputsValues({
+      ...inputsValues,
+      assignedMaintenanceUser
+    })
+    console.log('hhh', inputsValues)
+  }
+
+  const { data: clients} = useGetAllClientQuery();
+
+  async function fetchData() {
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/users");
+      const data = await response.json();
+      setAssignedMaintenanceUsers(data)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+  
+  useEffect(()=>{
+    fetchData();
+  }
+  ,[])
 
   const handleUpdateServicey = async () => {
     const updatedServiceyData = {
       id: id,
       values: { 
+        client: inputsValues.client ,
         serviceType: inputsValues.serviceType ,
         description: inputsValues.description,
         amount: inputsValues.amount,
-        statusMaintenance: inputsValues.statusMaintenance
+        statusMaintenance: inputsValues.statusMaintenance,
+        assignedMaintenanceUser: inputsValues.assignedMaintenanceUser
       } 
     };
     console.log('yyyeee', updatedServiceyData)
@@ -93,24 +148,25 @@ const UpdateServicey = ({ id }: { id: number }) => {
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
         <DialogTitle id='responsive-dialog-title'>
           {' '}
-          <Link href='#'> Actualizar Servicio </Link>
+          <Link href='#'> Modificar Servicio </Link>
         </DialogTitle>
         <DialogContent>
-          <Grid container spacing={7} style={{ paddingTop: '5px' }}>
+          <Grid container spacing={7} style={{ paddingTop: '10px' }}>
+          
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Cliente</InputLabel>
-                <Select
-                  label='Client'
-                  name='client'
-                  //onChange={handleInputChange}
-                  //defaultValue={inputsValues.client}
-                >
-                  <MenuItem value='1'>Mario Rios</MenuItem>
-                  <MenuItem value='2'>Osuma Poma</MenuItem>
-                  <MenuItem value='3'>Peres Rios</MenuItem>
-                </Select>
-              </FormControl>
+              <Autocomplete
+                options={clients ? clients : []}
+                value={inputsValues.client}
+                getOptionLabel={(option: Client) => option.businessName}
+                onChange={ (e, newValue:any ) => { handleClientChange( newValue ) } }
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label='Cliente'
+                    variant='outlined'
+                  />
+                )}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
@@ -149,21 +205,20 @@ const UpdateServicey = ({ id }: { id: number }) => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Encargado de Servicio</InputLabel>
-                <Select
-                  label='idAssignedMaintenanceUser'
-                  name='idAssignedMaintenanceUser'
-                  //onChange={handleInputChange}
-                  //value={inputsValues.idAssignedMaintenanceUser}
-                  >
-                  <MenuItem value='1'>Mario Rios</MenuItem>
-                  <MenuItem value='2'>Osuma Poma</MenuItem>
-                  <MenuItem value='3'>Peres Rios</MenuItem>
-                </Select>
-              </FormControl>
+              <Autocomplete
+                options={assignedMaintenanceUsers ? assignedMaintenanceUsers : []}
+                value={inputsValues.assignedMaintenanceUser}
+                getOptionLabel={(option: AssignedMaintenanceUser) => option.nombre}
+                onChange={ (e, newValue:any ) => { handleAssingChange( newValue ) } }
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label='Encargado Mantenimiento'
+                    variant='outlined'
+                  />
+                )}
+              />
             </Grid>
-
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -175,7 +230,7 @@ const UpdateServicey = ({ id }: { id: number }) => {
           onClick={ handleUpdateServicey } 
           variant='contained' 
           autoFocus>
-            {isLoading ? 'Actualizando servicey...' : 'Actualizar servicey'}
+            {isLoading ? 'Actualizando ...' : 'Actualizar'}
           </Button>
           {isError && <div> Error update servicey </div>}
         </DialogActions>

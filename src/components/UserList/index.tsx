@@ -72,7 +72,7 @@ const UserList = () => {
               <TableCell align='right'>{user.primerApellido}</TableCell>
               <TableCell align='right'>{user.segundoApellido}</TableCell>
               <TableCell align='right'>{user.ci}</TableCell>
-              <TableCell align='right'>{user.rol}</TableCell>
+              <TableCell align='right'>{user.rol == 'admin'? 'Administrador': 'Encargado de servicios'}</TableCell>
 
               
 

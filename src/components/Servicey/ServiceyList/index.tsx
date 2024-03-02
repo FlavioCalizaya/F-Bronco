@@ -13,56 +13,70 @@ import Chip from '@mui/material/Chip'
 import { generaPdf } from 'src/components/ReportPDF/serviceyReport'
 import { IconButton } from '@mui/material'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { dateParse } from 'src/utils/dateParser'
+import { useEffect, useState } from 'react'
+import DeleteServicey from '../DeleteServicey'
 
 
 
-export default function ServiceyList(){
-  
-
-interface Client{
-  id:number
-  nitCi: string
-  businessName: string
-  address: string
-  phoneNumber: number
-}
-
-interface User{
-  nombre: string,
-	primerApellido: string,
-	segundoApellido: string,
-	ci: string,
-	estado: 0,
-	nameUser: string
-}
-
-interface Servicey {
-
-  id: number;
-  client: Client;
-  serviceType: number;
-  description: string;
-  amount: number;
-  estado:number;
-  assignedMaintenanceUser:User;
-  statusMaintenance:number;
-  //createdAt:string;
-}
-
-
-const statusObj: StatusObj = {
-  pendiente: { color: 'info' },
-  observado: { color: 'warning' },
-  finalizado: { color: 'success' }
-}
-
-interface StatusObj {
-  [key: string]: {
-    color: ThemeColor
-  }
-}
-    // @ts-ignore
+export default function ServiceyList({servicesx}){
+  console.log('servicesx', servicesx)
+  const [datesFilter, setDatesFilter] = useState([]);
   const { data, isLoading} = useGetAllServiceyQuery()
+  console.log('xxxx',data)
+
+  interface Client{
+    id:number
+    nitCi: string
+    businessName: string
+    address: string
+    phoneNumber: number
+  }
+
+  interface User{
+    nombre: string,
+    primerApellido: string,
+    segundoApellido: string,
+    ci: string,
+    estado: 0,
+    nameUser: string
+  }
+
+  interface Servicey {
+
+    id: number;
+    createdAtt: string;
+    client: Client;
+    serviceType: number;
+    description: string;
+    amount: number;
+    estado:number;
+    assignedMaintenanceUser:User;
+    statusMaintenance:number;
+    //createdAt:string;
+  }
+
+
+  const statusObj: StatusObj = {
+    pendiente: { color: 'info' },
+    observado: { color: 'warning' },
+    finalizado: { color: 'success' }
+  }
+
+  interface StatusObj {
+    [key: string]: {
+      color: ThemeColor
+    }
+  }
+
+  useEffect(()=>{
+    if(servicesx != undefined){ 
+      setDatesFilter(servicesx);
+    }else{
+      setDatesFilter(data);
+    }
+  }
+  ,[servicesx,data])
 
   const showReportPDF = (servicey: Servicey)=>{
     generaPdf(servicey)
@@ -75,20 +89,20 @@ interface StatusObj {
         <TableHead>
           <TableRow>
             <TableCell>Nro</TableCell>   
-
+            <TableCell align='left'>Fecha </TableCell> 
             <TableCell align='left'>Cliente </TableCell>     
             <TableCell align='left'>Tipo Servicio </TableCell>     
             <TableCell align='left'>Descripcion</TableCell>      
             <TableCell align='left'>Importe</TableCell>
-            <TableCell align='left'>Usuario Mantenimiento</TableCell>
-            <TableCell align='left'>Estado</TableCell>
-            <TableCell align='left'>Editar</TableCell>
-            <TableCell align='left'>PDF</TableCell>
-            <TableCell align='left'>Eliminar</TableCell>
+            {!servicesx &&<TableCell align='left'>Usuario Mantenimiento</TableCell>}
+            {!servicesx &&<TableCell align='left'>Estado</TableCell>}
+            {!servicesx && <TableCell align='left'>Modificar</TableCell>}
+            {!servicesx && <TableCell align='left'>PDF</TableCell>}
+            {!servicesx && <TableCell align='left'>Eliminar</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((servicey: Servicey,item:number) => (
+          {datesFilter && datesFilter.map((servicey: Servicey,item:number) => (
             <TableRow
               key={servicey.serviceType}
               sx={{
@@ -98,12 +112,13 @@ interface StatusObj {
               }}
             >
               <TableCell align='left' component='th' scope='row'>{item +1}</TableCell>
+              <TableCell align='left'>{dateParse(servicey.createdAtt)}</TableCell>
               <TableCell align='left'>{servicey.client.businessName}</TableCell>
               <TableCell align='left'>{servicey.serviceType}</TableCell>
               <TableCell align='left'>{servicey.description}</TableCell>
               <TableCell align='left'>{servicey.amount}</TableCell>
-              <TableCell align='left'>{servicey.assignedMaintenanceUser.nameUser}</TableCell>
-              <TableCell>
+              {!servicesx && <TableCell align='left'>{servicey.assignedMaintenanceUser.nombre}</TableCell>}
+              {!servicesx && <TableCell>
                 <Chip
                   label={servicey.statusMaintenance}
                   color={statusObj[servicey.statusMaintenance].color}
@@ -114,20 +129,20 @@ interface StatusObj {
                     '& .MuiChip-label': { fontWeight: 500 }
                   }}
                 />
-              </TableCell>
-              <TableCell align='left'>
+              </TableCell>} 
+              {!servicesx &&<TableCell align='left'>
                 <UpdateServicey id={servicey.id}/>             
-              </TableCell>
-              <TableCell align='left'>
+              </TableCell>}
+              {!servicesx && <TableCell align='left'>
                 <IconButton aria-label='' color="primary" 
                 onClick={()=>showReportPDF(servicey)}>
                   <PictureAsPdfIcon />
                 </IconButton>
-              </TableCell>
+              </TableCell>}
 
-              {/*<TableCell align='left'>
+              <TableCell align='left'>
               <DeleteServicey data={servicey}/>                            
-              </TableCell>   */}   
+              </TableCell>    
               </TableRow>
           ))}
         </TableBody>

@@ -55,7 +55,7 @@ const adminNavigation = (): VerticalNavItemsType => {
       icon: AccountCogOutline,
       path: '/Maintenances'
     },
-      {
+    {
       title: 'Proveedores',
       icon: GroupsIcon,
       path: '/Providers'
@@ -69,6 +69,11 @@ const adminNavigation = (): VerticalNavItemsType => {
       title: 'Inventario',
       icon: GraphicEqIcon,
       path: '/Inventory'
+    },
+    {
+      title: 'Reportes',
+      icon: AccountCogOutline,
+      path: '/Reports',
     },
   ]
 }

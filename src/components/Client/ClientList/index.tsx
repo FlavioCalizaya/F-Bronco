@@ -39,7 +39,7 @@ return (
                     
             <TableCell align='left'>Telefono</TableCell>
 
-            <TableCell align='left'>Editar</TableCell>
+            <TableCell align='left'>Modificar</TableCell>
             <TableCell align='left'>Eliminar</TableCell>
           </TableRow>
         </TableHead>

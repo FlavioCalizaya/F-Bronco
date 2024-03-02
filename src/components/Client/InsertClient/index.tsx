@@ -58,7 +58,7 @@ const InsertClient = () => {
         Agregar Cliente
       </Button>
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
-        <DialogTitle id='responsive-dialog-title'>{'Añader Un Nuevo Cliente '}</DialogTitle>
+        <DialogTitle id='responsive-dialog-title'>{'Añadir Nuevo Cliente '}</DialogTitle>
         <DialogContent>
         <Box onSubmit={addClient} component="form">
           <Grid container spacing={7} style={{ marginTop: '1px' }}>

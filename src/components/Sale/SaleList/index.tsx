@@ -12,6 +12,7 @@ import { dateParse } from 'src/utils/dateParser'
 import { IconButton } from '@mui/material'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { saleReportPDF } from 'src/components/ReportPDF/sale/saleReport'
+import { useEffect, useState } from 'react'
 
 
 interface RowType {
@@ -26,10 +27,19 @@ interface RowType {
 const showReportPDF = (sale: RowType)=>{
   saleReportPDF(sale)
 }
-const SalesList = () => {
-
+const SalesList = ({salesx}) => {
+  const [datesFilter, setDatesFilter] = useState([]);
     // @ts-ignore
   const { data, isLoading, isError, error} = useGetAllSalesQuery();
+
+  useEffect(()=>{
+    if(salesx != undefined){ 
+      setDatesFilter(salesx);
+    }else{
+      setDatesFilter(data);
+    }
+  }
+  ,[salesx])
 
   if (isLoading) {
     return <h5>Cargando...</h5>;
@@ -54,13 +64,13 @@ return (
             <TableCell align='left'>Fecha</TableCell>
             <TableCell align='left'>Nro Correlativo </TableCell>
             <TableCell align='left'>Total</TableCell>
-            <TableCell align='right'>Ver</TableCell>
-            <TableCell align='right'>PDF</TableCell>
-            <TableCell align='right'>Eliminar</TableCell>
+            {!salesx && <TableCell align='right'>Ver</TableCell>}
+            {!salesx && <TableCell align='right'>PDF</TableCell>}
+            {!salesx && <TableCell align='right'>Eliminar</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
-          { data.map((sale: RowType) => (
+          { datesFilter && datesFilter.map((sale: RowType) => (
             <TableRow
               key={ sale.idVenta }
               sx={{
@@ -77,19 +87,18 @@ return (
               </TableCell>
               <TableCell align='left'>{sale.nroCorrelativo}</TableCell>
               <TableCell align='left'>{sale.total} Bs</TableCell>
-              <TableCell align='right'>
+              {!salesx && <TableCell align='right'>
                 <SaleDetails sale={ sale } /> 
-              </TableCell>
-              <TableCell align='right'>
+              </TableCell>}
+              {!salesx && <TableCell align='right'>
               <IconButton aria-label='' color="primary" 
               onClick={()=>showReportPDF(sale)}>
                 <PictureAsPdfIcon />
               </IconButton>
-              </TableCell>
-
-              <TableCell align='right'>
+              </TableCell>}
+              {!salesx && <TableCell align='right'>
               <DeleteSale id={ sale.idVenta }    />
-              </TableCell>
+              </TableCell>}
             </TableRow>
           ))}
         </TableBody>

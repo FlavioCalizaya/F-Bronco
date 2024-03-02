@@ -63,7 +63,7 @@ const UpdateClient = (data:any) => {
       <EditIcon/>
       </IconButton>
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
-        <DialogTitle id='responsive-dialog-title'>{'Editar Proveedor'}</DialogTitle>
+        <DialogTitle id='responsive-dialog-title'>{'Editar Cliente'}</DialogTitle>
         <DialogContent>
 
           <Box onSubmit={editClient} component="form">
@@ -84,7 +84,7 @@ const UpdateClient = (data:any) => {
               Cancelar
             </Button>
             <Button variant='contained' type='submit'  autoFocus>
-              Modificar
+              Actualizar
             </Button>
           </DialogActions>
           </Box>

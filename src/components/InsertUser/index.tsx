@@ -95,7 +95,7 @@ const InsertUser = () => {
         Insertar Usuario
       </Button>
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
-        <DialogTitle id='responsive-dialog-title'>  <Link href='#'> Añadir nuevo User </Link></DialogTitle>
+        <DialogTitle id='responsive-dialog-title'>  <Link href='#'> Añadir nuevo usuario </Link></DialogTitle>
         <DialogContent>
           <Grid container spacing={7} style={{ paddingTop: '5px'}}>
             <Grid item xs={12} sm={6}>
@@ -146,8 +146,8 @@ const InsertUser = () => {
               <FormControl fullWidth>
                 <InputLabel>rol</InputLabel>
                 <Select label='rol' name='rol' onChange={ handleInputChange } defaultValue={ inputsValues.rol }>
-                  <MenuItem value='admin'>Admin</MenuItem>
-                  <MenuItem value='user'>User</MenuItem>
+                  <MenuItem value='admin'>Administrador</MenuItem>
+                  <MenuItem value='user'>Encargado de Servicios</MenuItem>
                 </Select>
               </FormControl>
             </Grid>          

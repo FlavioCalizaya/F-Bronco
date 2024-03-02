@@ -61,7 +61,7 @@ const ProductList = () => {
             <TableCell align='right'>Alto</TableCell>
             <TableCell align='right'>Ancho</TableCell>
             <TableCell align='right'>Esp</TableCell>
-            <TableCell align='right'>Actualizar</TableCell>
+            <TableCell align='right'>Modificar</TableCell>
             <TableCell align='right'>Eliminar</TableCell>
           </TableRow>
         </TableHead>

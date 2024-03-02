@@ -23,7 +23,7 @@ export const serviceApi = createApi({
     refetchOnFocus: true,       // Cuando pone el foco en la informacion revalida
     refetchOnReconnect:true,    // Revalida los datos cuando hay Red
 
-    tagTypes: ["Services"],
+    tagTypes: ["Services",'Service'],
 
     endpoints: (builder) => ({
 
@@ -35,7 +35,7 @@ export const serviceApi = createApi({
         getServiceByID: builder.query({
             query: (id) => `/service/${ id }`,
             extraOptions:{maxRetries:2},
-            providesTags: ["Services"],
+            providesTags: ["Service"],
         }),
 
         addNewService: builder.mutation({
@@ -58,7 +58,7 @@ export const serviceApi = createApi({
             body: value,
           }
         },
-        invalidatesTags: ["Services"],
+        invalidatesTags: ["Services","Service"],
         extraOptions: {maxRetries:2}
       }),
 
@@ -72,7 +72,7 @@ export const serviceApi = createApi({
             body: values,
           }
         },
-        invalidatesTags: ["Services"],
+        invalidatesTags: ["Services","Service"],
         extraOptions: {maxRetries:2}
       })
     })

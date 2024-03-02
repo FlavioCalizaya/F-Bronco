@@ -134,8 +134,8 @@ const UpdateUser= ({ id }: { id: number }) => {
               <FormControl fullWidth>
                 <InputLabel>rol</InputLabel>
                 <Select label='rol' name='rol' onChange={handleInputChange} defaultValue={inputsValues.rol}>
-                  <MenuItem value='admin'>Admin</MenuItem>
-                  <MenuItem value='user'>User</MenuItem>
+                  <MenuItem value='admin'>Administrador</MenuItem>
+                  <MenuItem value='user'>Encargado de servicio</MenuItem>
                 </Select>
               </FormControl>
             </Grid>   
