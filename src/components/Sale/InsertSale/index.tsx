@@ -28,7 +28,7 @@ import { useGetAllClientQuery } from 'src/api/clientApi'
 import { useGetAllInventoriesQuery } from 'src/api/inventoryApi'
 import Typography from '@mui/material/Typography'
 import SaleDetails from '../SaleDetail/index';
-import { useAddNewSaleMutation } from 'src/api/Sale'
+import { useAddNewSaleMutation, useGetAllSalesQuery } from 'src/api/Sale'
 
 const InsertSales = () => {
   const [open, setOpen] = useState(false)
@@ -77,7 +77,8 @@ const InsertSales = () => {
   const [productName, setProductName] = useState('a')
   // const { data: products, isError, error } = useGetProductByNameQuery(productName);
   const { data: clients } = useGetAllClientQuery()
-
+  const { data: sales } = useGetAllSalesQuery()
+  console.log('saless', sales?.length)
   const { data: products } = useGetAllInventoriesQuery()
   console.log(products, 'products')
 
@@ -203,9 +204,9 @@ const handleAddSale = async () => {
             value={date} onChange={(e)=>setDate(e.target.value)}/>
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField type='correlativeNumber' fullWidth placeholder='Escriba un numero correlativo' 
+            <TextField disabled type='correlativeNumber' fullWidth placeholder='Escriba un numero correlativo' 
                 label='Numero Correlativo'
-                value={correlativeNumber}  onChange={(e)=>setCorrelativeNumber(e.target.value)}/>
+                value={sales?.length+1}/>
             </Grid>
             <Grid item xs={12} sm={12}>
               <TableContainer component={Paper}>

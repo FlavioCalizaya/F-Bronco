@@ -93,7 +93,7 @@ const LoginPage = () => {
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 
-          <img src="/images/logoB.jpg"  width="200" height="150" />
+          <img src="/images/Bronco.png"  width="200" height="150" />
 
           </Box>     
           <Box sx={{ mb:6}}>

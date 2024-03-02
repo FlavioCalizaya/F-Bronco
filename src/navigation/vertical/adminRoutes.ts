@@ -17,13 +17,6 @@ const adminNavigation = (): VerticalNavItemsType => {
     {
       sectionTitle: 'MENU PRINCIPAL DE OPCIONES'
     },
-
-    {
-      
-      title: 'Dashboard',
-      icon: HomeOutline,
-      path: '/Dashboard'
-    },
     {
       title: 'Usuarios',
       icon: AccountCogOutline,
