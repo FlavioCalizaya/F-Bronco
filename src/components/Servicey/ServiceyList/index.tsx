@@ -140,9 +140,15 @@ export default function ServiceyList({servicesx}){
                 </IconButton>
               </TableCell>
 
+<<<<<<< HEAD
               {!servicesx && <TableCell align='left'>
               <DeleteServicey data={servicey}/>                            
               </TableCell>}    
+=======
+              {!servicesx &&<TableCell align='left'>
+              <DeleteServicey data={servicey}/>                            
+              </TableCell>}  
+>>>>>>> 10583343eca3ffad371ee7b239c3deb2f1b9c646
               </TableRow>
           ))}
         </TableBody>
