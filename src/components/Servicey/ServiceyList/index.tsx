@@ -97,7 +97,7 @@ export default function ServiceyList({servicesx}){
             {!servicesx &&<TableCell align='left'>Usuario Mantenimiento</TableCell>}
             {!servicesx &&<TableCell align='left'>Estado</TableCell>}
             {!servicesx && <TableCell align='left'>Modificar</TableCell>}
-            {!servicesx && <TableCell align='left'>PDF</TableCell>}
+            <TableCell align='left'>PDF</TableCell>
             {!servicesx && <TableCell align='left'>Eliminar</TableCell>}
           </TableRow>
         </TableHead>
@@ -113,11 +113,11 @@ export default function ServiceyList({servicesx}){
             >
               <TableCell align='left' component='th' scope='row'>{item +1}</TableCell>
               <TableCell align='left'>{dateParse(servicey.createdAtt)}</TableCell>
-              <TableCell align='left'>{servicey.client.businessName}</TableCell>
+              <TableCell align='left'>{servicey.client?.businessName}</TableCell>
               <TableCell align='left'>{servicey.serviceType}</TableCell>
               <TableCell align='left'>{servicey.description}</TableCell>
               <TableCell align='left'>{servicey.amount}</TableCell>
-              {!servicesx && <TableCell align='left'>{servicey.assignedMaintenanceUser.nombre}</TableCell>}
+              {!servicesx && <TableCell align='left'>{servicey.assignedMaintenanceUser?.nombre}</TableCell>}
               {!servicesx && <TableCell>
                 <Chip
                   label={servicey.statusMaintenance}
@@ -133,16 +133,16 @@ export default function ServiceyList({servicesx}){
               {!servicesx &&<TableCell align='left'>
                 <UpdateServicey id={servicey.id}/>             
               </TableCell>}
-              {!servicesx && <TableCell align='left'>
+               <TableCell align='left'>
                 <IconButton aria-label='' color="primary" 
                 onClick={()=>showReportPDF(servicey)}>
                   <PictureAsPdfIcon />
                 </IconButton>
-              </TableCell>}
+              </TableCell>
 
-              <TableCell align='left'>
+              {!servicesx && <TableCell align='left'>
               <DeleteServicey data={servicey}/>                            
-              </TableCell>    
+              </TableCell>}    
               </TableRow>
           ))}
         </TableBody>

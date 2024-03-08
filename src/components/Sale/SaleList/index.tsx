@@ -9,10 +9,11 @@ import { useGetAllSalesQuery } from 'src/api/Sale'
 import SaleDetails from '../SaleDetail'
 import DeleteSale from '../DeleteSale'
 import { dateParse } from 'src/utils/dateParser'
-import { IconButton } from '@mui/material'
+import { IconButton, InputAdornment, TextField } from '@mui/material'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { saleReportPDF } from 'src/components/ReportPDF/sale/saleReport'
 import { useEffect, useState } from 'react'
+import { Magnify } from 'mdi-material-ui'
 
 
 interface RowType {
@@ -32,14 +33,29 @@ const SalesList = ({salesx}) => {
     // @ts-ignore
   const { data, isLoading, isError, error} = useGetAllSalesQuery();
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([])
+  
+  useEffect(()=>{
+    const filteredKardexes = datesFilter?.filter(sale => {
+      return (
+        sale.client.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        sale.nitCi?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+   setFilteredData(filteredKardexes) 
+  },[searchTerm])
+  
   useEffect(()=>{
     if(salesx != undefined){ 
       setDatesFilter(salesx);
+      setFilteredData(salesx)
     }else{
       setDatesFilter(data);
+      setFilteredData(data);
     }
   }
-  ,[salesx])
+  ,[salesx, data])
 
   if (isLoading) {
     return <h5>Cargando...</h5>;
@@ -52,9 +68,24 @@ const SalesList = ({salesx}) => {
   if (data && data.length === 0) {
     return <div>No hay productos disponibles.</div>;
   }
-  
+  console.log('ssssss', datesFilter)
+
 return (
     <>
+      <TextField
+          size='small'
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 4 }, width: '25%'}}
+          value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} 
+          placeholder='Busca por producto, descripcion o estado'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <Magnify fontSize='small' />
+              </InputAdornment>
+            )
+          }}
+        />
+
     { 
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} stickyHeader aria-label='sticky table'>
@@ -64,13 +95,13 @@ return (
             <TableCell align='left'>Fecha</TableCell>
             <TableCell align='left'>Nro Correlativo </TableCell>
             <TableCell align='left'>Total</TableCell>
-            {!salesx && <TableCell align='right'>Ver</TableCell>}
-            {!salesx && <TableCell align='right'>PDF</TableCell>}
+            <TableCell align='right'>Ver</TableCell>
+            <TableCell align='right'>PDF</TableCell>
             {!salesx && <TableCell align='right'>Eliminar</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
-          { datesFilter && datesFilter.map((sale: RowType) => (
+          { filteredData && filteredData.map((sale: RowType) => (
             <TableRow
               key={ sale.idVenta }
               sx={{
@@ -87,15 +118,15 @@ return (
               </TableCell>
               <TableCell align='left'>{sale.nroCorrelativo}</TableCell>
               <TableCell align='left'>{sale.total} Bs</TableCell>
-              {!salesx && <TableCell align='right'>
+              <TableCell align='right'>
                 <SaleDetails sale={ sale } /> 
-              </TableCell>}
-              {!salesx && <TableCell align='right'>
+              </TableCell>
+              <TableCell align='right'>
               <IconButton aria-label='' color="primary" 
               onClick={()=>showReportPDF(sale)}>
                 <PictureAsPdfIcon />
               </IconButton>
-              </TableCell>}
+              </TableCell>
               {!salesx && <TableCell align='right'>
               <DeleteSale id={ sale.idVenta }    />
               </TableCell>}

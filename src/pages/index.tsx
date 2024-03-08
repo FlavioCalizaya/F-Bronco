@@ -78,7 +78,7 @@ const LoginPage = () => {
       await sessionStorage.setItem('user', JSON.stringify(nameUser));
       await sessionStorage.setItem('rol', JSON.stringify(body.data.rol));
       await sessionStorage.setItem('idUser', JSON.stringify(body.data.idUser));
-      router.push('/Dashboard')
+      router.push('/Reports')
     }else{
       await sessionStorage.setItem('user', JSON.stringify(nameUser));
       await sessionStorage.setItem('rol', JSON.stringify(body.data.rol));

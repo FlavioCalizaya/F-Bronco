@@ -100,8 +100,9 @@ const InsertPurchase = () => {
     provider: string
     product: string
   }
+  const today = new Date().toISOString().split('T')[0];
 
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(today);
   const [quantity, setQuantity] = useState('')
   const [price, setPrice] = useState('')
 

@@ -78,7 +78,6 @@ const InsertSales = () => {
   // const { data: products, isError, error } = useGetProductByNameQuery(productName);
   const { data: clients } = useGetAllClientQuery()
   const { data: sales } = useGetAllSalesQuery()
-  console.log('saless', sales?.length)
   const { data: products } = useGetAllInventoriesQuery()
   console.log(products, 'products')
 
@@ -88,8 +87,10 @@ const InsertSales = () => {
   const handleInputChange = (event: any, value: any) => {
     setProductName(value)
   }
+  const today = new Date().toISOString().split('T')[0];
 
-  const [date, setDate] = useState('')
+  // Establecemos la fecha de hoy como valor por defecto en el estado
+  const [date, setDate] = useState(today);
   const [correlativeNumber, setCorrelativeNumber] = useState('')
   
   
@@ -122,7 +123,7 @@ const handleAddSale = async () => {
      total: calculateTotal(),
      estado: 1, 
      fecha: date, 
-     nroCorrelativo: correlativeNumber, 
+     nroCorrelativo: sales[sales.length - 1].idVenta + 1, 
      client: customer
      },
      saleDetails: selectedProducts.map( detail => {
@@ -145,7 +146,6 @@ const handleAddSale = async () => {
   }
 }
 
-  
   return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen}>
@@ -206,7 +206,7 @@ const handleAddSale = async () => {
             <Grid item xs={6} sm={6}>
             <TextField disabled type='correlativeNumber' fullWidth placeholder='Escriba un numero correlativo' 
                 label='Numero Correlativo'
-                value={sales?.length+1}/>
+                value={sales?sales[sales.length - 1].idVenta+1:10000}/>
             </Grid>
             <Grid item xs={12} sm={12}>
               <TableContainer component={Paper}>
