@@ -165,7 +165,7 @@ const UpdateMaintenance = ({ id }: { id: number }) => {
           onClick={ handleUpdateMaintenance } 
           variant='contained' 
           autoFocus>
-            {isLoading ? 'Guardardo Mantenimiento...' : 'Guardar Maintenance'}
+            {isLoading ? 'Guardardo Mantenimiento...' : 'Guardar Mantenimiento'}
           </Button>
           {isError && <div> Error update Mantenimiento </div>}
         </DialogActions>

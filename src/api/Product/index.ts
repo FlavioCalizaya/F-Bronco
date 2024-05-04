@@ -52,6 +52,7 @@ export const productApi = createApi({
               body: newProduct
             };
           },
+          invalidatesTags: ["Product"],
         }),
 
       updateProduct: builder.mutation({
