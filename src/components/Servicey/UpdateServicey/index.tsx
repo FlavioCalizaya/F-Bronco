@@ -58,7 +58,6 @@ const UpdateServicey = ({ id }: { id: number }) => {
   const [assignedMaintenanceUsers, setAssignedMaintenanceUsers] = useState([])
   const { data: servicey } = useGetServiceyByIDQuery(id);
   const [inputsValues, setinputsValues] = useState(initialValuesInputs);
-
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
     setinputsValues({
@@ -68,10 +67,8 @@ const UpdateServicey = ({ id }: { id: number }) => {
   }
 
   const handleClickOpen = () => {
-    console.log('serviceyUpdate', servicey)
-    setinputsValues(servicey )
+    setinputsValues(servicey)
     setOpen(true)
-   
   }
 
   const handleClose = () => {
@@ -116,8 +113,9 @@ const UpdateServicey = ({ id }: { id: number }) => {
     fetchData();
   }
   ,[])
-
+  console.log('servicessss', servicey)
   const handleUpdateServicey = async () => {
+ 
     const updatedServiceyData = {
       id: id,
       values: { 
@@ -126,7 +124,7 @@ const UpdateServicey = ({ id }: { id: number }) => {
         description: inputsValues.description,
         amount: inputsValues.amount,
         statusMaintenance: inputsValues.statusMaintenance,
-        assignedMaintenanceUser: inputsValues.assignedMaintenanceUser
+        assignedMaintenanceUser: servicey.assignedMaintenanceUser
       } 
     };
     console.log('yyyeee', updatedServiceyData)

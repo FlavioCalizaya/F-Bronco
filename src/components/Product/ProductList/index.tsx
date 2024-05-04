@@ -54,13 +54,12 @@ const ProductList = () => {
             <TableCell>Imagen</TableCell>
             <TableCell>Cod I</TableCell>
             <TableCell align='right'>Nombre</TableCell>
-            <TableCell align='right'>Tipo </TableCell>
             <TableCell align='right'>Categoria</TableCell>
             <TableCell align='right'>Marca </TableCell>
             <TableCell align='right'>Descripcion </TableCell>
             <TableCell align='right'>Alto</TableCell>
             <TableCell align='right'>Ancho</TableCell>
-            <TableCell align='right'>Esp</TableCell>
+            <TableCell align='right'>Precio</TableCell>
             <TableCell align='right'>Modificar</TableCell>
             <TableCell align='right'>Eliminar</TableCell>
           </TableRow>
@@ -77,20 +76,19 @@ const ProductList = () => {
             >
               <TableCell align='right'>
               {product.imagen && 
-                  <img src={ `/images/products/${product.imagen}`} alt='Imagen Producto' style={{ maxWidth: '50%', height: '100px' }} />
+                  <img src={ `/images/products/${product.imagen}`} alt='Imagen Producto' style={{ maxWidth: '100%', height: '100px' }} />
               }
               </TableCell>
               <TableCell component='th' scope='row'>
                 {product.codigo}
               </TableCell>
               <TableCell align='right'>{product.nombreProducto}</TableCell>
-              <TableCell align='right'>{product.tipo}</TableCell>
               <TableCell align='right'>{product.categoria}</TableCell>
               <TableCell align='right'>{product.marca}</TableCell>
               <TableCell align='right'>{product.descripcion ? product.descripcion : 'No hay descripcion'}</TableCell>
               <TableCell align='right'>{product.alto}</TableCell>
               <TableCell align='right'>{product.ancho}</TableCell>
-              <TableCell align='right'>{product.espesor}</TableCell>
+              <TableCell align='right'>{product.precioVenta}</TableCell>
               <TableCell align='right'>
                <UpdateProduct id={ product.idProducto } />
               </TableCell>

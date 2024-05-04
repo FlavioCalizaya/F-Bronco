@@ -126,7 +126,7 @@ return (
                 >
                   <MenuItem value='Accesorios'>Accesorios</MenuItem>
                   <MenuItem value='Tina de radiador'>Tina de radiador</MenuItem>
-                  <MenuItem value='Panales'>Panales</MenuItem>
+                  <MenuItem value='Panales'></MenuItem>
                   <MenuItem value='Ventiladores'>Ventiladores</MenuItem>
                   <MenuItem value='Radiadores'>Radiadores</MenuItem>
                 </Select>
@@ -141,7 +141,7 @@ return (
                 label='Nombre'
               />
             </Grid> }
-            { false && <Grid item xs={12} sm={6}>
+  <Grid item xs={12} sm={6}>
               <TextField
                 name='codigo'
                 value={inputsValues.codigo}
@@ -149,18 +149,7 @@ return (
                 fullWidth
                 label='Cod I'
               />
-            </Grid>}
-            {categoriaSelected=='Panales' && <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Tipo</InputLabel>
-                <Select label='Role' name='tipo' onChange={handleInputChange} value={ inputsValues.tipo }>
-                  <MenuItem value='C'>C</MenuItem>
-                  <MenuItem value='ST'>ST</MenuItem>
-                  <MenuItem value='KD'>KD</MenuItem>
-                  <MenuItem value='KV'>KV</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>}
+            </Grid>
            {(categoriaSelected=='Tina de radiador'|| categoriaSelected=='Ventiladores' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
               <TextField
                 name='marca'

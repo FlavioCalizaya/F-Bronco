@@ -65,10 +65,11 @@ const getDate = (initDate:any) => {
 
   return initDate? formattedDate : '';
 };
-//console.log('sasasa', datos) 
+
 let user = datos
     // @ts-ignore
 const { data, isLoading} = useGetAllMaintenanceQuery(user)
+console.log('sasasa', data) 
  
   return (  
     isLoading ?  <CircularProgress/>:
@@ -97,10 +98,10 @@ const { data, isLoading} = useGetAllMaintenanceQuery(user)
               }}
             >
               <TableCell align='left' component='th' scope='row'>{item +1}</TableCell>
-              <TableCell align='left'>{getDate(maintenance.dateInit)}</TableCell>
-              <TableCell align='left'>{getDate(maintenance.dateEnd)}</TableCell>
-              <TableCell align='left'>{maintenance.serviceType}</TableCell>
+                  <TableCell align='left'>{maintenance.serviceType}</TableCell>
               <TableCell align='left'>{maintenance.description}</TableCell>
+              <TableCell align='left'>{maintenance.dateInit?getDate(maintenance.dateInit): 'por comenzar'}</TableCell>
+              <TableCell align='left'>{maintenance.dateEnd? getDate(maintenance.dateEnd): 'por finalizar'}</TableCell>
               <TableCell>
                 <Chip
                   label={maintenance.statusMaintenance}

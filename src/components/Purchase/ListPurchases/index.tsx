@@ -63,7 +63,7 @@ const {data, isLoading} =  useGetAllpurchaseQuery()
             <TableCell align='left'>Total Bs.</TableCell>
             <TableCell align='left'>Detalle Compra</TableCell>
               {!purchasesx && <TableCell align='left'>Eliminar</TableCell>}
-              {!purchasesx &&<TableCell align='left'>Exportar PDF</TableCell>}
+            <TableCell align='left'>Exportar PDF</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -82,12 +82,12 @@ const {data, isLoading} =  useGetAllpurchaseQuery()
               {!purchasesx &&<TableCell align='left'>
                 <RemovePurchase data={purchase}/>
               </TableCell>}
-              {!purchasesx &&<TableCell align='left'>
+              <TableCell align='left'>
               <IconButton aria-label='' color="primary" 
               onClick={()=>showReportPDF(purchase)}>
                 <PictureAsPdfIcon />
               </IconButton>
-              </TableCell>}
+              </TableCell>
             </TableRow>
             ))}
            

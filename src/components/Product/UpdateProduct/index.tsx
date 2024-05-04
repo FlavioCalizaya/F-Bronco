@@ -50,8 +50,8 @@ const UpdateProduct = ({ id }: { id: number }) => {
   }
 
   const handleClickOpen = () => {
-
-  setinputsValues(product )
+    console.log('productttttopened', product )
+    setinputsValues(product )
 
     setOpen(true)
    
@@ -61,7 +61,7 @@ const UpdateProduct = ({ id }: { id: number }) => {
     setOpen(false)
   }
 
-  const [inputsValues, setinputsValues] = useState(initialValuesInputs);
+  const [inputsValues, setinputsValues] = useState();
 
   const [updateProduct, { isLoading, isError }] = useUpdateProductMutation();
 
@@ -78,7 +78,9 @@ const UpdateProduct = ({ id }: { id: number }) => {
       console.error('Error updating product:', error);
     }
   };
-  
+  useEffect(()=>{
+    setinputsValues(product)
+  },[product])
 
   return (
     <div>
@@ -93,61 +95,49 @@ const UpdateProduct = ({ id }: { id: number }) => {
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={7} style={{ paddingTop: '5px' }}>
+          { (inputsValues?.categoria=='Accesorios' || inputsValues?.categoria=='Tina de radiador' ) &&
             <Grid item xs={12} sm={6}>
               <TextField
                 name='nombreProducto'
-                value={inputsValues.nombreProducto}
+                value={inputsValues?.nombreProducto}
                 onChange={handleInputChange}
                 fullWidth
                 label='Nombre'
               />
-            </Grid>
+            </Grid>}
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Categoria</InputLabel>
-                <Select
-                  label='Categoria'
-                  name='categoria'
-                  onChange={handleInputChange}
-                  defaultValue={inputsValues.categoria}
-                >
-                  <MenuItem value='1'>Accesorios</MenuItem>
-                  <MenuItem value='2'>Aceites</MenuItem>
-                </Select>
-              </FormControl>
+              <TextField
+                name='categoria'
+                value={inputsValues?.categoria}
+                fullWidth
+                disabled
+                label='Categoria'
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 name='codigo'
-                value={inputsValues.codigo}
+                value={inputsValues?.codigo}
                 onChange={(e: any) => handleInputChange(e)}
                 fullWidth
                 label='Cod I'
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Tipo</InputLabel>
-                <Select label='Role' name='tipo' onChange={handleInputChange} defaultValue={inputsValues.tipo}>
-                  <MenuItem value='MT'>MT</MenuItem>
-                  <MenuItem value='AT'>AT</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+            {(inputsValues?.categoria=='Tina de radiador'|| inputsValues?.categoria=='Ventiladores' || inputsValues?.categoria=='Radiadores') && 
             <Grid item xs={12} sm={6}>
               <TextField
                 name='marca'
-                value={inputsValues.marca}
+                value={inputsValues?.marca}
                 onChange={handleInputChange}
                 fullWidth
                 type='text'
                 label='Marca'
               />
-            </Grid>
+            </Grid>}
             <Grid item xs={12} sm={6}>
               <TextField
                 name='descripcion'
-                value={inputsValues.descripcion}
+                value={inputsValues?.descripcion}
                 onChange={handleInputChange}
                 fullWidth
                 id='outlined-multiline-static'
@@ -162,7 +152,7 @@ const UpdateProduct = ({ id }: { id: number }) => {
                 type='number'
                 label='Alto'
                 name='alto'
-                value={inputsValues.alto}
+                value={inputsValues?.alto}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -172,16 +162,7 @@ const UpdateProduct = ({ id }: { id: number }) => {
                 type='number'
                 label='Ancho'
                 name='ancho'
-                value={inputsValues.ancho}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label='Espesor'
-                name='espesor'
-                value={inputsValues.espesor}
+                value={inputsValues?.ancho}
                 onChange={handleInputChange}
               />
             </Grid>
@@ -191,7 +172,7 @@ const UpdateProduct = ({ id }: { id: number }) => {
                 type='number'
                 label='Precio Venta'
                 name='precioVenta'
-                value={inputsValues.precioVenta}
+                value={inputsValues?.precioVenta}
                 onChange={handleInputChange}
               />
             </Grid>

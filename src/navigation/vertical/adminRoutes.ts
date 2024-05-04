@@ -43,11 +43,11 @@ const adminNavigation = (): VerticalNavItemsType => {
       icon: CubeOutline,///AccountFileTextOutline,
       path: '/Serviceys'
     },
-    {
-      title: 'Mantenimiento',
-      icon: AccountCogOutline,
-      path: '/Maintenances'
-    },
+    //{
+      //title: 'Mantenimiento',
+      //icon: AccountCogOutline,
+      //path: '/Maintenances'
+    //},
     {
       title: 'Proveedores',
       icon: GroupsIcon,

@@ -39,7 +39,7 @@ const UpdateMaintenance = ({ id }: { id: number }) => {
 
 
   const { data: servicey } = useGetMaintenanceByIDQuery(id);
-
+  const today = new Date().toISOString().split('T')[0];
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -50,13 +50,13 @@ const UpdateMaintenance = ({ id }: { id: number }) => {
   }
 
   const handleClickOpen = () => {
-    setinputsValues(servicey )
+    setinputsValues(servicey)
     setOpen(true)
    
   }
 
-  const [dateInit, setDateInit] = useState('')
-  const [dateEnd, setDateEnd] = useState('')
+  const [dateInit, setDateInit] = useState(today)
+  const [dateEnd, setDateEnd] = useState(today)
 
   const handleClose = () => {
     setOpen(false)
@@ -165,7 +165,7 @@ const UpdateMaintenance = ({ id }: { id: number }) => {
           onClick={ handleUpdateMaintenance } 
           variant='contained' 
           autoFocus>
-            {isLoading ? 'Guardardo Mantenimiento...' : 'Guardar Maintenance'}
+            {isLoading ? 'Guardardo Mantenimiento...' : 'Guardar Mantenimiento'}
           </Button>
           {isError && <div> Error update Mantenimiento </div>}
         </DialogActions>
