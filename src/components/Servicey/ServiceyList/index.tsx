@@ -11,15 +11,18 @@ import UpdateServicey from '../UpdateServicey'
 import { ThemeColor } from 'src/@core/layouts/types'
 import Chip from '@mui/material/Chip'
 import { generaPdf } from 'src/components/ReportPDF/serviceyReport'
-import { IconButton } from '@mui/material'
+import { IconButton, InputAdornment, TextField } from '@mui/material'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import { dateParse } from 'src/utils/dateParser'
 import { useEffect, useState } from 'react'
 import DeleteServicey from '../DeleteServicey'
+import { Magnify } from 'mdi-material-ui'
 
 export default function ServiceyList({ servicesx }) {
   console.log('servicesx', servicesx)
   const [datesFilter, setDatesFilter] = useState([])
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([])
   const { data, isLoading } = useGetAllServiceyQuery()
   console.log('xxxx', data)
 
@@ -64,12 +67,27 @@ export default function ServiceyList({ servicesx }) {
       color: ThemeColor
     }
   }
+  
+
+  useEffect(()=>{
+    console.log('sdkjdshkjd', datesFilter)
+    const filteredKardexes = datesFilter?.filter(servicey => {
+      return (
+        servicey.client.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        servicey.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+    console.log('sssssss', filteredKardexes)
+   setFilteredData(filteredKardexes) 
+  },[searchTerm])
 
   useEffect(() => {
     if (servicesx != undefined) {
-      setDatesFilter(servicesx)
+      setDatesFilter(servicesx);
+      setFilteredData(servicesx);
     } else {
-      setDatesFilter(data)
+      setDatesFilter(data);
+      setFilteredData(data);
     }
   }, [servicesx, data])
 
@@ -77,9 +95,22 @@ export default function ServiceyList({ servicesx }) {
     generaPdf(servicey)
   }
 
-  return isLoading ? (
-    <CircularProgress />
-  ) : (
+  return (
+    <>
+        <TextField
+          size='small'
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 4 }, width: '25%'}}
+          value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} 
+          placeholder='Busca por cliente y descripción'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <Magnify fontSize='small' />
+              </InputAdornment>
+            )
+          }}
+        />
+    {     
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
@@ -98,8 +129,7 @@ export default function ServiceyList({ servicesx }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {datesFilter &&
-            datesFilter.map((servicey: Servicey, item: number) => (
+          {filteredData && filteredData.map((servicey: Servicey, item: number) => (
               <TableRow
                 key={servicey.serviceType}
                 sx={{
@@ -152,5 +182,7 @@ export default function ServiceyList({ servicesx }) {
         </TableBody>
       </Table>
     </TableContainer>
+    }
+    </>
   )
 }

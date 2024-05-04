@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import CircularProgress from '@mui/material/CircularProgress';
-import { IconButton } from '@mui/material'
+import { IconButton, InputAdornment, TextField } from '@mui/material'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 /**Impor Purchase API */
@@ -16,11 +16,13 @@ import PurchaseDetail from '../PurchaseDetail'
 import { dateParse } from 'src/utils/dateParser'
 import { generaPdf } from '../../ReportPDF/purchaseReport'
 import { useEffect, useState } from 'react'
-
+import { Magnify } from 'mdi-material-ui'
 
 export default function PurchaseList ({purchasesx}) {
 const [datesFilter, setDatesFilter] = useState([]);
+const [searchTerm, setSearchTerm] = useState('');
 const {data, isLoading} =  useGetAllpurchaseQuery()
+const [filteredData, setFilteredData] = useState([])
 
   interface Provider{
     id:number
@@ -37,11 +39,25 @@ const {data, isLoading} =  useGetAllpurchaseQuery()
         provider: Provider
       }
 
+    useEffect(()=>{
+      console.log('sdkjdshkjd', datesFilter)
+      const filteredKardexes = datesFilter?.filter(purchace => {
+        return (
+          purchace.provider.businessName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+      console.log('sssssss', filteredKardexes)
+      setFilteredData(filteredKardexes) 
+    },[searchTerm])
+    
+
    useEffect(()=>{
     if(purchasesx != undefined){ 
       setDatesFilter(purchasesx);
+      setFilteredData(purchasesx);
     }else{
       setDatesFilter(data);
+      setFilteredData(data);
     }
   }
   ,[purchasesx, data])
@@ -51,8 +67,21 @@ const {data, isLoading} =  useGetAllpurchaseQuery()
   }
   
   return (
-    isLoading ? <CircularProgress/>
-    :
+    <>
+        <TextField
+          size='small'
+          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 4 }, width: '25%'}}
+          value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} 
+          placeholder='Busca por proveedor'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <Magnify fontSize='small' />
+              </InputAdornment>
+            )
+          }}
+        />
+    { 
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
@@ -67,7 +96,7 @@ const {data, isLoading} =  useGetAllpurchaseQuery()
           </TableRow>
         </TableHead>
         <TableBody>
-          {datesFilter && datesFilter.map((purchase: Purchase, item:number) => (
+          {filteredData && filteredData.map((purchase: Purchase, item:number) => (
             <TableRow
               key={purchase.id}
               sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}
@@ -94,5 +123,7 @@ const {data, isLoading} =  useGetAllpurchaseQuery()
         </TableBody>
       </Table>
     </TableContainer>
+    }
+    </>
     )
 }
