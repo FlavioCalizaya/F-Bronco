@@ -27,15 +27,15 @@ import Delete from 'mdi-material-ui/Delete'
 import { useGetAllClientQuery } from 'src/api/clientApi'
 import { useGetAllInventoriesQuery } from 'src/api/inventoryApi'
 import Typography from '@mui/material/Typography'
-import SaleDetails from '../SaleDetail/index';
+import SaleDetails from '../SaleDetail/index'
 import { useAddNewSaleMutation, useGetAllSalesQuery } from 'src/api/Sale'
 
-const InsertSales = () => {
-  const [open, setOpen] = useState(false)
+const InsertSales = ({ open, handleClose }) => {
+  // const [open, setOpen] = useState(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
-  const [customer, setCustomer] = useState({});
+  const [customer, setCustomer] = useState({})
 
   interface Product {
     idProducto: number
@@ -62,17 +62,16 @@ const InsertSales = () => {
     businessName: string
     phoneNumber: number
   }
-  const handleClickOpen = () => {
-    setOpen(true);
-  }
+  // const handleClickOpen = () => {
+  //   setOpen(true)
+  // }
 
-  const handleClose = () => {
-    
-    setSelectedProducts([]);
-    setCustomer({});
-    
-    setOpen(false)
-  }
+  //const handleClose = () => {
+  //  setSelectedProducts([])
+  //  setCustomer({})
+  //
+  //  setOpen(false)
+  //}
 
   const [productName, setProductName] = useState('a')
   // const { data: products, isError, error } = useGetProductByNameQuery(productName);
@@ -81,19 +80,42 @@ const InsertSales = () => {
   const { data: products } = useGetAllInventoriesQuery()
   console.log(products, 'products')
 
-  const [ addNewSale, { isLoading, isError } ] = useAddNewSaleMutation()
+  // Ordenamos los productos por fecha de creación de forma ascendente
+  const sortedProducts = products ? [...products].sort((a, b) => new Date(a.date) - new Date(b.date)) : []
 
+  // Creamos un mapa para almacenar los lotes más antiguos de cada producto
+  const uniqueInventoriesMap = new Map()
+
+  // Verificar si hay productos y procesarlos
+  if (sortedProducts) {
+    sortedProducts.forEach(inventory => {
+      // Obtener el ID del producto del inventario actual
+      const productId = inventory.product.idProducto
+
+      // Verificar si el ID del producto ya está en el mapa
+      if (!uniqueInventoriesMap.has(productId) && inventory.stock > 0) {
+        // Si no está, añadir el inventario al mapa usando el ID del producto como clave
+        uniqueInventoriesMap.set(productId, inventory)
+      }
+    })
+  }
+
+  // Ahora uniqueInventoriesMap contendrá los inventarios únicos, cada uno asociado con su respectivo ID de producto
+  // Puedes obtener la lista de inventarios únicos usando uniqueInventoriesMap.values()
+  const uniqueInventories = Array.from(uniqueInventoriesMap.values())
+  // const uniqueInventories = products
+
+  const [addNewSale, { isLoading, isError }] = useAddNewSaleMutation()
 
   const handleInputChange = (event: any, value: any) => {
     setProductName(value)
   }
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0]
 
   // Establecemos la fecha de hoy como valor por defecto en el estado
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState(today)
   const [correlativeNumber, setCorrelativeNumber] = useState('')
-  
-  
+
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([])
 
   const handleCountChange = (event: any, productId: any) => {
@@ -102,55 +124,52 @@ const InsertSales = () => {
         ? { ...product, cantidad: event.target.value, subtotal: event.target.value * product.precio }
         : product
     )
-    setSelectedProducts(updatedProducts);
+    setSelectedProducts(updatedProducts)
   }
   const calculateTotal = () => {
     return selectedProducts.reduce((acc, product) => {
-      return acc + product.subtotal;
-    }, 0);
-  };
-   
-  const addProduct = (prod:any) => {
-    console.log(prod,'new prod')
+      return acc + product.subtotal
+    }, 0)
+  }
+
+  const addProduct = (prod: any) => {
+    console.log(prod, 'new prod')
     console.log(selectedProducts, 'adding')
     setSelectedProducts([...selectedProducts, prod])
   }
 
-const handleAddSale = async () => {
-  console.log('selectedProduc', selectedProducts);
-   const dataSale = {
-     sale : {  
-     total: calculateTotal(),
-     estado: 1, 
-     fecha: date, 
-     nroCorrelativo: sales[sales.length - 1].idVenta + 1, 
-     client: customer
-     },
-     saleDetails: selectedProducts.map( detail => {
-      return  { 
-        precio: detail.precio,
-        cantidad: detail.cantidad, 
-        importe: detail.subtotal,
-        idProducto: detail.idProducto,
-        idInventario: detail.idInventario}
-     }
-     )
-   }
+  const handleAddSale = async () => {
+    console.log('selectedProduc', selectedProducts)
+    const dataSale = {
+      sale: {
+        total: calculateTotal(),
+        estado: 1,
+        fecha: date,
+        nroCorrelativo: sales[sales.length - 1].idVenta + 1,
+        client: customer
+      },
+      saleDetails: selectedProducts.map(detail => {
+        return {
+          precio: detail.precio,
+          cantidad: detail.cantidad,
+          importe: detail.subtotal,
+          idProducto: detail.idProducto,
+          idInventario: detail.idInventario
+        }
+      })
+    }
 
-   try {
-    await addNewSale(dataSale).unwrap()
-    console.log('datasale', dataSale)
-    handleClose();
-  } catch (error) {
-    console.log(error)
+    try {
+      await addNewSale(dataSale).unwrap()
+      console.log('datasale', dataSale)
+      handleClose()
+    } catch (error) {
+      console.log(error)
+    }
   }
-}
 
   return (
     <div>
-      <Button variant='outlined' onClick={handleClickOpen}>
-        Insertar Venta
-      </Button>
       <Dialog
         fullScreen={fullScreen}
         maxWidth={'lg'}
@@ -169,28 +188,33 @@ const handleAddSale = async () => {
               <Autocomplete
                 options={clients ? clients : []}
                 getOptionLabel={(option: Client) => option.businessName}
-                onChange={ (e, newValue:any ) => { setCustomer( newValue ) } }
+                onChange={(e, newValue: any) => {
+                  setCustomer(newValue)
+                }}
                 renderInput={params => <TextField {...params} label='Buscar Cliente' variant='outlined' />}
               />
             </Grid>
             <Grid item xs={6} sm={6}>
               <Autocomplete
                 options={
-                  products
-                    ?
-                    products.map( (product:any )=> { 
-                       return  {
-                        ...product.product,
-                        stock: product.stock,
-                        precio: product.price,
-                        cantidad: 0,
-                        subtotal: 0, 
-                        idInventario:product.id
-                      }
-                    })
+                  uniqueInventories
+                    ? uniqueInventories.map((product: any) => {
+                        return {
+                          ...product.product,
+                          stock: product.stock,
+                          precio: product.price,
+                          cantidad: 0,
+                          subtotal: 0,
+                          idInventario: product.id
+                        }
+                      })
                     : []
                 }
-                getOptionLabel={(option: Product) => option.nombreProducto}
+                getOptionLabel={(option: Product) =>
+                  option.nombreProducto !== ''
+                    ? option.nombreProducto + ' (' + option.stock + ')'
+                    : option.marca + ' (' + option.stock + ')'
+                }
                 onChange={(e, newValue) => {
                   if (newValue !== null) {
                     addProduct(newValue)
@@ -200,13 +224,23 @@ const handleAddSale = async () => {
               />
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField type='date' fullWidth placeholder='Eliga una fecha' 
-            value={date} onChange={(e)=>setDate(e.target.value)}/>
+              <TextField
+                type='date'
+                fullWidth
+                placeholder='Eliga una fecha'
+                value={date}
+                onChange={e => setDate(e.target.value)}
+              />
             </Grid>
             <Grid item xs={6} sm={6}>
-            <TextField disabled type='correlativeNumber' fullWidth placeholder='Escriba un numero correlativo' 
+              <TextField
+                disabled
+                type='correlativeNumber'
+                fullWidth
+                placeholder='Escriba un numero correlativo'
                 label='Numero Correlativo'
-                value={sales?sales[sales.length - 1].idVenta+1:10000}/>
+                value={sales ? sales[sales.length - 1].idVenta + 1 : 10000}
+              />
             </Grid>
             <Grid item xs={12} sm={12}>
               <TableContainer component={Paper}>
@@ -254,10 +288,8 @@ const handleAddSale = async () => {
                             type='number'
                             value={product.cantidad}
                             onChange={event => {
-                              handleCountChange(event, product.idProducto);
-
-                            }
-                            }
+                              handleCountChange(event, product.idProducto)
+                            }}
                           />
                         </TableCell>
                         <TableCell align='right'>{product.subtotal} Bs</TableCell>
@@ -269,7 +301,6 @@ const handleAddSale = async () => {
                               setSelectedProducts(prevSelectedProducts =>
                                 prevSelectedProducts.filter(p => p.idProducto !== product.idProducto)
                               )
-
                             }}
                           >
                             <Delete />
@@ -291,19 +322,16 @@ const handleAddSale = async () => {
               <Typography variant='h6' style={{ fontWeight: 'bold' }}>
                 Total:
               </Typography>
-              <Typography variant='h6' >
-              {calculateTotal()} Bs
-              </Typography>
+              <Typography variant='h6'>{calculateTotal()} Bs</Typography>
             </Grid>
-
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={ handleAddSale } disabled={ isLoading } variant='contained' autoFocus>
-            { isLoading ? 'Añadiendo venta...' : 'Añadir venta' }
+          <Button onClick={handleAddSale} disabled={isLoading} variant='contained' autoFocus>
+            {isLoading ? 'Añadiendo venta...' : 'Añadir venta'}
           </Button>
           {/* {isError && <div> Error al buscar un producto </div>} */}
         </DialogActions>
