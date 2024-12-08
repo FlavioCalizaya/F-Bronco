@@ -1,4 +1,4 @@
-import {Button, Box, IconButton} from '@mui/material'
+import { Button, Box, IconButton } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -7,88 +7,129 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit'
 
 import { useState } from 'react'
 import { useUpdateProviderMutation } from 'src/api/providerApi'
 
-const UpdatePovider = (data:any) => {
-
+const UpdatePovider = (data: any) => {
   const [open, setOpen] = useState(false)
-  
-  const [id, setID] = useState(data.data.id);
-  const [nitCi, setNitCi] = useState(data.data.nitCi);
-  const [businessName, setBusinessName] = useState(data.data.businessName);
-  const [phoneNumber, setPhoneNumber] = useState(data.data.phoneNumber);
-  const [address, setAddress] = useState(data.data.address);
-  
+
+  const [id, setID] = useState(data.data.id)
+  const [nitCi, setNitCi] = useState(data.data.nitCi)
+  const [businessName, setBusinessName] = useState(data.data.businessName)
+  const [phoneNumber, setPhoneNumber] = useState(data.data.phoneNumber)
+  const [address, setAddress] = useState(data.data.address)
+
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
-  
-  const [ updateProvider ] = useUpdateProviderMutation()
 
+  const [updateProvider] = useUpdateProviderMutation()
 
-
-    
-  
   const handleClickOpen = () => {
-   //const provider = getProviderByID(id).unwrap().then()
-   //console.log(provider)
+    //const provider = getProviderByID(id).unwrap().then()
+    //console.log(provider)
     setOpen(true)
   }
-  
-  const handleClose = () => {
 
+  const handleClose = () => {
     setOpen(false)
   }
-  
-  const editProvider = async (e:any) => {
-    e.preventDefault();
-    const values = {nitCi, businessName, address, phoneNumber}
 
-    const res =  await updateProvider({id, values}).unwrap();
-    if (res){
+  const editProvider = async (e: any) => {
+    e.preventDefault()
+    const values = { nitCi, businessName, address, phoneNumber }
+
+    const res = await updateProvider({ id, values }).unwrap()
+    if (res) {
       console.log('Proveedor modificado con exito')
       handleClose()
-    }else{
+    } else {
       console.log('Error al actualizar')
       handleClose()
     }
-
   }
 
   return (
     <div>
-      <IconButton aria-label='Edit' color="primary" onClick={handleClickOpen}>
-      <EditIcon/>
+      <IconButton aria-label='Edit' color='primary' onClick={handleClickOpen}>
+        <EditIcon />
       </IconButton>
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
         <DialogTitle id='responsive-dialog-title'>{'Editar Proveedor'}</DialogTitle>
         <DialogContent>
-
-          <Box onSubmit={editProvider} component="form">
+          <Box onSubmit={editProvider} component='form'>
             <Grid container spacing={7} style={{ marginTop: '1px' }}>
               <Grid item xs={12} sm={6}>
-                <TextField required fullWidth type='text' label='NIT / CI' value={nitCi} onChange={(e)=>setNitCi(e.target.value)}/>
+                <TextField
+                  required
+                  fullWidth
+                  type='text'
+                  label='NIT / CI'
+                  value={nitCi}
+                  onChange={e => {
+                    const regex = /^[0-9]*$/ // Solo números
+                    if (regex.test(e.target.value)) {
+                      setNitCi(e.target.value) // Solo actualiza si es válido
+                    }
+                  }}
+                  helperText={'Solo numeros maximo 13'}
+                  inputProps={{ maxLength: 13 }}
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField required fullWidth type='text' label='Razon social' value={businessName} onChange={(e)=>setBusinessName(e.target.value)} />
+                <TextField
+                  required
+                  fullWidth
+                  type='text'
+                  label='Razon social'
+                  value={businessName}
+                  onChange={e => setBusinessName(e.target.value)}
+                  inputProps={{ maxLength: 30 }}
+                  helperText={'Maximo 30'}
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
-              <TextField required fullWidth type='text' label='Teléfono' value={phoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)} />
+                <TextField
+                  required
+                  fullWidth
+                  type='text'
+                  label='Teléfono'
+                  onChange={e => {
+                    const regex = /^[0-9]*$/ // Solo números
+                    if (regex.test(e.target.value)) {
+                      setPhoneNumber(e.target.value) // Solo actualiza si es válido
+                    }
+                  }}
+                  helperText={'Solo numeros maximo 8'}
+                  inputProps={{ maxLength: 8 }}
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
-              <TextField required fullWidth type='text' label='Dirección' value={address} onChange={(e)=>setAddress(e.target.value)} />
+                <TextField
+                  required
+                  fullWidth
+                  type='text'
+                  label='Dirección'
+                  value={address}
+                  onChange={e => {
+                    const regex = /^[a-zA-Z0-9]*$/ // Solo letras y números
+                    if (regex.test(e.target.value)) {
+                      setAddress(e.target.value) // Solo actualiza si es válido
+                    }
+                  }}
+                  helperText={'Solo letras y numeros'}
+                />
               </Grid>
             </Grid>
-          <DialogActions>
-            <Button autoFocus onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button variant='contained' type='submit'  autoFocus>
-              Modificar
-            </Button>
-          </DialogActions>
+            <DialogActions>
+              <Button autoFocus onClick={handleClose}>
+                Cancelar
+              </Button>
+              <Button variant='contained' type='submit' autoFocus>
+                Modificar
+              </Button>
+            </DialogActions>
           </Box>
         </DialogContent>
       </Dialog>

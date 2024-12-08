@@ -5,38 +5,36 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress'
 
 import { useGetAllClientQuery } from 'src/api/clientApi'
 import UpdateClient from '../UpdateClient'
 import DeleteClient from '../DeleteClient'
 
-export default function ClientList(){
-  
-interface Client {
+export default function ClientList() {
+  interface Client {
+    id: number
+    nitCi: number
+    businessName: string
+    phoneNumber: number
+    estado: number
+  }
 
-  id: number;
-  nitCi: number;
-  businessName: string;
-  phoneNumber: number;
-  estado:number;
-  
-}
+  // @ts-ignore
+  const { data, isLoading } = useGetAllClientQuery()
+  console.log('data', data)
 
-    // @ts-ignore
-  const { data, isLoading} = useGetAllClientQuery()
- console.log('data',data)
-  
-return (  
-    isLoading ?  <CircularProgress/>:
+  return isLoading ? (
+    <CircularProgress />
+  ) : (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
-            <TableCell>Nro</TableCell>   
-            <TableCell align='left'>Razon Social </TableCell>     
-            <TableCell align='left'>Nit/C.I.</TableCell>      
-                    
+            <TableCell>Nro</TableCell>
+            <TableCell align='left'>Razon Social </TableCell>
+            <TableCell align='left'>Nit/C.I.</TableCell>
+
             <TableCell align='left'>Telefono</TableCell>
 
             <TableCell align='left'>Editar</TableCell>
@@ -44,33 +42,37 @@ return (
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((client: Client,item:number) => (
-            <TableRow
-              key={client.nitCi}
-              sx={{
-                '&:last-of-type td, &:last-of-type th': {
-                  border: 0
-                }
-              }}
-            >
-              <TableCell  align='left' component='th' scope='row'>{item +1}</TableCell>
-              <TableCell align='left'>{client.businessName}</TableCell>
-              <TableCell align='left'>{client.nitCi}</TableCell>
-              <TableCell align='left'>{client.phoneNumber}</TableCell>
-             
-              <TableCell align='left'>
-              <UpdateClient data={client}/>             
-              </TableCell>
+          {data &&
+            data
+              .slice() // Crea una copia del array para no mutar el original
+              .sort((a: any, b: any) => b.id - a.id)
+              .map((client: Client, item: number) => (
+                <TableRow
+                  key={client.nitCi}
+                  sx={{
+                    '&:last-of-type td, &:last-of-type th': {
+                      border: 0
+                    }
+                  }}
+                >
+                  <TableCell align='left' component='th' scope='row'>
+                    {item + 1}
+                  </TableCell>
+                  <TableCell align='left'>{client.businessName}</TableCell>
+                  <TableCell align='left'>{client.nitCi}</TableCell>
+                  <TableCell align='left'>{client.phoneNumber}</TableCell>
 
-              <TableCell align='left'>
-              <DeleteClient data={client}/>                            
-              </TableCell>     
-              </TableRow>
-          ))}
+                  <TableCell align='left'>
+                    <UpdateClient data={client} />
+                  </TableCell>
+
+                  <TableCell align='left'>
+                    <DeleteClient data={client} />
+                  </TableCell>
+                </TableRow>
+              ))}
         </TableBody>
       </Table>
-    </TableContainer>   
+    </TableContainer>
   )
 }
-
-

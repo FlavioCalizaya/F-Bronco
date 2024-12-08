@@ -17,29 +17,25 @@ import Link from '@mui/material/Link'
 import { IconButton } from '@mui/material'
 import Update from 'mdi-material-ui/Update'
 
-
-const initialValuesInputs= { 
-    serviceType:'',
-    description:'',
-    amount:0,
-    //idUser: 3,
-    //estado:0,
-    //dateInit:"2023-10-16T02:04:43.000+00:00",
-    //idAssignedMaintenanceUser: 4, 
-    statusMaintenance: "pendiente", 
-    //dateEnd:"2023-10-26T02:09:04.000+00:00" , 
-    //client: {"id": 1,"nitCi": "76576","businessName": "liss","phoneNumber": 67868,"estado": 0}
+const initialValuesInputs = {
+  serviceType: '',
+  description: '',
+  amount: 0,
+  //idUser: 3,
+  //estado:0,
+  //dateInit:"2023-10-16T02:04:43.000+00:00",
+  //idAssignedMaintenanceUser: 4,
+  statusMaintenance: 'pendiente'
+  //dateEnd:"2023-10-26T02:09:04.000+00:00" ,
+  //client: {"id": 1,"nitCi": "76576","businessName": "liss","phoneNumber": 67868,"estado": 0}
 }
 
 const UpdateServicey = ({ id }: { id: number }) => {
-
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
-
-  const { data: servicey } = useGetServiceyByIDQuery(id);
-
+  const { data: servicey } = useGetServiceyByIDQuery(id)
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -50,46 +46,43 @@ const UpdateServicey = ({ id }: { id: number }) => {
   }
 
   const handleClickOpen = () => {
-    setinputsValues(servicey )
+    setinputsValues(servicey)
     setOpen(true)
-   
   }
 
   const handleClose = () => {
     setOpen(false)
   }
 
-  const [inputsValues, setinputsValues] = useState(initialValuesInputs);
+  const [inputsValues, setinputsValues] = useState(initialValuesInputs)
 
-  const [updateServicey, { isLoading, isError }] = useUpdateServiceyMutation();
-
+  const [updateServicey, { isLoading, isError }] = useUpdateServiceyMutation()
 
   const handleUpdateServicey = async () => {
     const updatedServiceyData = {
       id: id,
-      values: { 
-        serviceType: inputsValues.serviceType ,
+      values: {
+        serviceType: inputsValues.serviceType,
         description: inputsValues.description,
         amount: inputsValues.amount,
         statusMaintenance: inputsValues.statusMaintenance
-      } 
-    };
+      }
+    }
     console.log('yyyeee', updatedServiceyData)
     try {
-      await updateServicey(updatedServiceyData).unwrap();
-      handleClose();
+      await updateServicey(updatedServiceyData).unwrap()
+      handleClose()
     } catch (error) {
-      console.error('Error updating servicey:', error);
+      console.error('Error updating servicey:', error)
     }
-  };
-  
+  }
 
   return (
     <div>
       <IconButton aria-label='Update' color='primary' onClick={handleClickOpen}>
         <Update />
       </IconButton>
-  
+
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
         <DialogTitle id='responsive-dialog-title'>
           {' '}
@@ -119,7 +112,8 @@ const UpdateServicey = ({ id }: { id: number }) => {
                   label='Tipo Servicio'
                   name='serviceType'
                   onChange={handleInputChange}
-                  value={inputsValues.serviceType}>
+                  value={inputsValues.serviceType}
+                >
                   <MenuItem value='Mantenimiento'>Mantenimiento</MenuItem>
                   <MenuItem value='Soldadura'>Soldadura</MenuItem>
                   <MenuItem value='Limpieza'>Limpieza</MenuItem>
@@ -127,16 +121,21 @@ const UpdateServicey = ({ id }: { id: number }) => {
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={12}>
-            <TextField
+              <TextField
                 name='description'
                 value={inputsValues.description}
-                onChange={handleInputChange}
+                onChange={e => {
+                  const regex = /^[a-zA-Z0-9]*$/ // Solo letras y números
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e) // Solo actualiza si es válido
+                  }
+                }}
                 fullWidth
                 id='outlined-multiline-static'
                 label='Descripcion'
                 multiline
                 rows={2}
-            />
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -156,25 +155,20 @@ const UpdateServicey = ({ id }: { id: number }) => {
                   name='idAssignedMaintenanceUser'
                   //onChange={handleInputChange}
                   //value={inputsValues.idAssignedMaintenanceUser}
-                  >
+                >
                   <MenuItem value='1'>Mario Rios</MenuItem>
                   <MenuItem value='2'>Osuma Poma</MenuItem>
                   <MenuItem value='3'>Peres Rios</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button  
-          disabled={isLoading}  
-          onClick={ handleUpdateServicey } 
-          variant='contained' 
-          autoFocus>
+          <Button disabled={isLoading} onClick={handleUpdateServicey} variant='contained' autoFocus>
             {isLoading ? 'Actualizando servicey...' : 'Actualizar servicey'}
           </Button>
           {isError && <div> Error update servicey </div>}

@@ -17,17 +17,12 @@ const Servicey = () => {
 
         <InsertServicey />
       </Grid>
-
       <Grid item xs={12}>
-        <Card>
-    
+        <Card>    
           <ServiceyList />
         </Card>
       </Grid>
-
     </Grid>
-    
-  
   )
 }
 

@@ -19,7 +19,6 @@ import CloudUploadIcon from 'mdi-material-ui/CloudUpload'
 import { styled } from '@mui/material/styles'
 
 const InsertProduct = () => {
-
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -37,9 +36,9 @@ const InsertProduct = () => {
     ancho: 0,
     espesor: '',
     precioVenta: '',
-    estado: 1,
+    estado: 1
   }
-  const [inputsValues, setinputsValues] = useState(initialValuesInputs);
+  const [inputsValues, setinputsValues] = useState(initialValuesInputs)
   const [categoriaSelected, setCategoriaSelected] = useState('Accesorios')
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -54,12 +53,11 @@ const InsertProduct = () => {
   }
 
   const handleClose = () => {
-    setOpen(false);
-    setinputsValues(initialValuesInputs);
+    setOpen(false)
+    setinputsValues(initialValuesInputs)
   }
 
-  const [addNewProduct, { isLoading, isError }] = useAddNewProductMutation();
-
+  const [addNewProduct, { isLoading, isError }] = useAddNewProductMutation()
 
   const handleAddProduct = async () => {
     try {
@@ -80,30 +78,29 @@ const InsertProduct = () => {
     left: 0,
     whiteSpace: 'nowrap',
     width: 1
-  });
+  })
 
-  const handleFileChange = ( event:any ) => { 
-    const file = event.target.files[0];
-    const reader = new FileReader();
+  const handleFileChange = (event: any) => {
+    const file = event.target.files[0]
+    const reader = new FileReader()
 
     reader.onload = () => {
-      setinputsValues( { 
+      setinputsValues({
         ...inputsValues,
         imagen: reader.result as string
-       })
-    };
-    reader.readAsDataURL( file );
-
+      })
+    }
+    reader.readAsDataURL(file)
   }
 
-  useEffect(()=>{
-     setinputsValues({
+  useEffect(() => {
+    setinputsValues({
       ...inputsValues,
       categoria: categoriaSelected
     })
-  },[categoriaSelected])
+  }, [categoriaSelected])
 
-return (
+  return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen}>
         Insertar Producto
@@ -121,97 +118,131 @@ return (
                 <Select
                   label='Categoria'
                   name='categoria'
-                  onChange={(event)=>setCategoriaSelected(event.target.value)}
+                  onChange={event => setCategoriaSelected(event.target.value)}
                   value={inputsValues.categoria}
                 >
                   <MenuItem value='Accesorios'>Accesorios</MenuItem>
                   <MenuItem value='Tina de radiador'>Tina de radiador</MenuItem>
-                  <MenuItem value='Panales'>Panales</MenuItem>
                   <MenuItem value='Ventiladores'>Ventiladores</MenuItem>
                   <MenuItem value='Radiadores'>Radiadores</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-          { (categoriaSelected=='Accesorios' || categoriaSelected=='Tina de radiador' ) && <Grid item xs={12} sm={6}>
-              <TextField
-                name='nombreProducto'
-                value={inputsValues.nombreProducto}
-                onChange={handleInputChange}
-                fullWidth
-                label='Nombre'
-              />
-            </Grid> }
-            { false && <Grid item xs={12} sm={6}>
-              <TextField
-                name='codigo'
-                value={inputsValues.codigo}
-                onChange={(e: any) => handleInputChange(e)}
-                fullWidth
-                label='Cod I'
-              />
-            </Grid>}
-            {categoriaSelected=='Panales' && <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Tipo</InputLabel>
-                <Select label='Role' name='tipo' onChange={handleInputChange} value={ inputsValues.tipo }>
-                  <MenuItem value='C'>C</MenuItem>
-                  <MenuItem value='ST'>ST</MenuItem>
-                  <MenuItem value='KD'>KD</MenuItem>
-                  <MenuItem value='KV'>KV</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>}
-           {(categoriaSelected=='Tina de radiador'|| categoriaSelected=='Ventiladores' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
-              <TextField
-                name='marca'
-                value={inputsValues.marca}
-                onChange={handleInputChange}
-                fullWidth
-                type='text'
-                label='Marca'
-              />
-            </Grid>}
-            {(categoriaSelected=='Tina de radiador'|| categoriaSelected=='Panales' || categoriaSelected=='Ventiladores' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
-              <TextField
-                name='descripcion'
-                value={inputsValues.descripcion}
-                onChange={handleInputChange}
-                fullWidth
-                id='outlined-multiline-static'
-                label='Descripcion'
-                multiline
-                rows={2}
-              />
-            </Grid>}
-            {(categoriaSelected=='Panales' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                type='number'
-                label='Alto'
-                name='alto'
-                value={inputsValues.alto}
-                onChange={handleInputChange}
-              />
-            </Grid>}
-            {(categoriaSelected=='Panales' || categoriaSelected=='Radiadores') && <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                type='number'
-                label='Ancho'
-                name='ancho'
-                value={inputsValues.ancho}
-                onChange={handleInputChange}
-              />
-            </Grid> }
-            {categoriaSelected=='Espesor' && <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label='Espesor'
-                name='espesor'
-                value={inputsValues.espesor}
-                onChange={handleInputChange}
-              />
-            </Grid>}
+            {(categoriaSelected == 'Accesorios' || categoriaSelected == 'Tina de radiador') && (
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  name='nombreProducto'
+                  value={inputsValues.nombreProducto}
+                  onChange={handleInputChange}
+                  fullWidth
+                  label='Nombre'
+                  inputProps={{ maxLength: 30 }}
+                />
+              </Grid>
+            )}
+            {false && (
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  name='codigo'
+                  value={inputsValues.codigo}
+                  onChange={e => {
+                    const regex = /^[a-zA-Z0-9]*$/ // Solo letras y números
+                    if (regex.test(e.target.value)) {
+                      handleInputChange(e) // Solo actualiza si es válido
+                    }
+                  }}
+                  helperText={'Solo letras y numeros'}
+                  fullWidth
+                  label='Cod I'
+
+                  //  helperText='Solo caracteres alfanumérico'
+                />
+              </Grid>
+            )}
+            {categoriaSelected == 'Panales' && (
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Tipo</InputLabel>
+                  <Select label='Role' name='tipo' onChange={handleInputChange} value={inputsValues.tipo}>
+                    <MenuItem value='C'>C</MenuItem>
+                    <MenuItem value='ST'>ST</MenuItem>
+                    <MenuItem value='KD'>KD</MenuItem>
+                    <MenuItem value='KV'>KV</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
+            {(categoriaSelected == 'Tina de radiador' ||
+              categoriaSelected == 'Ventiladores' ||
+              categoriaSelected == 'Radiadores') && (
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  name='marca'
+                  value={inputsValues.marca}
+                  onChange={handleInputChange}
+                  fullWidth
+                  type='text'
+                  label='Marca'
+                />
+              </Grid>
+            )}
+            {(categoriaSelected == 'Tina de radiador' ||
+              categoriaSelected == 'Panales' ||
+              categoriaSelected == 'Ventiladores' ||
+              categoriaSelected == 'Radiadores') && (
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  name='descripcion'
+                  value={inputsValues.descripcion}
+                  onChange={e => {
+                    const regex = /^[a-zA-Z0-9]*$/ // Solo letras y números
+                    if (regex.test(e.target.value)) {
+                      handleInputChange(e) // Solo actualiza si es válido
+                    }
+                  }}
+                  fullWidth
+                  id='outlined-multiline-static'
+                  label='Descripcion'
+                  multiline
+                  rows={2}
+                />
+              </Grid>
+            )}
+            {(categoriaSelected == 'Panales' || categoriaSelected == 'Radiadores') && (
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type='number'
+                  label='Alto'
+                  name='alto'
+                  value={inputsValues.alto}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            )}
+            {(categoriaSelected == 'Panales' || categoriaSelected == 'Radiadores') && (
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type='number'
+                  label='Ancho'
+                  name='ancho'
+                  value={inputsValues.ancho}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            )}
+            {categoriaSelected == 'Espesor' && (
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label='Espesor'
+                  name='espesor'
+                  value={inputsValues.espesor}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            )}
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -229,9 +260,9 @@ return (
               </Button>
             </Grid>
             <Grid item xs={12} sm={6}>
-              {inputsValues.imagen && 
-                  <img src={inputsValues.imagen} alt='Preview' style={{ maxWidth: '100%', height: 'auto' }} />
-              }
+              {inputsValues.imagen && (
+                <img src={inputsValues.imagen} alt='Preview' style={{ maxWidth: '100%', height: 'auto' }} />
+              )}
             </Grid>
           </Grid>
         </DialogContent>

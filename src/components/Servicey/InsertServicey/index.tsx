@@ -21,51 +21,49 @@ import { Autocomplete, IconButton } from '@mui/material'
 import { useGetAllClientQuery } from 'src/api/clientApi'
 
 const InsertServicey = () => {
-
   const [open, setOpen] = useState(false)
   const [assignedMaintenanceUsers, setAssignedMaintenanceUsers] = useState([])
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
- 
-  const [datos, setDatos] = useState({});
+  const [datos, setDatos] = useState({})
   useEffect(() => {
-    const dates = sessionStorage.getItem('idUser');
+    const dates = sessionStorage.getItem('idUser')
     if (dates) {
-      setDatos(JSON.parse(dates));
+      setDatos(JSON.parse(dates))
     }
-  }, []);
+  }, [])
 
   const initialValuesInputs = {
-    id:66, 
-    serviceType:'',
-    description:'',
-    amount:0,
+    id: 66,
+    serviceType: '',
+    description: '',
+    amount: 0,
     idUser: 1,
-    estado:0,
-    dateInit:"",
-    assignedMaintenanceUser: {}, 
-    statusMaintenance: 'pendiente', 
-    dateEnd:"" , 
+    estado: 0,
+    dateInit: '',
+    assignedMaintenanceUser: {},
+    statusMaintenance: 'pendiente',
+    dateEnd: '',
     client: {}
   }
   interface Client {
-    nitCi: string;
-    businessName: string;
-    phoneNumber: number;
+    nitCi: string
+    businessName: string
+    phoneNumber: number
   }
   interface AssignedMaintenanceUser {
-    nombre:string;
-    primerApellido: string;
-    segundoApellido: string;
-    ci: string;
-    rol: string;
-    estado: number;
-    userName:string;
-    password:string;
+    nombre: string
+    primerApellido: string
+    segundoApellido: string
+    ci: string
+    rol: string
+    estado: number
+    userName: string
+    password: string
   }
 
-  const [inputsValues, setInputsValues] = useState(initialValuesInputs);
+  const [inputsValues, setInputsValues] = useState(initialValuesInputs)
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -76,7 +74,7 @@ const InsertServicey = () => {
     console.log('ggg', inputsValues)
   }
   const handleClientChange = (client: any) => {
-    console.log('gggdd',client)
+    console.log('gggdd', client)
     setInputsValues({
       ...inputsValues,
       client
@@ -85,7 +83,7 @@ const InsertServicey = () => {
   }
 
   const handleAssingChange = (assignedMaintenanceUser: any) => {
-    console.log('gggdd',assignedMaintenanceUser)
+    console.log('gggdd', assignedMaintenanceUser)
     setInputsValues({
       ...inputsValues,
       assignedMaintenanceUser
@@ -98,38 +96,37 @@ const InsertServicey = () => {
   }
 
   const handleClose = () => {
-    setOpen(false);
-    setInputsValues(initialValuesInputs);
+    setOpen(false)
+    setInputsValues(initialValuesInputs)
   }
 
-  const [addNewServicey, { isLoading, isError }] = useAddNewServiceyMutation();
-  const { data: clients} = useGetAllClientQuery();
+  const [addNewServicey, { isLoading, isError }] = useAddNewServiceyMutation()
+  const { data: clients } = useGetAllClientQuery()
 
   //const { data: users} = useGetAllUsersQuery();
 
   async function fetchData() {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/users");
-      const data = await response.json();
+      const response = await fetch('http://localhost:8080/api/v1/users')
+      const data = await response.json()
       setAssignedMaintenanceUsers(data)
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error)
     }
   }
-  
-  useEffect(()=>{
-    fetchData();
-  }
-  ,[])
 
-  const [customer, setCustomer] = useState({});
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const [customer, setCustomer] = useState({})
 
   const handleAddServicey = async () => {
     try {
       console.log('yyyy', initialValuesInputs)
       console.log('333', inputsValues)
 
-    /*   setInputsValues({
+      /*   setInputsValues({
         ...inputsValues,
         client: customer
       }) */
@@ -138,7 +135,6 @@ const InsertServicey = () => {
       await addNewServicey(inputsValues).unwrap()
       handleClose()
       setInputsValues(initialValuesInputs)
-      
     } catch (error) {
       console.log(error)
     }
@@ -153,11 +149,8 @@ const InsertServicey = () => {
     left: 0,
     whiteSpace: 'nowrap',
     width: 1
-  });
+  })
 
-
-
-  
   return (
     <div>
       <Button variant='outlined' onClick={handleClickOpen}>
@@ -174,14 +167,10 @@ const InsertServicey = () => {
               <Autocomplete
                 options={clients ? clients : []}
                 getOptionLabel={(option: Client) => option.businessName}
-                onChange={ (e, newValue:any ) => { handleClientChange( newValue ) } }
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label='Buscar Cliente'
-                    variant='outlined'
-                  />
-                )}
+                onChange={(e, newValue: any) => {
+                  handleClientChange(newValue)
+                }}
+                renderInput={params => <TextField {...params} label='Buscar Cliente' variant='outlined' />}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -191,7 +180,8 @@ const InsertServicey = () => {
                   label='Tipo Servicio'
                   name='serviceType'
                   onChange={handleInputChange}
-                  value={inputsValues.serviceType}>
+                  value={inputsValues.serviceType}
+                >
                   <MenuItem value='Mantenimiento'>Mantenimiento</MenuItem>
                   <MenuItem value='Soldadura'>Soldadura</MenuItem>
                   <MenuItem value='Limpieza'>Limpieza</MenuItem>
@@ -202,7 +192,12 @@ const InsertServicey = () => {
               <TextField
                 name='description'
                 value={inputsValues.description}
-                onChange={handleInputChange}
+                onChange={e => {
+                  const regex = /^[a-zA-Z0-9]*$/ // Solo letras y números
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e) // Solo actualiza si es válido
+                  }
+                }}
                 fullWidth
                 id='outlined-multiline-static'
                 label='Descripcion'
@@ -220,20 +215,16 @@ const InsertServicey = () => {
                 onChange={handleInputChange}
               />
             </Grid>
-             <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <Autocomplete
                 options={assignedMaintenanceUsers ? assignedMaintenanceUsers : []}
                 getOptionLabel={(option: AssignedMaintenanceUser) => option.nombre}
-                onChange={ (e, newValue:any ) => { handleAssingChange( newValue ) } }
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label='Encargado Mantenimiento'
-                    variant='outlined'
-                  />
-                )}
+                onChange={(e, newValue: any) => {
+                  handleAssingChange(newValue)
+                }}
+                renderInput={params => <TextField {...params} label='Encargado Mantenimiento' variant='outlined' />}
               />
-            </Grid> 
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -251,5 +242,3 @@ const InsertServicey = () => {
 }
 
 export default InsertServicey
-
-

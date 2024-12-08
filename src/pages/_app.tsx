@@ -3,12 +3,10 @@ import Head from 'next/head'
 import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
-
+import { useRouter } from 'next/router'
 //** Redux provider Import */
-import {Provider} from 'react-redux'
-
+import { Provider } from 'react-redux'
 import { store } from 'src/store'
-
 
 // ** Loader Import
 import NProgress from 'nprogress'
@@ -37,7 +35,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 import { ReactNode } from 'react'
-
+import '../pages/Reportes/reportes.css'
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
   Component: NextPage
@@ -61,6 +59,7 @@ if (themeConfig.routingLoader) {
 
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
+  const router = useRouter()
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   // Variables
@@ -71,21 +70,20 @@ const App = (props: ExtendedAppProps) => {
 
   if (typeof window !== 'undefined') {
     rol = JSON.parse(sessionStorage.getItem('rol'))
+    console.log('userrrrr', JSON.parse(sessionStorage?.getItem('user')))
+    if (!JSON.parse(sessionStorage?.getItem('user') == 'invitado')) {
+      router.push('/')
+    }
   }
 
   console.log(rol)
 
-
   return (
     <Provider store={store}>
-
       <CacheProvider value={emotionCache}>
         <Head>
           <title>{`${themeConfig.templateName}`}</title>
-          <meta
-            name='description'
-            content={`${themeConfig.templateName}`}
-          />
+          <meta name='description' content={`${themeConfig.templateName}`} />
           <meta name='keywords' content='Admin' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />
         </Head>
@@ -93,7 +91,15 @@ const App = (props: ExtendedAppProps) => {
         <SettingsProvider>
           <SettingsConsumer>
             {({ settings }) => {
-              return <ThemeComponent settings={settings}>{rol==='admin'? getLayout(<Component {...pageProps} />): rol==='user'? getLayoutUser(<Component {...pageProps} />):getLayout(<Component {...pageProps} />)}</ThemeComponent>
+              return (
+                <ThemeComponent settings={settings}>
+                  {rol === 'admin'
+                    ? getLayout(<Component {...pageProps} />)
+                    : rol === 'user'
+                    ? getLayoutUser(<Component {...pageProps} />)
+                    : getLayout(<Component {...pageProps} />)}
+                </ThemeComponent>
+              )
             }}
           </SettingsConsumer>
         </SettingsProvider>

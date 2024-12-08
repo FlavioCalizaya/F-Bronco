@@ -20,17 +20,16 @@ const InsertUser = () => {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
-  const initialValuesInputs= { 
+  const initialValuesInputs = {
     nombre: '',
     primerApellido: '',
     segundoApellido: '',
     ci: '',
     rol: '',
     nameUser: '',
-    password: ''   
-  
+    password: ''
   }
-  const [inputsValues, setinputsValues] = useState( initialValuesInputs );
+  const [inputsValues, setinputsValues] = useState(initialValuesInputs)
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -48,44 +47,41 @@ const InsertUser = () => {
     setOpen(false)
   }
 
-  const [addNewUser, { isLoading, isError }] = useAddNewUserMutation();
+  const [addNewUser, { isLoading, isError }] = useAddNewUserMutation()
 
   const handleAddUser = async () => {
-
     // Validar que los campos no estén en blanco
-  if (
-    !inputsValues.nombre ||
-    !inputsValues.primerApellido ||
-    !inputsValues.segundoApellido ||
-    !inputsValues.ci ||
-    !inputsValues.rol ||
-    !inputsValues.nameUser ||
-    !inputsValues.password
-  ) {
-    
-    alert('Por favor, Llene todos los campos antes de agregar un Usuario.');
-    return; 
-  }
+    if (
+      !inputsValues.nombre ||
+      !inputsValues.primerApellido ||
+      !inputsValues.segundoApellido ||
+      !inputsValues.ci ||
+      !inputsValues.rol ||
+      !inputsValues.nameUser ||
+      !inputsValues.password
+    ) {
+      alert('Por favor, Llene todos los campos antes de agregar un Usuario.')
+      return
+    }
     const newUser = {
       idUser: 1,
       nombre: inputsValues.nombre,
-      primerApellido: inputsValues.primerApellido,   
-      segundoApellido: inputsValues.segundoApellido,   
+      primerApellido: inputsValues.primerApellido,
+      segundoApellido: inputsValues.segundoApellido,
       estado: 1,
       ci: inputsValues.ci,
       rol: inputsValues.rol,
 
       nameUser: inputsValues.nameUser,
       password: inputsValues.password
-     
-    };
+    }
 
-    try{
-      await addNewUser( newUser ).unwrap();
-      handleClose();
-      setinputsValues( initialValuesInputs );
-    } catch( error ) {
-      console.log(error );
+    try {
+      await addNewUser(newUser).unwrap()
+      handleClose()
+      setinputsValues(initialValuesInputs)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -95,17 +91,28 @@ const InsertUser = () => {
         Insertar Usuario
       </Button>
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
-        <DialogTitle id='responsive-dialog-title'>  <Link href='#'> Añadir nuevo User </Link></DialogTitle>
+        <DialogTitle id='responsive-dialog-title'>
+          {' '}
+          <Link href='#'> Añadir nuevo User </Link>
+        </DialogTitle>
         <DialogContent>
-          <Grid container spacing={7} style={{ paddingTop: '5px'}}>
+          <Grid container spacing={7} style={{ paddingTop: '5px' }}>
             <Grid item xs={12} sm={6}>
               <TextField
                 name='nombre'
                 value={inputsValues.nombre}
-                onChange={ handleInputChange }
+                onChange={e => {
+                  const regex = /^[a-zA-Z\s]*$/
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e)
+                  }
+                }}
                 fullWidth
                 label='Nombre'
                 type='text'
+                inputProps={{ maxLength: 20, pattern: '^[a-zA-Z\\s]*$' }}
+                helperText={'Solo letras maximo 20'}
+                error={false}
               />
             </Grid>
 
@@ -113,7 +120,14 @@ const InsertUser = () => {
               <TextField
                 name='primerApellido'
                 value={inputsValues.primerApellido}
-                onChange={(e: any) => handleInputChange(e)}
+                onChange={e => {
+                  const regex = /^[a-zA-Z\s]*$/
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e)
+                  }
+                }}
+                inputProps={{ maxLength: 20, pattern: '^[a-zA-Z\\s]*$' }}
+                helperText={'Solo letras maximo 20'}
                 fullWidth
                 label='primer Apellido'
                 type='text'
@@ -124,7 +138,14 @@ const InsertUser = () => {
               <TextField
                 name='segundoApellido'
                 value={inputsValues.segundoApellido}
-                onChange={(e: any) => handleInputChange(e)}
+                inputProps={{ maxLength: 20, pattern: '^[a-zA-Z\\s]*$' }}
+                helperText={'Solo letras maximo 20'}
+                onChange={e => {
+                  const regex = /^[a-zA-Z\s]*$/
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e)
+                  }
+                }}
                 fullWidth
                 label='segundo Apellido'
                 type='text'
@@ -135,24 +156,31 @@ const InsertUser = () => {
               <TextField
                 name='ci'
                 value={inputsValues.ci}
-                onChange={(e: any) => handleInputChange(e)}
+                onChange={e => {
+                  const regex = /^[0-9]*$/ // Solo números
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e) // Solo actualiza si es válido
+                  }
+                }}
                 fullWidth
                 label='C.I.'
                 type='text'
+                inputProps={{ maxLength: 10 }} // Máximo 10 dígitos
+                helperText='Solo números, máxi 10 dígitos'
               />
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>rol</InputLabel>
-                <Select label='rol' name='rol' onChange={ handleInputChange } defaultValue={ inputsValues.rol }>
+                <Select label='rol' name='rol' onChange={handleInputChange} defaultValue={inputsValues.rol}>
                   <MenuItem value='admin'>Admin</MenuItem>
                   <MenuItem value='user'>User</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>          
-         
-          <Grid item xs={12} sm={6}>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
               <TextField
                 name='nameUser'
                 value={inputsValues.nameUser}
@@ -162,30 +190,29 @@ const InsertUser = () => {
                 type='text'
               />
             </Grid>
-            
-             
+
             <Grid item xs={12} sm={6}>
               <TextField
-                name='password' 
+                name='password'
                 value={inputsValues.password}
                 id='auth-register-password'
-                onChange={handleInputChange}                
-                fullWidth                 
-                label='Password'  aria-label='toggle password visibility'
+                onChange={handleInputChange}
+                fullWidth
+                label='Password'
+                aria-label='toggle password visibility'
                 type='password'
-              
               />
-            </Grid>                     
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={ handleAddUser } disabled={ isLoading } variant='contained' autoFocus>
-            { isLoading ? 'Añadiendo Usuario...' : 'Añadir Usuario'}
+          <Button onClick={handleAddUser} disabled={isLoading} variant='contained' autoFocus>
+            {isLoading ? 'Añadiendo Usuario...' : 'Añadir Usuario'}
           </Button>
-          { isError && <div> Error adding User </div> }
+          {isError && <div> Error adding User </div>}
         </DialogActions>
       </Dialog>
     </div>

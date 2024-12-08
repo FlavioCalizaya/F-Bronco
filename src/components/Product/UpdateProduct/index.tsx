@@ -17,8 +17,7 @@ import Link from '@mui/material/Link'
 import { IconButton } from '@mui/material'
 import Update from 'mdi-material-ui/Update'
 
-
-const initialValuesInputs= { 
+const initialValuesInputs = {
   nombreProducto: 'Cargando',
   categoria: '1',
   codigo: 'Cargando',
@@ -32,14 +31,11 @@ const initialValuesInputs= {
 }
 
 const UpdateProduct = ({ id }: { id: number }) => {
-
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
-
-  const { data: product } = useGetProductByIDQuery(id);
-
+  const { data: product } = useGetProductByIDQuery(id)
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -50,42 +46,38 @@ const UpdateProduct = ({ id }: { id: number }) => {
   }
 
   const handleClickOpen = () => {
-
-  setinputsValues(product )
+    setinputsValues(product)
 
     setOpen(true)
-   
   }
 
   const handleClose = () => {
     setOpen(false)
   }
 
-  const [inputsValues, setinputsValues] = useState(initialValuesInputs);
+  const [inputsValues, setinputsValues] = useState(initialValuesInputs)
 
-  const [updateProduct, { isLoading, isError }] = useUpdateProductMutation();
-
+  const [updateProduct, { isLoading, isError }] = useUpdateProductMutation()
 
   const handleUpdateProduct = async () => {
     const updatedProductData = {
       id: id,
-      value: inputsValues 
-    };
-    try {
-      await updateProduct(updatedProductData).unwrap();
-      handleClose();
-    } catch (error) {
-      console.error('Error updating product:', error);
+      value: inputsValues
     }
-  };
-  
+    try {
+      await updateProduct(updatedProductData).unwrap()
+      handleClose()
+    } catch (error) {
+      console.error('Error updating product:', error)
+    }
+  }
 
   return (
     <div>
       <IconButton aria-label='Update' color='primary' onClick={handleClickOpen}>
         <Update />
       </IconButton>
-  
+
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
         <DialogTitle id='responsive-dialog-title'>
           {' '}
@@ -100,6 +92,7 @@ const UpdateProduct = ({ id }: { id: number }) => {
                 onChange={handleInputChange}
                 fullWidth
                 label='Nombre'
+                inputProps={{ maxLength: 30 }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -111,8 +104,11 @@ const UpdateProduct = ({ id }: { id: number }) => {
                   onChange={handleInputChange}
                   defaultValue={inputsValues.categoria}
                 >
-                  <MenuItem value='1'>Accesorios</MenuItem>
-                  <MenuItem value='2'>Aceites</MenuItem>
+                  <MenuItem value='Accesorios'>Accesorios</MenuItem>
+                  <MenuItem value='Aceites'>Aceites</MenuItem>
+                  <MenuItem value='Tina de radiador'>Tina de radiador</MenuItem>
+                  <MenuItem value='Ventiladores'>Ventiladores</MenuItem>
+                  <MenuItem value='Radiadores'>Radiadores</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -120,7 +116,13 @@ const UpdateProduct = ({ id }: { id: number }) => {
               <TextField
                 name='codigo'
                 value={inputsValues.codigo}
-                onChange={(e: any) => handleInputChange(e)}
+                onChange={e => {
+                  const regex = /^[a-zA-Z0-9]*$/ // Solo letras y números
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e) // Solo actualiza si es válido
+                  }
+                }}
+                helperText={'Solo letras y numeros'}
                 fullWidth
                 label='Cod I'
               />
@@ -148,12 +150,18 @@ const UpdateProduct = ({ id }: { id: number }) => {
               <TextField
                 name='descripcion'
                 value={inputsValues.descripcion}
-                onChange={handleInputChange}
+                onChange={e => {
+                  const regex = /^[a-zA-Z0-9]*$/ // Solo letras y números
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e) // Solo actualiza si es válido
+                  }
+                }}
                 fullWidth
                 id='outlined-multiline-static'
                 label='Descripcion'
                 multiline
                 rows={2}
+                helperText={'Solo letras y numeros'}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -201,11 +209,7 @@ const UpdateProduct = ({ id }: { id: number }) => {
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button  
-          disabled={isLoading}  
-          onClick={ handleUpdateProduct } 
-          variant='contained' 
-          autoFocus>
+          <Button disabled={isLoading} onClick={handleUpdateProduct} variant='contained' autoFocus>
             {isLoading ? 'Actualizando producto...' : 'Actualizar producto'}
           </Button>
           {isError && <div> Error update product </div>}

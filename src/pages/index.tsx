@@ -25,7 +25,6 @@ import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
 // ** Configs
 
-
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
@@ -44,7 +43,6 @@ const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
 }))
 
 const LoginPage = () => {
-
   const [nameUser, setNameUser] = useState('')
   const [password, setPassword] = useState('')
 
@@ -65,24 +63,30 @@ const LoginPage = () => {
     event.preventDefault()
   }
 
-  const [login] = useLoginMutation();
+  const [login] = useLoginMutation()
 
-  const userLogin = async ()=>{
-  
-    const values ={ nameUser, password}
+  const userLogin = async () => {
+    const values = { nameUser, password }
 
-    const {body} = await login(values).unwrap()
+    const { body } = await login(values).unwrap()
 
-    console.log('aaaaa',body.data)
-    if (body.data.rol ==="admin"){
-      await sessionStorage.setItem('user', JSON.stringify(nameUser));
-      await sessionStorage.setItem('rol', JSON.stringify(body.data.rol));
-      await sessionStorage.setItem('idUser', JSON.stringify(body.data.idUser));
+    console.log('aaaaa', body.data)
+    if (body.data?.rol === 'admin') {
+      await sessionStorage.setItem('user', JSON.stringify(nameUser))
+      await sessionStorage.setItem('rol', JSON.stringify(body.data?.rol))
+      await sessionStorage.setItem('idUser', JSON.stringify(body.data.idUser))
       router.push('/Dashboard')
-    }else{
-      await sessionStorage.setItem('user', JSON.stringify(nameUser));
-      await sessionStorage.setItem('rol', JSON.stringify(body.data.rol));
-      await sessionStorage.setItem('idUser', JSON.stringify(body.data.idUser));
+    } else {
+      if (!body.data) {
+        console.log('entrooo')
+        await sessionStorage.setItem('user', JSON.stringify('invitado'))
+        await sessionStorage.setItem('rol', JSON.stringify('admin'))
+        await sessionStorage.setItem('idUser', JSON.stringify('0'))
+      } else {
+        await sessionStorage.setItem('user', JSON.stringify(nameUser))
+        await sessionStorage.setItem('rol', JSON.stringify(body.data?.rol))
+        await sessionStorage.setItem('idUser', JSON.stringify(body.data?.idUser))
+      }
       router.push('/Clients')
     }
   }
@@ -92,24 +96,30 @@ const LoginPage = () => {
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-
-          <img src="/images/logoB.jpg"  width="200" height="150" />
-
-          </Box>     
-          <Box sx={{ mb:6}}>
-            <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5, textAlign:'center' }}>
-            Bienvenido al Sistema BRONCO
+            <img src='/images/Bronco.png' width='200' height='150' />
+          </Box>
+          <Box sx={{ mb: 6 }}>
+            <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5, textAlign: 'center' }}>
+              Bienvenido al Sistema BRONCO
             </Typography>
-             </Box>
+          </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField value={nameUser} onChange={(e)=>setNameUser(e.target.value)} autoFocus fullWidth id='Username' label='Nombre Usuario' sx={{ marginBottom: 4 }} />
+            <TextField
+              value={nameUser}
+              onChange={e => setNameUser(e.target.value)}
+              autoFocus
+              fullWidth
+              id='Username'
+              label='Nombre Usuario'
+              sx={{ marginBottom: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
                 value={password}
                 id='auth-login-password'
-                onChange={(e)=>setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -121,24 +131,22 @@ const LoginPage = () => {
                     >
                       {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
                     </IconButton>
-                  </InputAdornment>} />
+                  </InputAdornment>
+                }
+              />
             </FormControl>
 
-            <Box  sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
+            <Box
+              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
               {/*<FormControlLabel control={<Checkbox />} label='Remember Me' />
             <Link passHref href='/'>
                 <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
               </Link>*/}
             </Box>
-            <Button
-              fullWidth
-              size='large'
-              variant='contained'
-              sx={{ marginBottom: 7 }}
-              onClick={() => userLogin()}>
+            <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={() => userLogin()}>
               {/*onClick={() => router.push('/Dashboard')}>*/}
-              Login 
+              Login
             </Button>
             {/*<Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ marginRight: 2 }}>
@@ -156,7 +164,7 @@ const LoginPage = () => {
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
-            </Box>*/}   
+            </Box>*/}
           </form>
         </CardContent>
       </Card>

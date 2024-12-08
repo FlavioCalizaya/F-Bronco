@@ -6,29 +6,28 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress'
 
 /**Impor Provider API */
 import { useGetAllProvidersQuery } from 'src/api/providerApi'
 import UpdatePovider from '../UpdateProvider'
 import RemoveProvider from '../DeleteProvider'
 
-export default function ProviderList () {
-
+export default function ProviderList() {
   interface Provider {
-        id:number
-        businessName: string
-        nitCi: string
-        phoneNumber: number
-        address: string
-      }
+    id: number
+    businessName: string
+    nitCi: string
+    phoneNumber: number
+    address: string
+  }
 
-    // @ts-ignore
-   const {data, isLoading} =  useGetAllProvidersQuery()
-  
-  return (
-    isLoading ? <CircularProgress/>
-    :
+  // @ts-ignore
+  const { data, isLoading } = useGetAllProvidersQuery()
+
+  return isLoading ? (
+    <CircularProgress />
+  ) : (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
@@ -43,29 +42,28 @@ export default function ProviderList () {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.data.map((provider: Provider, item:number) => (
-            <TableRow
-              key={provider.nitCi}
-              sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}
-            >
-              <TableCell component='th' scope='row'>{item +1}</TableCell>
-              <TableCell align='left'>{provider.nitCi}</TableCell>
-              <TableCell align='left'>{provider.businessName}</TableCell>
-              <TableCell align='left'>{provider.phoneNumber}</TableCell>
-              <TableCell align='left'>{provider.address}</TableCell>
-              <TableCell align='left'>
-              
-               <UpdatePovider data={provider}/>
-               
-              </TableCell>
-              <TableCell align='left'>
-                <RemoveProvider data={provider}/>
-              </TableCell>
-            </TableRow>
+          {data?.data
+            .slice() // Crea una copia del array para no mutar el original
+            .sort((a: any, b: any) => b.id - a.id)
+            .map((provider: Provider, item: number) => (
+              <TableRow key={provider.nitCi} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                <TableCell component='th' scope='row'>
+                  {item + 1}
+                </TableCell>
+                <TableCell align='left'>{provider.nitCi}</TableCell>
+                <TableCell align='left'>{provider.businessName}</TableCell>
+                <TableCell align='left'>{provider.phoneNumber}</TableCell>
+                <TableCell align='left'>{provider.address}</TableCell>
+                <TableCell align='left'>
+                  <UpdatePovider data={provider} />
+                </TableCell>
+                <TableCell align='left'>
+                  <RemoveProvider data={provider} />
+                </TableCell>
+              </TableRow>
             ))}
-           
         </TableBody>
       </Table>
     </TableContainer>
-    )
+  )
 }

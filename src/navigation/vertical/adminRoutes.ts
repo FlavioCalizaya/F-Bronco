@@ -17,13 +17,6 @@ const adminNavigation = (): VerticalNavItemsType => {
     {
       sectionTitle: 'MENU PRINCIPAL DE OPCIONES'
     },
-
-    {
-      
-      title: 'Dashboard',
-      icon: HomeOutline,
-      path: '/Dashboard'
-    },
     {
       title: 'Usuarios',
       icon: AccountCogOutline,
@@ -55,7 +48,7 @@ const adminNavigation = (): VerticalNavItemsType => {
       icon: AccountCogOutline,
       path: '/Maintenances'
     },
-      {
+    {
       title: 'Proveedores',
       icon: GroupsIcon,
       path: '/Providers'
@@ -69,6 +62,11 @@ const adminNavigation = (): VerticalNavItemsType => {
       title: 'Inventario',
       icon: GraphicEqIcon,
       path: '/Inventory'
+    },
+    {
+      title: 'Reportes',
+      path: '/Reportes',
+      icon: GraphicEqIcon,
     },
   ]
 }

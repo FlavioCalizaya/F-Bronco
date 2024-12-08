@@ -15,10 +15,9 @@ import { useEffect, useState } from 'react'
 import { useGetUserByIDQuery, useUpdateUserMutation } from 'src/api/userApi'
 import Link from '@mui/material/Link'
 import { IconButton } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit'
 
-
-const initialValuesInputs= { 
+const initialValuesInputs = {
   nombre: 'Cargando',
   primerApellido: 'Cargando',
   segundoApellido: 'Cargando',
@@ -26,15 +25,12 @@ const initialValuesInputs= {
   rol: 'Cargando'
 }
 
-const UpdateUser= ({ id }: { id: number }) => {
-
+const UpdateUser = ({ id }: { id: number }) => {
   const [open, setOpen] = useState(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
-
-  const { data: product } = useGetUserByIDQuery(id);
-
+  const { data: product } = useGetUserByIDQuery(id)
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target
@@ -45,65 +41,73 @@ const UpdateUser= ({ id }: { id: number }) => {
   }
 
   const handleClickOpen = () => {
-
-  setinputsValues(product )
+    setinputsValues(product)
 
     setOpen(true)
-   
   }
 
   const handleClose = () => {
     setOpen(false)
   }
 
-  const [inputsValues, setinputsValues] = useState(initialValuesInputs);
+  const [inputsValues, setinputsValues] = useState(initialValuesInputs)
 
-  const [updateUser, { isLoading, isError }] = useUpdateUserMutation();
-
+  const [updateUser, { isLoading, isError }] = useUpdateUserMutation()
 
   const handleUpdateUser = async () => {
     const updatedUserData = {
       id: id,
-      value: inputsValues 
-    };
-    try {
-      await updateUser(updatedUserData).unwrap();
-      handleClose();
-    } catch (error) {
-      console.error('Error updating user:', error);
+      value: inputsValues
     }
-  };
-  
+    try {
+      await updateUser(updatedUserData).unwrap()
+      handleClose()
+    } catch (error) {
+      console.error('Error updating user:', error)
+    }
+  }
+
   return (
     <div>
       <IconButton aria-label='Edit' color='primary' onClick={handleClickOpen}>
         <EditIcon />
       </IconButton>
-  
+
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby='responsive-dialog-title'>
         <DialogTitle id='responsive-dialog-title'>
-        
-          <Link href='#'> Modificar  Usuario </Link>
+          <Link href='#'> Modificar Usuario </Link>
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={7} style={{ paddingTop: '5px' }}>
-                       
             <Grid item xs={12} sm={6}>
               <TextField
                 name='nombre'
                 value={inputsValues.nombre}
-                onChange={(e: any) => handleInputChange(e)}
+                onChange={e => {
+                  const regex = /^[a-zA-Z\s]*$/
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e)
+                  }
+                }}
+                inputProps={{ maxLength: 20, pattern: '^[a-zA-Z\\s]*$' }}
+                helperText={'Solo letras maximo 20'}
                 fullWidth
                 label='Nombre'
               />
             </Grid>
 
-
             <Grid item xs={12} sm={6}>
               <TextField
                 name='primerApellido'
                 value={inputsValues.primerApellido}
-                onChange={(e: any) => handleInputChange(e)}
+                onChange={e => {
+                  const regex = /^[a-zA-Z\s]*$/
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e)
+                  }
+                }}
+                inputProps={{ maxLength: 20, pattern: '^[a-zA-Z\\s]*$' }}
+                helperText={'Solo letras maximo 20'}
                 fullWidth
                 label='Primer Apellido'
               />
@@ -113,7 +117,14 @@ const UpdateUser= ({ id }: { id: number }) => {
               <TextField
                 name='segundoApellido'
                 value={inputsValues.segundoApellido}
-                onChange={(e: any) => handleInputChange(e)}
+                onChange={e => {
+                  const regex = /^[a-zA-Z\s]*$/
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e)
+                  }
+                }}
+                inputProps={{ maxLength: 20, pattern: '^[a-zA-Z\\s]*$' }}
+                helperText={'Solo letras maximo 20'}
                 fullWidth
                 label='Segundo Apellido'
               />
@@ -123,12 +134,17 @@ const UpdateUser= ({ id }: { id: number }) => {
               <TextField
                 name='ci'
                 value={inputsValues.ci}
-                onChange={(e: any) => handleInputChange(e)}
+                onChange={e => {
+                  const regex = /^[0-9]*$/ // Solo números
+                  if (regex.test(e.target.value)) {
+                    handleInputChange(e) // Solo actualiza si es válido
+                  }
+                }}
+                inputProps={{ maxLength: 10 }}
                 fullWidth
                 label='C.I.'
               />
             </Grid>
-
 
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
@@ -138,19 +154,14 @@ const UpdateUser= ({ id }: { id: number }) => {
                   <MenuItem value='user'>User</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>   
-                                  
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button  
-          disabled={isLoading}  
-          onClick={ handleUpdateUser } 
-          variant='contained' 
-          autoFocus>
+          <Button disabled={isLoading} onClick={handleUpdateUser} variant='contained' autoFocus>
             {isLoading ? 'Actualizando Usuario...' : 'Actualizar Usuario'}
           </Button>
           {isError && <div> Error update User </div>}
